@@ -39,7 +39,7 @@ namespace PrettigLokaalBackend
 
             var signConfig = new ConfigurationBuilder()
                                 .SetBasePath(Directory.GetCurrentDirectory())
-                                .AddJsonFile("signature.json").Build();
+                                .AddJsonFile(Configuration["Data:JwtConfig"]).Build();
 
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
             services
@@ -57,7 +57,8 @@ namespace PrettigLokaalBackend
                     cfg.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidIssuer = signConfig["ISSUER"],
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(signConfig["JWT_PRIVATE_KEY"])),
+                        ValidAudience = signConfig["AUDIENCE"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(signConfig["JWT_SIGN"])),
                     };
                 });
 
@@ -70,8 +71,8 @@ namespace PrettigLokaalBackend
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                context.Database.EnsureDeleted();
-                context.Database.EnsureCreated();
+                //context.Database.EnsureDeleted();
+                //context.Database.EnsureCreated();
             }
             else
             {
@@ -79,7 +80,10 @@ namespace PrettigLokaalBackend
             }
 
             app.UseHttpsRedirection();
-            app.UseMvc();
+            app.UseMvc(/*routes =>
+            {
+                routes.MapRoute("default", "api/{controller}/{action}/{id?}");
+            }*/);
         }
     }
 }

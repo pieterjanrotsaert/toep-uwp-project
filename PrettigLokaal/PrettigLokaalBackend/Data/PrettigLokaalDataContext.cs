@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using PrettigLokaalBackend.DomainModels;
+using PrettigLokaalBackend.Models.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;

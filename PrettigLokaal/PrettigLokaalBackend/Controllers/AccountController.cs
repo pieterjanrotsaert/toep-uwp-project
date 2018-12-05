@@ -1,53 +1,139 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.IO;
 using System.Linq;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
+using PrettigLokaalBackend.Controllers.Extensions;
 using PrettigLokaalBackend.Data;
+using PrettigLokaalBackend.Models.Domain;
+using PrettigLokaalBackend.Models.Requests;
 
 namespace PrettigLokaalBackend.Controllers
 {
+    [Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]
-    public class AccountController : ControllerBase
+    [Authorize(AuthenticationSchemes = "Bearer")]
+    public class AccountController : APIControllerBase
     {
-        private PrettigLokaalDataContext _context;
 
-        public AccountController(PrettigLokaalDataContext context)
+        public AccountController(PrettigLokaalDataContext context, IConfiguration config) : base(context, config)
         {
-            _context = context;
         }
 
-        // GET api/values
+        private string GenerateJwtToken(int userId, string userEmail)
+        {
+            var jwtConfig = new ConfigurationBuilder()
+                                .SetBasePath(Directory.GetCurrentDirectory())
+                                .AddJsonFile(_config["Data:JwtConfig"]).Build();
+
+            var claims = new List<Claim>
+            {
+                new Claim(JwtRegisteredClaimNames.Sub, userEmail),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(ClaimTypes.NameIdentifier, userId.ToString())
+            };
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtConfig["JWT_SIGN"]));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var expires = DateTime.Now.AddDays(30);
+
+            var token = new JwtSecurityToken(
+                jwtConfig["ISSUER"],
+                jwtConfig["AUDIENCE"],
+                claims,
+                expires: expires,
+                signingCredentials: creds
+            );
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        [HttpPost("Create")]
+        [AllowAnonymous]
+        public async Task<IActionResult> Create([FromBody] CreateUserModel model)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if(await GetUserByEmail(model.Email) != null)
+                return UnprocessableEntity(new ErrorModel(ErrorModel.EMAIL_ALREADY_IN_USE));
+            
+            var account = new Account()
+            {
+                Email = model.Email,
+                Fullname = model.Fullname,
+                BirthDate = model.BirthDate,
+            };
+            account.SetPassword(model.Password);
+
+            _context.Accounts.Add(account);
+            await _context.SaveChangesAsync();
+
+            return Ok(new LoginResponse(GenerateJwtToken(account.Id, account.Email)));
+        }
+
+        [HttpPost("Login")]
+        [AllowAnonymous]
+        public async Task<IActionResult> Login([FromBody] LoginModel model)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            Account account = await GetUserByEmail(model.Email);
+            if (account == null)
+                return NotFound();
+
+            if (!account.ComparePassword(model.Password))
+                return Unauthorized();
+
+            return Ok(new LoginResponse(GenerateJwtToken(account.Id, account.Email)));
+        }
+
+        [HttpPost("Update")]
+        public async Task<IActionResult> Update([FromBody]Dictionary<string, string> fields)
+        {
+            Account acc = await GetAccount();
+            foreach(string key in fields.Keys)
+            {
+                switch(key.ToLower())
+                {
+                    case "birthdate":
+                        acc.BirthDate = DateTime.Parse(fields[key]);
+                        break;
+                    case "fullname":
+                        acc.Fullname = fields[key];
+                        break;
+                }
+            }
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
+
+        [HttpPost("UpdatePassword")]
+        public async Task<IActionResult> UpdatePassword([FromBody]UpdatePasswordModel model)
+        {
+            Account acc = await GetAccount();
+            if (!acc.ComparePassword(model.OldPassword))
+                return Unauthorized();
+            acc.SetPassword(model.NewPassword);
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
+
         [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
+        public async Task<ActionResult<Account>> Get()
         {
-            return new string[] { "value1", "value2" };
+            return await GetAccount();
         }
 
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
-        {
-            return "value";
-        }
-
-        // POST api/values
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
     }
 }

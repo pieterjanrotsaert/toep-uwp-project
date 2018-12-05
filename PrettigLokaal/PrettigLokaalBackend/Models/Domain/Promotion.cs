@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace PrettigLokaalBackend.DomainModels
+namespace PrettigLokaalBackend.Models.Domain
 {
-    public class Event
+    public class Promotion
     {
         public int Id { get; set; }
         public string Name;
@@ -13,6 +13,7 @@ namespace PrettigLokaalBackend.DomainModels
         public DateTime EndDate { get; set; }
         public Image Image { get; set; }
         public Merchant Organizer { get; set; }
+        public bool HasCouponCode { get; set; } = false;
         public string Description { get; set; }
     }
 }

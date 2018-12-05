@@ -92,10 +92,39 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\PrettigLokaalBackend\Models\Domain\Account.cs">
+      <Link>Models\Domain\Account.cs</Link>
+    </Compile>
+    <Compile Include="..\PrettigLokaalBackend\Models\Domain\Coupon.cs">
+      <Link>Models\Domain\Coupon.cs</Link>
+    </Compile>
+    <Compile Include="..\PrettigLokaalBackend\Models\Domain\Event.cs">
+      <Link>Models\Domain\Event.cs</Link>
+    </Compile>
+    <Compile Include="..\PrettigLokaalBackend\Models\Domain\Image.cs">
+      <Link>Models\Domain\Image.cs</Link>
+    </Compile>
+    <Compile Include="..\PrettigLokaalBackend\Models\Domain\Merchant.cs">
+      <Link>Models\Domain\Merchant.cs</Link>
+    </Compile>
+    <Compile Include="..\PrettigLokaalBackend\Models\Domain\MerchantSubscription.cs">
+      <Link>Models\Domain\MerchantSubscription.cs</Link>
+    </Compile>
+    <Compile Include="..\PrettigLokaalBackend\Models\Domain\Promotion.cs">
+      <Link>Models\Domain\Promotion.cs</Link>
+    </Compile>
+    <Compile Include="..\PrettigLokaalBackend\Models\Requests\CreateUserModel.cs">
+      <Link>Models\Requests\CreateUserModel.cs</Link>
+    </Compile>
+    <Compile Include="..\PrettigLokaalBackend\Models\Requests\ErrorModel.cs">
+      <Link>Models\Requests\ErrorModel.cs</Link>
+    </Compile>
+    <Compile Include="..\PrettigLokaalBackend\Models\Requests\LoginResponse.cs">
+      <Link>Models\Requests\LoginResponse.cs</Link>
+    </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Models\Domain\Merchant.cs" />
     <Compile Include="ViewModels\MainPageViewModel.cs" />
     <Compile Include="Views\DiscoverPage.xaml.cs">
       <DependentUpon>DiscoverPage.xaml</DependentUpon>
