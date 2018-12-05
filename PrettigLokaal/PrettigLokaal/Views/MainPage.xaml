@@ -1,0 +1,68 @@
+﻿<Page
+    x:Class="PrettigLokaal.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:PrettigLokaal"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <NavigationView x:Name="NavView" IsSettingsVisible="False" SelectionChanged="NavView_SelectionChanged" Loaded="NavView_Loaded">
+            <NavigationView.MenuItems>
+                <NavigationViewItemHeader Content="PrettigLokaal"></NavigationViewItemHeader>
+                <NavigationViewItem Content="Feed" Tag="nav_feed">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE762;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Content="Ontdek" Tag="nav_discover">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE762;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Content="Mijn Couponcodes" Tag="nav_coupons">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE762;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItemSeparator/>
+                <NavigationViewItemHeader Content="Handelaar"></NavigationViewItemHeader>
+                <NavigationViewItem Content="Handelaarspaneel" Tag="nav_merchantpanel">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE779;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+            </NavigationView.MenuItems>
+
+            <!--NavigationView.HeaderTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <TextBlock FontSize="28"
+                               Margin="24 0 0 0"
+                               Text="Titel">
+                        </TextBlock>
+                    </StackPanel>
+                </DataTemplate>
+            </NavigationView.HeaderTemplate-->
+
+            <NavigationView.PaneFooter>
+                <NavigationViewItem Tapped="SignoutButton_Tapped" Content="Afmelden" Tag="nav_signout">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE7E8;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+
+            </NavigationView.PaneFooter>
+
+            <Frame x:Name="ContentFrame">
+                <Frame.ContentTransitions>
+                    <TransitionCollection>
+                        <NavigationThemeTransition/>
+                    </TransitionCollection>
+                </Frame.ContentTransitions>
+            </Frame>
+
+        </NavigationView>
+    </Grid>
+</Page>
