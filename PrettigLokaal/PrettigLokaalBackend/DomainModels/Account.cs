@@ -14,6 +14,10 @@ namespace PrettigLokaalBackend.DomainModels
         public string PasswordHash { get; set; }
         public string PasswordSalt { get; set; }
 
+        public DateTime BirthDate { get; set; }
+
+        public List<MerchantSubscription> Subscriptions { get; set; }
+
         public Merchant Merchant { get; set; } // null if the user is not a merchant
 
         // This sets a new password for the user.
@@ -30,6 +34,11 @@ namespace PrettigLokaalBackend.DomainModels
             if (BCrypt.Net.BCrypt.HashPassword(password + PasswordSalt) == PasswordHash)
                 return true;
             return false;
+        }
+
+        public bool IsMerchant()
+        {
+            return Merchant != null;
         }
     }
 }
