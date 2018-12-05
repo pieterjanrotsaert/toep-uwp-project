@@ -16,6 +16,7 @@ namespace PrettigLokaalBackend.DomainModels
 
         public DateTime BirthDate { get; set; }
 
+        public List<Coupon> Coupons { get; set; }
         public List<MerchantSubscription> Subscriptions { get; set; }
 
         public Merchant Merchant { get; set; } // null if the user is not a merchant

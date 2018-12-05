@@ -16,6 +16,7 @@ namespace PrettigLokaalBackend.Data
         public DbSet<Event> Events { get; set; }
         public DbSet<Promotion> Promotions { get; set; }
         public DbSet<Image> Images { get; set; }
+        public DbSet<Coupon> Coupons { get; set; }
 
         public PrettigLokaalDataContext(DbContextOptions options) : base(options)
         {
@@ -30,51 +31,60 @@ namespace PrettigLokaalBackend.Data
             builder.Entity<Event>(MapEvent);
             builder.Entity<Promotion>(MapPromotion);
             builder.Entity<Image>(MapImage);
+            builder.Entity<Coupon>(MapCoupon);
         }
 
         private static void MapAccount(EntityTypeBuilder<Account> builder)
         {
             builder.ToTable("Account");
-            builder.HasKey(a => a.Id);
-            builder.HasOne(a => a.Merchant).WithOne(a => a.Account).HasForeignKey("Account", "MerchantId");
+            builder.HasKey(p => p.Id);
+            builder.HasOne(p => p.Merchant).WithOne(p => p.Account).HasForeignKey("Account", "MerchantId");
+            builder.HasMany(p => p.Coupons).WithOne(p => p.Account);
         }
 
         private static void MapMerchant(EntityTypeBuilder<Merchant> builder)
         {
             builder.ToTable("Merchant");
-            builder.HasKey(a => a.Id);
-            builder.HasMany(a => a.Images);
-            builder.HasMany(a => a.Events).WithOne(a => a.Organizer);
-            builder.HasMany(a => a.Promotions).WithOne(a => a.Organizer);
+            builder.HasKey(p => p.Id);
+            builder.HasMany(p => p.Images);
+            builder.HasMany(p => p.Events).WithOne(p => p.Organizer);
+            builder.HasMany(p => p.Promotions).WithOne(p => p.Organizer);
         }
 
         private static void MapMerchantSubs(EntityTypeBuilder<MerchantSubscription> builder)
         {
             builder.ToTable("MerchantSubscription");
-            builder.HasKey(a => a.Id);
-            builder.HasOne(a => a.Merchant).WithMany(a => a.Subscriptions);
-            builder.HasOne(a => a.Account).WithMany(a => a.Subscriptions);
+            builder.HasKey(p => p.Id);
+            builder.HasOne(p => p.Merchant).WithMany(p => p.Subscriptions);
+            builder.HasOne(p => p.Account).WithMany(p => p.Subscriptions);
         }
 
         private static void MapEvent(EntityTypeBuilder<Event> builder)
         {
             builder.ToTable("Event");
-            builder.HasKey(a => a.Id);
-            builder.HasOne(a => a.Image);
+            builder.HasKey(p => p.Id);
+            builder.HasOne(p => p.Image);
         }
 
         private static void MapPromotion(EntityTypeBuilder<Promotion> builder)
         {
             builder.ToTable("Promotion");
-            builder.HasKey(a => a.Id);
-            builder.HasOne(a => a.Image);
+            builder.HasKey(p => p.Id);
+            builder.HasOne(p => p.Image);
         }
 
         private static void MapImage(EntityTypeBuilder<Image> builder)
         {
             builder.ToTable("Image");
-            builder.HasKey(a => a.Id);
-            builder.Property(a => a.Data).HasColumnType("nvarchar(MAX)");
+            builder.HasKey(p => p.Id);
+            builder.Property(p => p.Data).HasColumnType("nvarchar(MAX)");
+        }
+
+        private static void MapCoupon(EntityTypeBuilder<Coupon> builder)
+        {
+            builder.ToTable("Coupon");
+            builder.HasKey(p => p.Id);
+            builder.HasOne(p => p.Promotion);
         }
     }
 }
