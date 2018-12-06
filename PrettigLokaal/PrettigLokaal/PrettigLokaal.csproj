@@ -110,6 +110,9 @@
     <Compile Include="..\PrettigLokaalBackend\Models\Domain\MerchantSubscription.cs">
       <Link>Models\Domain\MerchantSubscription.cs</Link>
     </Compile>
+    <Compile Include="..\PrettigLokaalBackend\Models\Domain\OpeningHourSpan.cs">
+      <Link>Backend\Models\Domain\OpeningHourSpan.cs</Link>
+    </Compile>
     <Compile Include="..\PrettigLokaalBackend\Models\Domain\Promotion.cs">
       <Link>Models\Domain\Promotion.cs</Link>
     </Compile>
@@ -122,12 +125,28 @@
     <Compile Include="..\PrettigLokaalBackend\Models\Requests\ErrorModel.cs">
       <Link>Models\Requests\ErrorModel.cs</Link>
     </Compile>
+    <Compile Include="..\PrettigLokaalBackend\Models\Requests\LoginModel.cs">
+      <Link>Models\Requests\LoginModel.cs</Link>
+    </Compile>
     <Compile Include="..\PrettigLokaalBackend\Models\Requests\LoginResponse.cs">
       <Link>Models\Requests\LoginResponse.cs</Link>
+    </Compile>
+    <Compile Include="..\PrettigLokaalBackend\Models\Requests\MerchantAddEventModel.cs">
+      <Link>Models\Requests\MerchantAddEventModel.cs</Link>
+    </Compile>
+    <Compile Include="..\PrettigLokaalBackend\Models\Requests\MerchantAddPromotionModel.cs">
+      <Link>Models\Requests\MerchantAddPromotionModel.cs</Link>
+    </Compile>
+    <Compile Include="..\PrettigLokaalBackend\Models\Requests\MerchantRegisterModel.cs">
+      <Link>Models\Requests\MerchantRegisterModel.cs</Link>
+    </Compile>
+    <Compile Include="..\PrettigLokaalBackend\Models\Requests\UpdatePasswordModel.cs">
+      <Link>Models\Requests\UpdatePasswordModel.cs</Link>
     </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Backend\API.cs" />
     <Compile Include="ViewModels\MainPageViewModel.cs" />
     <Compile Include="Views\DiscoverPage.xaml.cs">
       <DependentUpon>DiscoverPage.xaml</DependentUpon>
@@ -189,6 +208,9 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.0.6</Version>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>12.0.1</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup />

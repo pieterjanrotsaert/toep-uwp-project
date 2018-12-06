@@ -71,19 +71,17 @@ namespace PrettigLokaalBackend
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                context.Database.EnsureDeleted();
-                context.Database.EnsureCreated();
+                //context.Database.EnsureDeleted();
             }
             else
             {
                 app.UseHsts();
             }
 
+            context.Database.EnsureCreated();
+
             app.UseHttpsRedirection();
-            app.UseMvc(/*routes =>
-            {
-                routes.MapRoute("default", "api/{controller}/{action}/{id?}");
-            }*/);
+            app.UseMvc();
         }
     }
 }

@@ -28,6 +28,7 @@ namespace PrettigLokaalBackend.Models.Domain
 
         public Merchant Merchant { get; set; } // null if the user is not a merchant
 
+#if BACKEND 
         // This sets a new password for the user.
         // The password is not stored directly, rather a hash is computed and stored along with a salt.
         public void SetPassword(string password)
@@ -48,5 +49,7 @@ namespace PrettigLokaalBackend.Models.Domain
         {
             return Merchant != null;
         }
+#endif 
+
     }
 }
