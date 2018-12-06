@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace PrettigLokaalBackend.Models.Domain
 {
-    public class Coupon
+    public class OpeningHourSpan
     {
-        public int Id { get; set; }
-        [JsonIgnore] public Account Account { get; set; }
-        public Promotion Promotion { get; set; }
+        [JsonIgnore] public int Id { get; set; }
+        public DateTime OpenTime { get; set; }
+        public DateTime CloseTime { get; set; }
     }
 }

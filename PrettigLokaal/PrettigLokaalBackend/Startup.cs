@@ -32,7 +32,7 @@ namespace PrettigLokaalBackend
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<PrettigLokaalDataContext>(options =>
+            services.AddDbContext<PrettigLokaalContext>(options =>
             {
                 options.UseSqlServer(Configuration["Data:ConnectionString"]);
             });
@@ -66,13 +66,13 @@ namespace PrettigLokaalBackend
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, PrettigLokaalDataContext context)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, PrettigLokaalContext context)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                //context.Database.EnsureDeleted();
-                //context.Database.EnsureCreated();
+                context.Database.EnsureDeleted();
+                context.Database.EnsureCreated();
             }
             else
             {

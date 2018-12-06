@@ -113,6 +113,9 @@
     <Compile Include="..\PrettigLokaalBackend\Models\Domain\Promotion.cs">
       <Link>Models\Domain\Promotion.cs</Link>
     </Compile>
+    <Compile Include="..\PrettigLokaalBackend\Models\Domain\Tag.cs">
+      <Link>Models\Domain\Tag.cs</Link>
+    </Compile>
     <Compile Include="..\PrettigLokaalBackend\Models\Requests\CreateUserModel.cs">
       <Link>Models\Requests\CreateUserModel.cs</Link>
     </Compile>

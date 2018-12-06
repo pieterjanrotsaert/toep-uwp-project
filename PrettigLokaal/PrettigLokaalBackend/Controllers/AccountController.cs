@@ -26,7 +26,7 @@ namespace PrettigLokaalBackend.Controllers
     public class AccountController : APIControllerBase
     {
 
-        public AccountController(PrettigLokaalDataContext context, IConfiguration config) : base(context, config)
+        public AccountController(PrettigLokaalContext context, IConfiguration config) : base(context, config)
         {
         }
 
@@ -61,11 +61,8 @@ namespace PrettigLokaalBackend.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Create([FromBody] CreateUserModel model)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
             if(await GetUserByEmail(model.Email) != null)
-                return UnprocessableEntity(new ErrorModel(ErrorModel.EMAIL_ALREADY_IN_USE));
+                return Error(ErrorModel.EMAIL_ALREADY_IN_USE);
             
             var account = new Account()
             {
@@ -76,7 +73,7 @@ namespace PrettigLokaalBackend.Controllers
             account.SetPassword(model.Password);
 
             _context.Accounts.Add(account);
-            await _context.SaveChangesAsync();
+            SaveDB();
 
             return Ok(new LoginResponse(GenerateJwtToken(account.Id, account.Email)));
         }
@@ -90,10 +87,10 @@ namespace PrettigLokaalBackend.Controllers
 
             Account account = await GetUserByEmail(model.Email);
             if (account == null)
-                return NotFound();
+                return Error(ErrorModel.INVALID_USERNAME);
 
             if (!account.ComparePassword(model.Password))
-                return Unauthorized();
+                return Error(ErrorModel.INVALID_PASSWORD);
 
             return Ok(new LoginResponse(GenerateJwtToken(account.Id, account.Email)));
         }
@@ -114,7 +111,7 @@ namespace PrettigLokaalBackend.Controllers
                         break;
                 }
             }
-            await _context.SaveChangesAsync();
+            SaveDB();
             return Ok();
         }
 
@@ -123,16 +120,16 @@ namespace PrettigLokaalBackend.Controllers
         {
             Account acc = await GetAccount();
             if (!acc.ComparePassword(model.OldPassword))
-                return Unauthorized();
+                return Error(ErrorModel.INVALID_PASSWORD);
             acc.SetPassword(model.NewPassword);
-            await _context.SaveChangesAsync();
+            SaveDB();
             return Ok();
         }
 
         [HttpGet]
-        public async Task<ActionResult<Account>> Get()
+        public async Task<IActionResult> Get()
         {
-            return await GetAccount();
+            return Ok(await GetAccount());
         }
 
     }

@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using PrettigLokaalBackend.Data;
 using PrettigLokaalBackend.Models.Domain;
+using PrettigLokaalBackend.Models.Requests;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,12 +12,13 @@ using System.Threading.Tasks;
 
 namespace PrettigLokaalBackend.Controllers.Extensions
 {
+    // This class contains helper functions that are helpful for every controller.
     public class APIControllerBase : ControllerBase
     {
-        protected readonly PrettigLokaalDataContext _context;
+        protected readonly PrettigLokaalContext _context;
         protected readonly IConfiguration _config;
 
-        public APIControllerBase(PrettigLokaalDataContext context, IConfiguration configuration) : base()
+        public APIControllerBase(PrettigLokaalContext context, IConfiguration configuration) : base()
         {
             _context = context;
             _config = configuration;
@@ -24,12 +26,22 @@ namespace PrettigLokaalBackend.Controllers.Extensions
 
         protected async Task<Account> GetUserByEmail(string email)
         {
-            return await _context.Accounts.Where(a => a.Email.Equals(email)).Include(a => a.Merchant).FirstOrDefaultAsync();
+            return await _context.Accounts.Where(a => a.Email.Equals(email))
+                .Include(a => a.Merchant)
+                    .ThenInclude(m => m.Tags)
+                .Include(a => a.Merchant)
+                    .ThenInclude(m => m.OpeningHours)
+                .FirstOrDefaultAsync();
         }
 
         protected async Task<Account> GetAccountById(int id)
         {
-            return await _context.Accounts.Where(a => a.Id == id).Include(a => a.Merchant).FirstOrDefaultAsync();
+            return await _context.Accounts.Where(a => a.Id == id)
+                .Include(a => a.Merchant)
+                    .ThenInclude(m => m.Tags)
+                .Include(a => a.Merchant)
+                    .ThenInclude(m => m.OpeningHours)
+                .FirstOrDefaultAsync();
         }
 
         protected int GetAccountId()
@@ -40,6 +52,16 @@ namespace PrettigLokaalBackend.Controllers.Extensions
         protected async Task<Account> GetAccount()
         {
             return await GetAccountById(GetAccountId());
+        }
+
+        protected IActionResult Error(int errCode)
+        {
+            return UnprocessableEntity(new ErrorModel(errCode));
+        }
+
+        protected async void SaveDB()
+        {
+            await _context.SaveChangesAsync();
         }
     }
 }

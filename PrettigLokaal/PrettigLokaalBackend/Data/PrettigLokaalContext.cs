@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace PrettigLokaalBackend.Data
 {
-    public class PrettigLokaalDataContext : DbContext
+    public class PrettigLokaalContext : DbContext
     {
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Merchant> Merchants { get; set; }
@@ -18,7 +18,7 @@ namespace PrettigLokaalBackend.Data
         public DbSet<Image> Images { get; set; }
         public DbSet<Coupon> Coupons { get; set; }
 
-        public PrettigLokaalDataContext(DbContextOptions options) : base(options)
+        public PrettigLokaalContext(DbContextOptions options) : base(options)
         {
         }
 
@@ -32,6 +32,8 @@ namespace PrettigLokaalBackend.Data
             builder.Entity<Promotion>(MapPromotion);
             builder.Entity<Image>(MapImage);
             builder.Entity<Coupon>(MapCoupon);
+            builder.Entity<Tag>(MapTag);
+            builder.Entity<OpeningHourSpan>(MapMerchantOpeningHourSpan);
         }
 
         private static void MapAccount(EntityTypeBuilder<Account> builder)
@@ -46,9 +48,11 @@ namespace PrettigLokaalBackend.Data
         {
             builder.ToTable("Merchant");
             builder.HasKey(p => p.Id);
-            builder.HasMany(p => p.Images);
+            builder.HasMany(p => p.Images).WithOne(p => p.Merchant);
             builder.HasMany(p => p.Events).WithOne(p => p.Organizer);
             builder.HasMany(p => p.Promotions).WithOne(p => p.Organizer);
+            builder.HasMany(p => p.Tags);
+            builder.HasMany(p => p.OpeningHours);
         }
 
         private static void MapMerchantSubs(EntityTypeBuilder<MerchantSubscription> builder)
@@ -85,6 +89,18 @@ namespace PrettigLokaalBackend.Data
             builder.ToTable("Coupon");
             builder.HasKey(p => p.Id);
             builder.HasOne(p => p.Promotion);
+        }
+
+        private static void MapTag(EntityTypeBuilder<Tag> builder)
+        {
+            builder.ToTable("Tag");
+            builder.HasKey(p => p.Id);
+        }
+
+        private static void MapMerchantOpeningHourSpan(EntityTypeBuilder<OpeningHourSpan> builder)
+        {
+            builder.ToTable("OpeningHourSpan");
+            builder.HasKey(p => p.Id);
         }
     }
 }
