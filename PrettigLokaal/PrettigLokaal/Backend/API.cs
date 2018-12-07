@@ -7,6 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.Security.Credentials;
 using Newtonsoft.Json;
+using PrettigLokaalBackend.Models.Domain;
+using Windows.Storage;
 
 namespace PrettigLokaal.Backend
 {
@@ -16,6 +18,7 @@ namespace PrettigLokaal.Backend
         private static API singleton = null;
         private const string PWVAULT_RES  = "AUTH";
         private const string PWVAULT_USER = "API";
+        private const string ACCOUNTCACHE = "account.json";
 
 #if DEBUG
         private const string ENDPOINT     = "http://localhost:3000";
@@ -24,15 +27,16 @@ namespace PrettigLokaal.Backend
 #endif 
 
         private PasswordVault passwordVault = new PasswordVault();
+        private StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
         private HttpClient client = new HttpClient();
         private string token = ""; // JWT auth token, empty if not logged in.
+        private Account accountData = null; // Cached account data
 
         public delegate void Callback<T>(T result, ErrorModel error);
         public delegate void VoidCallback(ErrorModel error);
 
         private API()
-        {
-            SetToken(LoadToken());
+        {  
         }
 
         public static API Get() // Lazily instantiates the singleton and returns it.
@@ -42,22 +46,51 @@ namespace PrettigLokaal.Backend
             return singleton;
         }
 
+        public void Init(VoidCallback callback)
+        {
+            LoadToken();
+            if (IsLoggedIn())
+                LoadAccountData(callback);
+            else
+                callback(null);
+        }
+
+        private async void LoadAccountData(VoidCallback callback)
+        {
+            StorageFile file = await storageFolder.GetFileAsync(ACCOUNTCACHE);
+            if (file != null)
+            {
+                accountData = JsonConvert.DeserializeObject<Account>(await FileIO.ReadTextAsync(file));
+                callback.Invoke(null);
+            }
+            else
+                callback.Invoke(new ErrorModel(ErrorModel.NOT_FOUND, ACCOUNTCACHE));
+        }
+
+        private async void SaveAccountData(VoidCallback callback)
+        {
+            StorageFile file = await storageFolder.CreateFileAsync(ACCOUNTCACHE, CreationCollisionOption.ReplaceExisting);
+            if(accountData != null && file != null)
+                await FileIO.WriteTextAsync(file, JsonConvert.SerializeObject(accountData));
+            callback.Invoke(null);
+        }
+
+        private void LoadToken()
+        {
+            var credentials = passwordVault.Retrieve(PWVAULT_RES, PWVAULT_USER);
+            credentials.RetrievePassword();
+            string _token = credentials.Password;
+            if (_token == null)
+                SetToken("");
+            SetToken(credentials.Password);
+        }
+
         private void SetToken(string _token)
         {
             token = _token;
             passwordVault.Add(new PasswordCredential(PWVAULT_RES, PWVAULT_USER, token));
             client.DefaultRequestHeaders.Clear();
             client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
-        }
-
-        private string LoadToken()
-        {
-            var credentials = passwordVault.Retrieve(PWVAULT_RES, PWVAULT_USER);
-            credentials.RetrievePassword();
-            string _token = credentials.Password;
-            if (_token == null)
-                return "";
-            return credentials.Password;
         }
 
         private void ClearToken()
@@ -132,6 +165,34 @@ namespace PrettigLokaal.Backend
             return token.Length > 0;
         }
 
+        public bool IsMerchant()
+        {
+            return false;
+        }
+
+        public Account GetAccountInfo()
+        {
+            return accountData;
+        }
+
+        // This function retrieves and stores account info, it is automatically called by Login() and CreateAccount().
+        public void RetrieveAccountInfo(VoidCallback callback)
+        {
+            if (!IsLoggedIn())
+                callback(new ErrorModel(ErrorModel.NOT_LOGGED_IN));
+
+            SendGet<Account>("/api/account", (response, err) =>
+            {
+                if (response == null)
+                    callback(err);
+                else
+                {
+                    accountData = response;
+                    SaveAccountData(callback);
+                }
+            });
+        }
+
         public void Login(string email, string password, VoidCallback callback)
         {
             LoginModel model = new LoginModel()
@@ -143,7 +204,10 @@ namespace PrettigLokaal.Backend
             SendPost<LoginResponse>("/api/account/login", model, (response, err) => 
             {
                 if (err == null)
+                {
                     SetToken(response.Token);
+                    RetrieveAccountInfo(callback);
+                }
                 else
                     callback.Invoke(err);
             });
@@ -162,12 +226,13 @@ namespace PrettigLokaal.Backend
             SendPost<LoginResponse>("/api/account/create", model, (response, err) =>
             {
                 if (err == null)
+                {
                     SetToken(response.Token);
+                    RetrieveAccountInfo(callback);
+                }
                 else
                     callback.Invoke(err);
             });
         }
-
-
     }
 }

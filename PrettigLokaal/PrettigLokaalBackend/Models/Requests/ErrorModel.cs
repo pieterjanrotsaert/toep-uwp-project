@@ -39,8 +39,10 @@ namespace PrettigLokaalBackend.Models.Requests
         public const int ALREADY_A_MERCHANT     = 100;
         public const int NOT_A_MERCHANT         = 101;
 
-        public const int HTTP_ERROR     = 400;
         public const int NOT_FOUND              = 404;
+
+        public const int HTTP_ERROR             = 500;
+        public const int NOT_LOGGED_IN          = 501;
 
         public static string GetErrorString(int code)
         {

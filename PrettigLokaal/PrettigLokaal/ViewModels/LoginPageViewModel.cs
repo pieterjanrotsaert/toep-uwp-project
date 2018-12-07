@@ -7,9 +7,10 @@ using System.Threading.Tasks;
 
 namespace PrettigLokaal.ViewModels
 {
-    class MainPageViewModel : ViewModelBase 
+    class LoginPageViewModel : ViewModelBase 
     {
-        string SignoutButtonText { get; set; }
-
+        string Email { get; set; }
+        string Password { get; set; }
+        bool Remember { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using PrettigLokaal.ViewModels;
+﻿using PrettigLokaal.Backend;
+using PrettigLokaal.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -30,11 +31,45 @@ namespace PrettigLokaal
             InitializeComponent();
             _viewModel = new MainPageViewModel();
             DataContext = _viewModel;
+
+            API.Get().Init(err =>
+            {
+                // Navigate to appropriate page
+            });
+        }
+
+        private void NavView_Loaded(object sender, RoutedEventArgs e)
+        {
+            var item = FindNavItemByTag("nav_feed");
+            if (item != null)
+                NavView.SelectedItem = item;
+        }
+
+        private NavigationViewItem FindNavItemByTag(string tag)
+        {
+            foreach (NavigationViewItemBase item in NavView.MenuItems)
+            {
+                if (item is NavigationViewItem && item.Tag.ToString() == "nav_feed")
+                    return (NavigationViewItem)item;
+            }
+            return null;
+        }
+
+        private void PopulateMenu()
+        {
+
         }
 
         private void SignoutButton_Tapped(object sender, TappedRoutedEventArgs e)
         {
+            if(API.Get().IsLoggedIn())
+            {
 
+            }
+            else
+            {
+
+            }
             e.Handled = true;
         }
 
@@ -47,31 +82,20 @@ namespace PrettigLokaal
             switch(item.Tag.ToString())
             {
                 case "nav_feed":
-                    ContentFrame.Navigate(typeof(FeedPage));
+                    ContentFrame.Navigate(typeof(FeedPage), this);
                     break;
                 case "nav_discover":
-                    ContentFrame.Navigate(typeof(DiscoverPage));
+                    ContentFrame.Navigate(typeof(DiscoverPage), this);
                     break;
                 case "nav_coupons":
-                    ContentFrame.Navigate(typeof(MyCouponsPage));
+                    ContentFrame.Navigate(typeof(MyCouponsPage), this);
                     break;
                 case "nav_merchantpanel":
-                    ContentFrame.Navigate(typeof(MerchantPanel));
+                    ContentFrame.Navigate(typeof(MerchantPanel), this);
                     break;
             }
         }
-
-        private void NavView_Loaded(object sender, RoutedEventArgs e)
-        {
-            // Set the feed item as the currently selected one.
-            foreach (NavigationViewItemBase item in NavView.MenuItems)
-            {
-                if (item is NavigationViewItem && item.Tag.ToString() == "nav_feed")
-                {
-                    NavView.SelectedItem = item;
-                    break;
-                }
-            }
-        }
+        
+        
     }
 }
