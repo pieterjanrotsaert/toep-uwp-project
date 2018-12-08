@@ -1,5 +1,6 @@
 ﻿using PrettigLokaal.Backend;
 using PrettigLokaal.ViewModels;
+using PrettigLokaal.Views;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -24,23 +25,47 @@ namespace PrettigLokaal
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        private MainPageViewModel _viewModel;
+        private MainPageViewModel viewModel;
+        private string startPage = "";
+        private bool navViewLoaded = false;
 
         public MainPage()
         {
             InitializeComponent();
-            _viewModel = new MainPageViewModel();
-            DataContext = _viewModel;
+
+            viewModel = new MainPageViewModel();
+            DataContext = viewModel;
 
             API.Get().Init(err =>
             {
-                // Navigate to appropriate page
+                viewModel.IsLoggedIn = API.Get().IsLoggedIn();
+                viewModel.IsMerchant = API.Get().IsMerchant();
+
+                if(API.Get().IsLoggedIn())
+                {
+                    startPage = "nav_feed";
+                }
+                else
+                {
+                    startPage = "nav_discover";
+                }
+
+                if (navViewLoaded)
+                    SelectNavItem(startPage);
             });
         }
 
         private void NavView_Loaded(object sender, RoutedEventArgs e)
         {
-            var item = FindNavItemByTag("nav_feed");
+            navViewLoaded = true;
+            if (startPage.Length <= 0)
+                return;
+            SelectNavItem(startPage);
+        }
+
+        private void SelectNavItem(string tag)
+        {
+            var item = FindNavItemByTag(startPage);
             if (item != null)
                 NavView.SelectedItem = item;
         }
@@ -49,28 +74,72 @@ namespace PrettigLokaal
         {
             foreach (NavigationViewItemBase item in NavView.MenuItems)
             {
-                if (item is NavigationViewItem && item.Tag.ToString() == "nav_feed")
+                if (item is NavigationViewItem && item.Tag.ToString() == tag)
                     return (NavigationViewItem)item;
             }
             return null;
-        }
-
-        private void PopulateMenu()
-        {
-
         }
 
         private void SignoutButton_Tapped(object sender, TappedRoutedEventArgs e)
         {
             if(API.Get().IsLoggedIn())
             {
-
-            }
-            else
-            {
-
+                SetLoading(true);
+                API.Get().Logout(err => 
+                {
+                    SetLoading(false);
+                    viewModel.IsMerchant = false;
+                    viewModel.IsLoggedIn = false;
+                });
             }
             e.Handled = true;
+        }
+
+        private void ClearNavSelection()
+        {
+            NavView.SelectedItem = NavView.SettingsItem; // Use the settings item to 'deselect' the current one, it's hidden anyway.
+        }
+
+        private void SigninButton_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            ClearNavSelection();
+            viewModel.Title = "Aanmelden";
+            ContentFrame.Navigate(typeof(LoginPage), this);
+        }
+
+        private void RegisterButton_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            ClearNavSelection();
+            viewModel.Title = "Registreren";
+            ContentFrame.Navigate(typeof(RegisterPage), this);
+        }
+
+        private void ChangePassword_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            ClearNavSelection();
+            viewModel.Title = "Wachtwoord wijzigen";
+            ContentFrame.Navigate(typeof(ChangePasswordPage), this);
+        }
+    
+        public void GoBack()
+        {
+            ContentFrame.GoBack();
+        }
+
+        public void GoHome()
+        {
+            SelectNavItem("nav_discover");
+        }
+
+        public void OnSignInComplete()
+        {
+            viewModel.IsLoggedIn = API.Get().IsLoggedIn();
+            viewModel.IsMerchant = API.Get().IsMerchant();
+        }
+
+        public void SetLoading(bool state)
+        {
+            viewModel.IsLoading = state;
         }
 
         private void NavView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
@@ -78,24 +147,30 @@ namespace PrettigLokaal
             NavigationViewItem item = args.SelectedItem as NavigationViewItem;
             if (item == null)
                 return;
+            if (item.Tag == null)
+                return;
 
             switch(item.Tag.ToString())
             {
                 case "nav_feed":
+                    viewModel.Title = "Feed";
                     ContentFrame.Navigate(typeof(FeedPage), this);
                     break;
                 case "nav_discover":
+                    viewModel.Title = "Ontdek";
                     ContentFrame.Navigate(typeof(DiscoverPage), this);
                     break;
                 case "nav_coupons":
+                    viewModel.Title = "Coupons";
                     ContentFrame.Navigate(typeof(MyCouponsPage), this);
                     break;
                 case "nav_merchantpanel":
+                    viewModel.Title = "Zaakbeheer";
                     ContentFrame.Navigate(typeof(MerchantPanel), this);
                     break;
             }
         }
-        
+
         
     }
 }

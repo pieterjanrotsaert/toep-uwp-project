@@ -21,7 +21,7 @@ namespace PrettigLokaalBackend.Models.Requests
         {
             string str = GetString();
             if (!string.IsNullOrEmpty(Detail))
-                str += " - " + Detail;
+                str += ": " + Detail;
             return str;
         }
 
@@ -43,13 +43,14 @@ namespace PrettigLokaalBackend.Models.Requests
 
         public const int HTTP_ERROR             = 500;
         public const int NOT_LOGGED_IN          = 501;
+        public const int NETWORK_ERROR = 502;
 
         public static string GetErrorString(int code)
         {
             switch (code)
             {
                 case EMAIL_ALREADY_IN_USE: return "E-Mailadres is reeds in gebruik.";
-                default: return "Ongekende fout.";
+                default: return "Ongekende fout";
             }
         }
     }

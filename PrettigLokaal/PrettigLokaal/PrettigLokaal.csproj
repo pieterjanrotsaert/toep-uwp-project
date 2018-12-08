@@ -147,9 +147,19 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Backend\API.cs" />
+    <Compile Include="Misc\Utils.cs" />
+    <Compile Include="ViewModels\ChangePasswordPageViewModel.cs" />
+    <Compile Include="ViewModels\Helpers\DateConverter.cs" />
+    <Compile Include="ViewModels\Helpers\InverseVisibilityConverter.cs" />
+    <Compile Include="ViewModels\Helpers\ModelErrors.cs" />
     <Compile Include="ViewModels\Helpers\ViewModelBase.cs" />
+    <Compile Include="ViewModels\Helpers\VisibilityConverter.cs" />
     <Compile Include="ViewModels\LoginPageViewModel.cs" />
     <Compile Include="ViewModels\MainPageViewModel.cs" />
+    <Compile Include="ViewModels\RegisterPageViewModel.cs" />
+    <Compile Include="Views\ChangePasswordPage.xaml.cs">
+      <DependentUpon>ChangePasswordPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\DiscoverPage.xaml.cs">
       <DependentUpon>DiscoverPage.xaml</DependentUpon>
     </Compile>
@@ -167,6 +177,9 @@
       <DependentUpon>MerchantPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MyCouponsPage.xaml.cs" />
+    <Compile Include="Views\RegisterPage.xaml.cs">
+      <DependentUpon>RegisterPage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -189,6 +202,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Views\ChangePasswordPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\DiscoverPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -210,6 +227,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MyCouponsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\RegisterPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

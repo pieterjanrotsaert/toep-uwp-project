@@ -9,6 +9,7 @@ using Windows.Security.Credentials;
 using Newtonsoft.Json;
 using PrettigLokaalBackend.Models.Domain;
 using Windows.Storage;
+using System.Security.Authentication;
 
 namespace PrettigLokaal.Backend
 {
@@ -16,19 +17,25 @@ namespace PrettigLokaal.Backend
     class API
     {
         private static API singleton = null;
-        private const string PWVAULT_RES  = "AUTH";
-        private const string PWVAULT_USER = "API";
+        private const string PWVAULT_TOKENRES        = "AUTH";
+        private const string PWVAULT_TOKENUSER       = "TOKEN";
+        private const string PWVAULT_ACCOUNTRES      = "ACCOUNT";
+        private const string PWVAULT_ACCOUNTNAME     = "NAME";
+        private const string PWVAULT_ACCOUNTPASSWORD = "PASSWORD";
+
         private const string ACCOUNTCACHE = "account.json";
 
 #if DEBUG
-        private const string ENDPOINT     = "http://localhost:3000";
+        private const string ENDPOINT     = "https://localhost:3001";
 #else
         private const string ENDPOINT     = "http://localhost:3000";
 #endif 
 
         private PasswordVault passwordVault = new PasswordVault();
         private StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
-        private HttpClient client = new HttpClient();
+        private HttpClient client;
+        private HttpClientHandler clientHandler = new HttpClientHandler();
+
         private string token = ""; // JWT auth token, empty if not logged in.
         private Account accountData = null; // Cached account data
 
@@ -36,7 +43,11 @@ namespace PrettigLokaal.Backend
         public delegate void VoidCallback(ErrorModel error);
 
         private API()
-        {  
+        {
+            // Prevents exceptions being thrown because of https signing errors.
+            clientHandler.ServerCertificateCustomValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true;
+            clientHandler.SslProtocols = SslProtocols.Tls12 | SslProtocols.Tls11 | SslProtocols.Tls;
+            client = new HttpClient(clientHandler);
         }
 
         public static API Get() // Lazily instantiates the singleton and returns it.
@@ -57,7 +68,12 @@ namespace PrettigLokaal.Backend
 
         private async void LoadAccountData(VoidCallback callback)
         {
-            StorageFile file = await storageFolder.GetFileAsync(ACCOUNTCACHE);
+            StorageFile file = null;
+            try
+            {
+                file = await storageFolder.GetFileAsync(ACCOUNTCACHE);
+            }
+            catch (Exception) { }
             if (file != null)
             {
                 accountData = JsonConvert.DeserializeObject<Account>(await FileIO.ReadTextAsync(file));
@@ -69,7 +85,12 @@ namespace PrettigLokaal.Backend
 
         private async void SaveAccountData(VoidCallback callback)
         {
-            StorageFile file = await storageFolder.CreateFileAsync(ACCOUNTCACHE, CreationCollisionOption.ReplaceExisting);
+            StorageFile file = null;
+            try
+            {
+                file = await storageFolder.CreateFileAsync(ACCOUNTCACHE, CreationCollisionOption.ReplaceExisting);
+            }
+            catch (Exception) { }
             if(accountData != null && file != null)
                 await FileIO.WriteTextAsync(file, JsonConvert.SerializeObject(accountData));
             callback.Invoke(null);
@@ -77,18 +98,34 @@ namespace PrettigLokaal.Backend
 
         private void LoadToken()
         {
-            var credentials = passwordVault.Retrieve(PWVAULT_RES, PWVAULT_USER);
-            credentials.RetrievePassword();
-            string _token = credentials.Password;
+            string _token = null;
+            try
+            {
+                var credentials = passwordVault.Retrieve(PWVAULT_TOKENRES, PWVAULT_TOKENUSER);
+                credentials.RetrievePassword();
+                _token = credentials.Password;
+            }
+            catch (Exception) { }
             if (_token == null)
                 SetToken("");
-            SetToken(credentials.Password);
+            else 
+                SetToken(_token);
         }
 
         private void SetToken(string _token)
         {
             token = _token;
-            passwordVault.Add(new PasswordCredential(PWVAULT_RES, PWVAULT_USER, token));
+            if(!string.IsNullOrEmpty(token))
+                passwordVault.Add(new PasswordCredential(PWVAULT_TOKENRES, PWVAULT_TOKENUSER, token));
+            else
+            {
+                try
+                {
+                    var credentials = passwordVault.Retrieve(PWVAULT_TOKENRES, PWVAULT_TOKENUSER);
+                    passwordVault.Remove(credentials);
+                }
+                catch (Exception) { }
+            }
             client.DefaultRequestHeaders.Clear();
             client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
         }
@@ -105,13 +142,28 @@ namespace PrettigLokaal.Backend
             if(requestModel != null)
                 request.Content = new StringContent(JsonConvert.SerializeObject(requestModel), Encoding.UTF8, "application/json");
 
-            var response = await client.SendAsync(request);
+            HttpResponseMessage response;
+            try
+            {
+                response = await client.SendAsync(request);
+            }
+            catch(HttpRequestException ex)
+            {
+                callback.Invoke(default(T), new ErrorModel(ErrorModel.NETWORK_ERROR, ex.Message));
+                return; 
+            }
+
             if (response.IsSuccessStatusCode)
                 callback.Invoke(JsonConvert.DeserializeObject<T>(await response.Content.ReadAsStringAsync()), null);
             else
             {
                 if((int)response.StatusCode == 422) // Http Status 422: Unprocessable Entity (Backend uses this to throw errors)
                     callback.Invoke(default(T), JsonConvert.DeserializeObject<ErrorModel>(await response.Content.ReadAsStringAsync()));
+                else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized) // Happens when the token expires or is invalid.
+                {
+                    ClearToken();
+                    callback.Invoke(default(T), new ErrorModel(ErrorModel.NOT_LOGGED_IN));
+                }
                 else
                 {
                     ErrorModel err = new ErrorModel(ErrorModel.HTTP_ERROR, 
@@ -128,13 +180,28 @@ namespace PrettigLokaal.Backend
             if (requestModel != null)
                 request.Content = new StringContent(JsonConvert.SerializeObject(requestModel), Encoding.UTF8, "application/json");
 
-            var response = await client.SendAsync(request);
+            HttpResponseMessage response;
+            try
+            {
+                response = await client.SendAsync(request);
+            }
+            catch (HttpRequestException ex)
+            {
+                callback.Invoke(new ErrorModel(ErrorModel.NETWORK_ERROR, ex.Message));
+                return;
+            }
+
             if (response.IsSuccessStatusCode)
                 callback.Invoke(null);
             else
             {
                 if ((int)response.StatusCode == 422) // Http Status 422: Unprocessable Entity (Backend uses this to throw errors)
                     callback.Invoke(JsonConvert.DeserializeObject<ErrorModel>(await response.Content.ReadAsStringAsync()));
+                else if(response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                {
+                    ClearToken();
+                    callback.Invoke(new ErrorModel(ErrorModel.NOT_LOGGED_IN));
+                }
                 else
                 {
                     ErrorModel err = new ErrorModel(ErrorModel.HTTP_ERROR,
@@ -167,12 +234,65 @@ namespace PrettigLokaal.Backend
 
         public bool IsMerchant()
         {
-            return false;
+            return accountData != null ? accountData.Merchant != null : false;
         }
 
         public Account GetAccountInfo()
         {
             return accountData;
+        }
+
+        public void RememberLoginInfo(string username, string password)
+        {
+            if (!string.IsNullOrEmpty(username))
+                passwordVault.Add(new PasswordCredential(PWVAULT_ACCOUNTRES, PWVAULT_ACCOUNTNAME, username));
+            if (!string.IsNullOrEmpty(password))
+                passwordVault.Add(new PasswordCredential(PWVAULT_ACCOUNTRES, PWVAULT_ACCOUNTPASSWORD, password));
+        }
+
+        public string GetRememberedLoginName()
+        {
+            try
+            {
+                var credentials = passwordVault.Retrieve(PWVAULT_ACCOUNTRES, PWVAULT_ACCOUNTNAME);
+                credentials.RetrievePassword();
+                return credentials.Password;
+            }
+            catch (Exception) { }
+            return "";
+        }
+
+        public string GetRememberedLoginPassword()
+        {
+            try
+            {
+                var credentials = passwordVault.Retrieve(PWVAULT_ACCOUNTRES, PWVAULT_ACCOUNTPASSWORD);
+                credentials.RetrievePassword();
+                return credentials.Password;
+            }
+            catch (Exception) { }
+            return "";
+        }
+
+        public bool HasRememberedLoginInfo()
+        {
+            return (GetRememberedLoginName().Length > 0 || GetRememberedLoginPassword().Length > 0);
+        }
+
+        public void ClearRememberedLoginInfo()
+        {
+            try
+            {
+                var credentials = passwordVault.Retrieve(PWVAULT_TOKENRES, PWVAULT_ACCOUNTNAME);
+                passwordVault.Remove(credentials);
+            }
+            catch (Exception) { }
+            try
+            {
+                var credentials = passwordVault.Retrieve(PWVAULT_TOKENRES, PWVAULT_ACCOUNTPASSWORD);
+                passwordVault.Remove(credentials);
+            }
+            catch (Exception) { }
         }
 
         // This function retrieves and stores account info, it is automatically called by Login() and CreateAccount().
@@ -213,6 +333,13 @@ namespace PrettigLokaal.Backend
             });
         }
 
+        public void Logout(VoidCallback callback)
+        {
+            // TODO: Contact server and ask it to invalidate the token first.
+            ClearToken();
+            callback.Invoke(null);
+        }
+
         public void CreateAccount(string email, string password, string fullname, DateTime birthDay, VoidCallback callback)
         {
             CreateUserModel model = new CreateUserModel()
@@ -233,6 +360,17 @@ namespace PrettigLokaal.Backend
                 else
                     callback.Invoke(err);
             });
+        }
+
+        public void ChangePassword(string oldPassword, string newPassword, VoidCallback callback)
+        {
+            UpdatePasswordModel model = new UpdatePasswordModel()
+            {
+                OldPassword = oldPassword,
+                NewPassword = newPassword
+            };
+
+            SendPostVoid("/api/account/updatepassword", model, callback);
         }
     }
 }

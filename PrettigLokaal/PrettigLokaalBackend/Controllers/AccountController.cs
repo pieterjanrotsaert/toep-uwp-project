@@ -73,7 +73,7 @@ namespace PrettigLokaalBackend.Controllers
             account.SetPassword(model.Password);
 
             _context.Accounts.Add(account);
-            SaveDB();
+            await _context.SaveChangesAsync();
 
             return Ok(new LoginResponse(GenerateJwtToken(account.Id, account.Email)));
         }
@@ -111,7 +111,7 @@ namespace PrettigLokaalBackend.Controllers
                         break;
                 }
             }
-            SaveDB();
+            await _context.SaveChangesAsync();
             return Ok();
         }
 
@@ -122,7 +122,7 @@ namespace PrettigLokaalBackend.Controllers
             if (!acc.ComparePassword(model.OldPassword))
                 return Error(ErrorModel.INVALID_PASSWORD);
             acc.SetPassword(model.NewPassword);
-            SaveDB();
+            await _context.SaveChangesAsync();
             return Ok();
         }
 

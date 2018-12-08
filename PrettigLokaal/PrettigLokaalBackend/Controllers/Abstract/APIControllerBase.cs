@@ -58,10 +58,5 @@ namespace PrettigLokaalBackend.Controllers.Extensions
         {
             return UnprocessableEntity(new ErrorModel(errCode));
         }
-
-        protected async void SaveDB()
-        {
-            await _context.SaveChangesAsync();
-        }
     }
 }

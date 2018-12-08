@@ -123,7 +123,7 @@ namespace PrettigLokaalBackend.Controllers
             foreach (var timeSpan in modelOpeningHours)
                 acc.Merchant.OpeningHours.Add(timeSpan);
 
-            SaveDB();
+            await _context.SaveChangesAsync();
             return Ok();
         }
 
@@ -164,7 +164,7 @@ namespace PrettigLokaalBackend.Controllers
                 acc.Merchant.OpeningHours[i].CloseTime = modelOpeningHours[i].CloseTime;
             }
 
-            SaveDB();
+            await _context.SaveChangesAsync();
             return Ok();
         }
 
@@ -178,7 +178,7 @@ namespace PrettigLokaalBackend.Controllers
             _context.Merchants.Remove(acc.Merchant);
             acc.Merchant = null;
 
-            SaveDB();
+            await _context.SaveChangesAsync();
             return Ok();
         }
 
@@ -192,7 +192,7 @@ namespace PrettigLokaalBackend.Controllers
             foreach (string imgData in images)
                 acc.Merchant.Images.Add(new Image() { Data = imgData });
 
-            SaveDB();
+            await _context.SaveChangesAsync();
             return Ok();
         }
 
@@ -213,7 +213,7 @@ namespace PrettigLokaalBackend.Controllers
 
             acc.Merchant.Images.Remove(image);
             _context.Remove(image);
-            SaveDB();
+            await _context.SaveChangesAsync();
             return Ok();
         }
 
@@ -234,7 +234,7 @@ namespace PrettigLokaalBackend.Controllers
                  Image = model.Image,
                  Organizer = acc.Merchant
             });
-            SaveDB();
+            await _context.SaveChangesAsync();
             return Ok();
         }
 
@@ -255,7 +255,7 @@ namespace PrettigLokaalBackend.Controllers
                 Image = model.Image,
                 Organizer = acc.Merchant
             });
-            SaveDB();
+            await _context.SaveChangesAsync();
             return Ok();
         }
 
@@ -283,7 +283,7 @@ namespace PrettigLokaalBackend.Controllers
             if (model.Image != null)
                 promo.Image = model.Image;
 
-            SaveDB();
+            await _context.SaveChangesAsync();
             return Ok();
         }
 
@@ -311,7 +311,7 @@ namespace PrettigLokaalBackend.Controllers
             if (model.Image != null)
                 ev.Image = model.Image;
 
-            SaveDB();
+            await _context.SaveChangesAsync();
             return Ok();
         }
 
@@ -332,7 +332,7 @@ namespace PrettigLokaalBackend.Controllers
 
             acc.Merchant.Promotions.Remove(promo);
             _context.Remove(promo);
-            SaveDB();
+            await _context.SaveChangesAsync();
             return Ok();
         }
 
@@ -353,7 +353,7 @@ namespace PrettigLokaalBackend.Controllers
 
             acc.Merchant.Events.Remove(ev);
             _context.Remove(ev);
-            SaveDB();
+            await _context.SaveChangesAsync();
             return Ok();
         }
        
