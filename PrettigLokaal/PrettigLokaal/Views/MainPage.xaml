@@ -14,9 +14,14 @@
     </Page.Resources>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <NavigationView x:Name="NavView" IsSettingsVisible="False" SelectionChanged="NavView_SelectionChanged" Loaded="NavView_Loaded">
+        <NavigationView 
+            x:Name="NavView" 
+            IsSettingsVisible="False" 
+            SelectionChanged="NavView_SelectionChanged" 
+            Loaded="NavView_Loaded" 
+            FontFamily="Segoe UI">
             <NavigationView.MenuItems>
-                <NavigationViewItemHeader Content="PrettigLokaal"></NavigationViewItemHeader>
+                <NavigationViewItemHeader Content="Hoofdmenu"></NavigationViewItemHeader>
                 <NavigationViewItem Content="Feed" Tag="nav_feed" Visibility="{Binding IsLoggedIn, Mode=OneWay, Converter={StaticResource visibilityConverter}}">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE762;"/>
@@ -33,9 +38,15 @@
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
 
-                <NavigationViewItemSeparator Visibility="{Binding IsMerchant, Mode=OneWay, Converter={StaticResource visibilityConverter}}"/>
-                <NavigationViewItemHeader Content="Handelaar" Name="MerchantNavHeader" Visibility="{Binding IsMerchant, Mode=OneWay, Converter={StaticResource visibilityConverter}}">
+                <NavigationViewItemSeparator/>
+                <NavigationViewItemHeader Content="Handelaar" Visibility="{Binding IsLoggedIn, Mode=OneWay, Converter={StaticResource visibilityConverter}}">
                 </NavigationViewItemHeader>
+
+                <NavigationViewItem Content="Wordt een Handelaar" Tag="nav_merchantregister" Visibility="{Binding ShowMerchantSignup, Mode=OneWay, Converter={StaticResource visibilityConverter}}">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE748;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
 
                 <NavigationViewItem Content="Zaakbeheer" Tag="nav_merchantpanel" Visibility="{Binding IsMerchant, Mode=OneWay, Converter={StaticResource visibilityConverter}}">
                     <NavigationViewItem.Icon>
@@ -43,7 +54,7 @@
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
 
-                <NavigationViewItem Content="Wijzig zaakinstellingen" Tag="nav_merchantsettings" Visibility="{Binding IsMerchant, Mode=OneWay, Converter={StaticResource visibilityConverter}}">
+                <NavigationViewItem Content="Zaakdetails Wijzigen" Tag="nav_merchantsettings" Visibility="{Binding IsMerchant, Mode=OneWay, Converter={StaticResource visibilityConverter}}">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE713;"/>
                     </NavigationViewItem.Icon>
@@ -51,13 +62,17 @@
 
             </NavigationView.MenuItems>
 
+            <NavigationView.AutoSuggestBox>
+                <AutoSuggestBox x:Name="SearchBox" QueryIcon="Find" PlaceholderText="Zoek naar handelaars..."/>
+            </NavigationView.AutoSuggestBox>
+
             <NavigationView.HeaderTemplate>
                 <DataTemplate>
                     <StackPanel>
-                        <TextBlock FontSize="28"
-                                   HorizontalAlignment="Center"
-                               Margin="0 10 0 0"
-                               Text="{Binding Title, Mode=OneWay}">
+                        <TextBlock FontSize="20"
+                                   HorizontalAlignment="Left"
+                               Margin="10 5 0 0"
+                               Text="{Binding Title, Mode=OneWay}" FontFamily="Segoe UI">
                         </TextBlock>
                     </StackPanel>
                 </DataTemplate>
@@ -78,7 +93,7 @@
                         </NavigationViewItem.Icon>
                     </NavigationViewItem>
 
-                    <NavigationViewItem Tapped="ChangePassword_Tapped" Content="Wachtwoord Veranderen" Tag="nav_changepasswd" Visibility="{Binding IsLoggedIn, Mode=OneWay, Converter={StaticResource visibilityConverter}}">
+                    <NavigationViewItem Tapped="ChangePassword_Tapped" Content="Wachtwoord Wijzigen" Tag="nav_changepasswd" Visibility="{Binding IsLoggedIn, Mode=OneWay, Converter={StaticResource visibilityConverter}}">
                         <NavigationViewItem.Icon>
                             <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE72E;"/>
                         </NavigationViewItem.Icon>
@@ -93,15 +108,18 @@
                 </StackPanel>
             </NavigationView.PaneFooter>
 
-            <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
 
                 <ProgressRing x:Name="ProgressRing" 
                               IsActive="True" 
                               HorizontalAlignment="Center" 
                               VerticalAlignment="Center" 
-                              Visibility="{Binding IsLoading, Mode=OneWay, Converter={StaticResource visibilityConverter}}" Margin="0,151,0,0" Height="45" Width="45" />
+                              Visibility="{Binding IsLoading, Mode=OneWay, Converter={StaticResource visibilityConverter}}" Margin="0,0,0,0" Height="45" Width="45" FontFamily="Segoe UI" />
                 
-                <Frame x:Name="ContentFrame" Visibility="{Binding IsLoading, Mode=OneWay, Converter={StaticResource invVisibilityConverter}}">
+                <Frame x:Name="ContentFrame" 
+                       HorizontalAlignment="Stretch"
+                       VerticalAlignment="Stretch"
+                       Visibility="{Binding IsLoading, Mode=OneWay, Converter={StaticResource invVisibilityConverter}}" Padding="0,0,0,0">
                     <Frame.ContentTransitions>
                         <TransitionCollection>
                             <NavigationThemeTransition/>
@@ -109,7 +127,7 @@
                     </Frame.ContentTransitions>
                 </Frame>
 
-            </StackPanel>
+            </Grid>
                
             
 

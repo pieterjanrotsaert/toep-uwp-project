@@ -15,18 +15,18 @@ namespace PrettigLokaalBackend.Controllers.Extensions
     // This class contains helper functions that are helpful for every controller.
     public class APIControllerBase : ControllerBase
     {
-        protected readonly PrettigLokaalContext _context;
-        protected readonly IConfiguration _config;
+        protected readonly PrettigLokaalContext context;
+        protected readonly IConfiguration config;
 
         public APIControllerBase(PrettigLokaalContext context, IConfiguration configuration) : base()
         {
-            _context = context;
-            _config = configuration;
+            this.context = context;
+            config = configuration;
         }
 
         protected async Task<Account> GetUserByEmail(string email)
         {
-            return await _context.Accounts.Where(a => a.Email.Equals(email))
+            return await context.Accounts.Where(a => a.Email.Equals(email))
                 .Include(a => a.Merchant)
                     .ThenInclude(m => m.Tags)
                 .Include(a => a.Merchant)
@@ -36,7 +36,7 @@ namespace PrettigLokaalBackend.Controllers.Extensions
 
         protected async Task<Account> GetAccountById(int id)
         {
-            return await _context.Accounts.Where(a => a.Id == id)
+            return await context.Accounts.Where(a => a.Id == id)
                 .Include(a => a.Merchant)
                     .ThenInclude(m => m.Tags)
                 .Include(a => a.Merchant)

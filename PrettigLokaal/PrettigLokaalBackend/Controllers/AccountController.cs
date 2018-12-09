@@ -34,7 +34,7 @@ namespace PrettigLokaalBackend.Controllers
         {
             var jwtConfig = new ConfigurationBuilder()
                                 .SetBasePath(Directory.GetCurrentDirectory())
-                                .AddJsonFile(_config["Data:JwtConfig"]).Build();
+                                .AddJsonFile(config["Data:JwtConfig"]).Build();
 
             var claims = new List<Claim>
             {
@@ -72,8 +72,8 @@ namespace PrettigLokaalBackend.Controllers
             };
             account.SetPassword(model.Password);
 
-            _context.Accounts.Add(account);
-            await _context.SaveChangesAsync();
+            context.Accounts.Add(account);
+            await context.SaveChangesAsync();
 
             return Ok(new LoginResponse(GenerateJwtToken(account.Id, account.Email)));
         }
@@ -111,7 +111,7 @@ namespace PrettigLokaalBackend.Controllers
                         break;
                 }
             }
-            await _context.SaveChangesAsync();
+            await context.SaveChangesAsync();
             return Ok();
         }
 
@@ -122,7 +122,7 @@ namespace PrettigLokaalBackend.Controllers
             if (!acc.ComparePassword(model.OldPassword))
                 return Error(ErrorModel.INVALID_PASSWORD);
             acc.SetPassword(model.NewPassword);
-            await _context.SaveChangesAsync();
+            await context.SaveChangesAsync();
             return Ok();
         }
 

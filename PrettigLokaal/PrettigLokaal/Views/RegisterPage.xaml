@@ -26,19 +26,26 @@
         </Grid.ColumnDefinitions>
 
         <StackPanel Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="0">
-            <TextBlock Text="E-mailadres:"  Grid.Column="1" Margin="0,5,0,0"/>
-            <TextBox Text="{Binding Email, Mode=TwoWay}" Margin="0,0,0,0"/>
-            <TextBlock Text="{Binding ModelErrors[Email]}" Foreground="Red"/>
 
-            <TextBlock Text="Voer uw naam in:"  Grid.Column="1" Margin="0,0,0,0"/>
-            <TextBox Text="{Binding FullName, Mode=TwoWay}" Margin="0,0,0,0"/>
-            <TextBlock Text="{Binding ModelErrors[FullName]}" Foreground="Red"/>
+            <StackPanel Orientation="Vertical" Margin="0,5,0,5">
+                <TextBlock Text="E-mailadres:"  Grid.Column="1" Margin="0,5,0,0"/>
+                <TextBox Text="{Binding Email, Mode=TwoWay}" Margin="0,0,0,0"/>
+                <TextBlock Text="{Binding ModelErrors[Email]}" Foreground="Red"/>
+            </StackPanel>
 
-            <TextBlock Text="Voer uw geboortedatum in:"  Grid.Column="1" Margin="0,0,0,0"/>
-            <DatePicker Date="{Binding BirthDate, Mode=TwoWay, Converter={StaticResource dateConverter}}"  HorizontalAlignment="Stretch" MaxWidth="999"></DatePicker>
-            <TextBlock Text="{Binding ModelErrors[BirthDate]}" Foreground="Red"/>
+            <StackPanel Orientation="Vertical" Margin="0,5,0,5">
+                <TextBlock Text="Voer uw naam in:"  Grid.Column="1" Margin="0,0,0,0"/>
+                <TextBox Text="{Binding FullName, Mode=TwoWay}" Margin="0,0,0,0"/>
+                <TextBlock Text="{Binding ModelErrors[FullName]}" Foreground="Red"/>
+            </StackPanel>
 
-            <Grid HorizontalAlignment="Stretch" Width="Auto" Height="Auto">
+            <StackPanel Orientation="Vertical" Margin="0,5,0,5">
+                <TextBlock Text="Voer uw geboortedatum in:"  Grid.Column="1" Margin="0,0,0,0"/>
+                <DatePicker Date="{Binding BirthDate, Mode=TwoWay, Converter={StaticResource dateConverter}}"  HorizontalAlignment="Stretch" MaxWidth="999"></DatePicker>
+                <TextBlock Text="{Binding ModelErrors[BirthDate]}" Foreground="Red"/>
+            </StackPanel>
+
+            <Grid HorizontalAlignment="Stretch" Width="Auto" Height="Auto" Margin="0,5,0,5">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>

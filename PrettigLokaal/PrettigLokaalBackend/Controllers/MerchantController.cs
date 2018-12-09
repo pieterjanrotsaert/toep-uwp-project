@@ -29,7 +29,7 @@ namespace PrettigLokaalBackend.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Get(int id)
         {
-            Merchant merchant = await _context.Merchants.Where(m => m.Id == id)
+            Merchant merchant = await context.Merchants.Where(m => m.Id == id)
                 .Include(m => m.Events).ThenInclude(ev => ev.Image)
                 .Include(m => m.Promotions).ThenInclude(p => p.Image)
                 .Include(m => m.Images)
@@ -49,7 +49,7 @@ namespace PrettigLokaalBackend.Controllers
         {
             string[] keywords = query.Split(new char[] { ' ', '\t', '\n', '\r' });
 
-            List<Merchant> merchants = await _context.Merchants
+            List<Merchant> merchants = await context.Merchants
                 .Include(m => m.Tags)
                 .Include(m => m.OpeningHours)
                 .Where(m => keywords.Count(kw => m.Name.Contains(kw) || m.Address.Contains(kw) || 
@@ -74,7 +74,7 @@ namespace PrettigLokaalBackend.Controllers
         public async Task<IActionResult> MyEvents()
         {
             int accId = GetAccountId();
-            Merchant merchant = await _context.Merchants.Where(m => m.Account.Id == accId)
+            Merchant merchant = await context.Merchants.Where(m => m.Account.Id == accId)
                 .Include(m => m.Events).ThenInclude(ev => ev.Image)
                 .FirstOrDefaultAsync();
 
@@ -89,7 +89,7 @@ namespace PrettigLokaalBackend.Controllers
         public async Task<IActionResult> MyPromotions()
         {
             int accId = GetAccountId();
-            Merchant merchant = await _context.Merchants.Where(m => m.Account.Id == accId)
+            Merchant merchant = await context.Merchants.Where(m => m.Account.Id == accId)
                 .Include(m => m.Promotions).ThenInclude(p => p.Image)
                 .FirstOrDefaultAsync();
 
@@ -113,6 +113,7 @@ namespace PrettigLokaalBackend.Controllers
                 Address = model.Address,
                 PhoneNumber = model.PhoneNumber,
                 Description = model.Description,
+                FacebookPage = model.FacebookPage,
                 Account = acc
             };
 
@@ -123,7 +124,7 @@ namespace PrettigLokaalBackend.Controllers
             foreach (var timeSpan in modelOpeningHours)
                 acc.Merchant.OpeningHours.Add(timeSpan);
 
-            await _context.SaveChangesAsync();
+            await context.SaveChangesAsync();
             return Ok();
         }
 
@@ -139,6 +140,7 @@ namespace PrettigLokaalBackend.Controllers
             acc.Merchant.Address = model.Address;
             acc.Merchant.PhoneNumber = model.PhoneNumber;
             acc.Merchant.Description = model.Description;
+            acc.Merchant.FacebookPage = model.FacebookPage;
 
             List<Tag> toRemove = new List<Tag>();
             foreach(var curTag in acc.Merchant.Tags) // Check which tags to remove.
@@ -149,7 +151,7 @@ namespace PrettigLokaalBackend.Controllers
             foreach(var tag in toRemove) // Remove tags
             {
                 acc.Merchant.Tags.Remove(tag);
-                _context.Remove(tag);
+                context.Remove(tag);
             }
             foreach(var tag in model.Tags) // Add new tags
             {
@@ -164,7 +166,7 @@ namespace PrettigLokaalBackend.Controllers
                 acc.Merchant.OpeningHours[i].CloseTime = modelOpeningHours[i].CloseTime;
             }
 
-            await _context.SaveChangesAsync();
+            await context.SaveChangesAsync();
             return Ok();
         }
 
@@ -175,10 +177,10 @@ namespace PrettigLokaalBackend.Controllers
             if (acc.Merchant == null)
                 return Error(ErrorModel.NOT_A_MERCHANT);
 
-            _context.Merchants.Remove(acc.Merchant);
+            context.Merchants.Remove(acc.Merchant);
             acc.Merchant = null;
 
-            await _context.SaveChangesAsync();
+            await context.SaveChangesAsync();
             return Ok();
         }
 
@@ -192,7 +194,7 @@ namespace PrettigLokaalBackend.Controllers
             foreach (string imgData in images)
                 acc.Merchant.Images.Add(new Image() { Data = imgData });
 
-            await _context.SaveChangesAsync();
+            await context.SaveChangesAsync();
             return Ok();
         }
 
@@ -203,7 +205,7 @@ namespace PrettigLokaalBackend.Controllers
             if (acc.Merchant == null)
                 return Error(ErrorModel.NOT_A_MERCHANT);
 
-            Image image = await _context.Images
+            Image image = await context.Images
                 .Include(e => e.Merchant)
                 .Where(e => e.Id == id && e.Merchant.Id == acc.Merchant.Id)
                 .FirstOrDefaultAsync();
@@ -212,8 +214,8 @@ namespace PrettigLokaalBackend.Controllers
                 return Error(ErrorModel.NOT_FOUND);
 
             acc.Merchant.Images.Remove(image);
-            _context.Remove(image);
-            await _context.SaveChangesAsync();
+            context.Remove(image);
+            await context.SaveChangesAsync();
             return Ok();
         }
 
@@ -234,7 +236,7 @@ namespace PrettigLokaalBackend.Controllers
                  Image = model.Image,
                  Organizer = acc.Merchant
             });
-            await _context.SaveChangesAsync();
+            await context.SaveChangesAsync();
             return Ok();
         }
 
@@ -255,7 +257,7 @@ namespace PrettigLokaalBackend.Controllers
                 Image = model.Image,
                 Organizer = acc.Merchant
             });
-            await _context.SaveChangesAsync();
+            await context.SaveChangesAsync();
             return Ok();
         }
 
@@ -266,7 +268,7 @@ namespace PrettigLokaalBackend.Controllers
             if (acc.Merchant == null)
                 return Error(ErrorModel.NOT_A_MERCHANT);
 
-            Promotion promo = await _context.Promotions
+            Promotion promo = await context.Promotions
                 .Include(e => e.Organizer)
                 .Where(e => e.Id == model.Id && e.Organizer.Id == acc.Merchant.Id)
                 .FirstOrDefaultAsync();
@@ -283,7 +285,7 @@ namespace PrettigLokaalBackend.Controllers
             if (model.Image != null)
                 promo.Image = model.Image;
 
-            await _context.SaveChangesAsync();
+            await context.SaveChangesAsync();
             return Ok();
         }
 
@@ -294,7 +296,7 @@ namespace PrettigLokaalBackend.Controllers
             if (acc.Merchant == null)
                 return Error(ErrorModel.NOT_A_MERCHANT);
 
-            Event ev = await _context.Events
+            Event ev = await context.Events
                 .Include(e => e.Organizer)
                 .Where(e => e.Id == model.Id && e.Organizer.Id == acc.Merchant.Id)
                 .FirstOrDefaultAsync();
@@ -311,7 +313,7 @@ namespace PrettigLokaalBackend.Controllers
             if (model.Image != null)
                 ev.Image = model.Image;
 
-            await _context.SaveChangesAsync();
+            await context.SaveChangesAsync();
             return Ok();
         }
 
@@ -322,7 +324,7 @@ namespace PrettigLokaalBackend.Controllers
             if (acc.Merchant == null)
                 return Error(ErrorModel.NOT_A_MERCHANT);
 
-            Promotion promo = await _context.Promotions
+            Promotion promo = await context.Promotions
                 .Include(e => e.Organizer)
                 .Where(e => e.Id == id && e.Organizer.Id == acc.Merchant.Id)
                 .FirstOrDefaultAsync();
@@ -331,8 +333,8 @@ namespace PrettigLokaalBackend.Controllers
                 return Error(ErrorModel.NOT_FOUND);
 
             acc.Merchant.Promotions.Remove(promo);
-            _context.Remove(promo);
-            await _context.SaveChangesAsync();
+            context.Remove(promo);
+            await context.SaveChangesAsync();
             return Ok();
         }
 
@@ -343,7 +345,7 @@ namespace PrettigLokaalBackend.Controllers
             if (acc.Merchant == null)
                 return Error(ErrorModel.NOT_A_MERCHANT);
 
-            Event ev = await _context.Events
+            Event ev = await context.Events
                 .Include(e => e.Organizer)
                 .Where(e => e.Id == id && e.Organizer.Id == acc.Merchant.Id)
                 .FirstOrDefaultAsync();
@@ -352,8 +354,8 @@ namespace PrettigLokaalBackend.Controllers
                 return Error(ErrorModel.NOT_FOUND);
 
             acc.Merchant.Events.Remove(ev);
-            _context.Remove(ev);
-            await _context.SaveChangesAsync();
+            context.Remove(ev);
+            await context.SaveChangesAsync();
             return Ok();
         }
        

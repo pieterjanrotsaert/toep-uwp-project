@@ -337,6 +337,7 @@ namespace PrettigLokaal.Backend
         {
             // TODO: Contact server and ask it to invalidate the token first.
             ClearToken();
+            accountData = null;
             callback.Invoke(null);
         }
 
@@ -371,6 +372,40 @@ namespace PrettigLokaal.Backend
             };
 
             SendPostVoid("/api/account/updatepassword", model, callback);
+        }
+
+        public void RegisterAsMerchant(MerchantRegisterModel model, VoidCallback callback)
+        {
+            SendPostVoid("/api/merchant/register", model, err =>
+            {
+                if (err != null)
+                    callback(err);
+                else
+                    RetrieveAccountInfo(callback); // Retrieve & store updated account info.
+            });
+        }
+
+        public void UpdateMerchantDetails(MerchantRegisterModel model, VoidCallback callback)
+        {
+            SendPostVoid("/api/merchant/updatedetails", model, err =>
+            {
+                if (err != null)
+                    callback(err);
+                else
+                    RetrieveAccountInfo(callback); // Retrieve & store updated account info.
+            });
+        }
+
+        // Warning: this deletes your merchant account.
+        public void TerminateMerchantAccount(VoidCallback callback)
+        {
+            SendPostVoid("/api/merchant/terminate", null, err =>
+            {
+                if (err != null)
+                    callback(err);
+                else
+                    RetrieveAccountInfo(callback); // Retrieve & store updated account info.
+            });
         }
     }
 }

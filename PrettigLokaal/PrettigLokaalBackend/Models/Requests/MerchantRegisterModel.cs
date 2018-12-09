@@ -16,6 +16,8 @@ namespace PrettigLokaalBackend.Models.Requests
         [Required] public string Description { get; set; }
         [Required] public List<string> Tags { get; set; }
 
+        public string FacebookPage { get; set; }
+
         [Required] public DateTime OpenTimeMonday { get; set; }
         [Required] public DateTime OpenTimeTuesday { get; set; }
         [Required] public DateTime OpenTimeWednesday { get; set; }

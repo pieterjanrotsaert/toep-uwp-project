@@ -16,6 +16,7 @@ namespace PrettigLokaalBackend.Models.Domain
         public string ContactEmail { get; set; }
         public string Address { get; set; }
         public string Description { get; set; }
+        public string FacebookPage { get; set; }
 
         public List<OpeningHourSpan> OpeningHours { get; set; }
         public List<Tag> Tags { get; set; }

@@ -93,55 +93,55 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\PrettigLokaalBackend\Models\Domain\Account.cs">
-      <Link>Models\Domain\Account.cs</Link>
+      <Link>Backend\Models\Domain\Account.cs</Link>
     </Compile>
     <Compile Include="..\PrettigLokaalBackend\Models\Domain\Coupon.cs">
-      <Link>Models\Domain\Coupon.cs</Link>
+      <Link>Backend\Models\Domain\Coupon.cs</Link>
     </Compile>
     <Compile Include="..\PrettigLokaalBackend\Models\Domain\Event.cs">
-      <Link>Models\Domain\Event.cs</Link>
+      <Link>Backend\Models\Domain\Event.cs</Link>
     </Compile>
     <Compile Include="..\PrettigLokaalBackend\Models\Domain\Image.cs">
-      <Link>Models\Domain\Image.cs</Link>
+      <Link>Backend\Models\Domain\Image.cs</Link>
     </Compile>
     <Compile Include="..\PrettigLokaalBackend\Models\Domain\Merchant.cs">
-      <Link>Models\Domain\Merchant.cs</Link>
+      <Link>Backend\Models\Domain\Merchant.cs</Link>
     </Compile>
     <Compile Include="..\PrettigLokaalBackend\Models\Domain\MerchantSubscription.cs">
-      <Link>Models\Domain\MerchantSubscription.cs</Link>
+      <Link>Backend\Models\Domain\MerchantSubscription.cs</Link>
     </Compile>
     <Compile Include="..\PrettigLokaalBackend\Models\Domain\OpeningHourSpan.cs">
       <Link>Backend\Models\Domain\OpeningHourSpan.cs</Link>
     </Compile>
     <Compile Include="..\PrettigLokaalBackend\Models\Domain\Promotion.cs">
-      <Link>Models\Domain\Promotion.cs</Link>
+      <Link>Backend\Models\Domain\Promotion.cs</Link>
     </Compile>
     <Compile Include="..\PrettigLokaalBackend\Models\Domain\Tag.cs">
-      <Link>Models\Domain\Tag.cs</Link>
+      <Link>Backend\Models\Domain\Tag.cs</Link>
     </Compile>
     <Compile Include="..\PrettigLokaalBackend\Models\Requests\CreateUserModel.cs">
-      <Link>Models\Requests\CreateUserModel.cs</Link>
+      <Link>Backend\Models\Requests\CreateUserModel.cs</Link>
     </Compile>
     <Compile Include="..\PrettigLokaalBackend\Models\Requests\ErrorModel.cs">
-      <Link>Models\Requests\ErrorModel.cs</Link>
+      <Link>Backend\Models\Requests\ErrorModel.cs</Link>
     </Compile>
     <Compile Include="..\PrettigLokaalBackend\Models\Requests\LoginModel.cs">
-      <Link>Models\Requests\LoginModel.cs</Link>
+      <Link>Backend\Models\Requests\LoginModel.cs</Link>
     </Compile>
     <Compile Include="..\PrettigLokaalBackend\Models\Requests\LoginResponse.cs">
-      <Link>Models\Requests\LoginResponse.cs</Link>
+      <Link>Backend\Models\Requests\LoginResponse.cs</Link>
     </Compile>
     <Compile Include="..\PrettigLokaalBackend\Models\Requests\MerchantAddEventModel.cs">
-      <Link>Models\Requests\MerchantAddEventModel.cs</Link>
+      <Link>Backend\Models\Requests\MerchantAddEventModel.cs</Link>
     </Compile>
     <Compile Include="..\PrettigLokaalBackend\Models\Requests\MerchantAddPromotionModel.cs">
-      <Link>Models\Requests\MerchantAddPromotionModel.cs</Link>
+      <Link>Backend\Models\Requests\MerchantAddPromotionModel.cs</Link>
     </Compile>
     <Compile Include="..\PrettigLokaalBackend\Models\Requests\MerchantRegisterModel.cs">
-      <Link>Models\Requests\MerchantRegisterModel.cs</Link>
+      <Link>Backend\Models\Requests\MerchantRegisterModel.cs</Link>
     </Compile>
     <Compile Include="..\PrettigLokaalBackend\Models\Requests\UpdatePasswordModel.cs">
-      <Link>Models\Requests\UpdatePasswordModel.cs</Link>
+      <Link>Backend\Models\Requests\UpdatePasswordModel.cs</Link>
     </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
@@ -149,13 +149,16 @@
     <Compile Include="Backend\API.cs" />
     <Compile Include="Misc\Utils.cs" />
     <Compile Include="ViewModels\ChangePasswordPageViewModel.cs" />
+    <Compile Include="ViewModels\Helpers\BitmapConverter.cs" />
     <Compile Include="ViewModels\Helpers\DateConverter.cs" />
     <Compile Include="ViewModels\Helpers\InverseVisibilityConverter.cs" />
     <Compile Include="ViewModels\Helpers\ModelErrors.cs" />
+    <Compile Include="ViewModels\Helpers\TimeConverter.cs" />
     <Compile Include="ViewModels\Helpers\ViewModelBase.cs" />
     <Compile Include="ViewModels\Helpers\VisibilityConverter.cs" />
     <Compile Include="ViewModels\LoginPageViewModel.cs" />
     <Compile Include="ViewModels\MainPageViewModel.cs" />
+    <Compile Include="ViewModels\MerchantRegisterPageViewModel.cs" />
     <Compile Include="ViewModels\RegisterPageViewModel.cs" />
     <Compile Include="Views\ChangePasswordPage.xaml.cs">
       <DependentUpon>ChangePasswordPage.xaml</DependentUpon>
@@ -175,6 +178,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Views\MerchantPanel.xaml.cs">
       <DependentUpon>MerchantPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MerchantRegisterPage.xaml.cs">
+      <DependentUpon>MerchantRegisterPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MyCouponsPage.xaml.cs" />
     <Compile Include="Views\RegisterPage.xaml.cs">
@@ -223,6 +229,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\MerchantPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MerchantRegisterPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
