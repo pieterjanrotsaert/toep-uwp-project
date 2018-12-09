@@ -1,6 +1,7 @@
 ﻿using PrettigLokaal.Backend;
 using PrettigLokaal.Misc;
 using PrettigLokaal.ViewModels;
+using PrettigLokaalBackend.Models.Domain;
 using PrettigLokaalBackend.Models.Requests;
 using System;
 using System.Collections.Generic;
@@ -38,13 +39,34 @@ namespace PrettigLokaal.Views
             DataContext = viewModel;
 
             viewModel.IsMerchant = API.Get().IsMerchant();
-            if(viewModel.IsMerchant)
+            if (viewModel.IsMerchant)
             {
+                Merchant m = API.Get().GetAccountInfo().Merchant;
+                viewModel.Address = m.Address;
+                viewModel.ContactEmail = m.ContactEmail;
+                viewModel.PhoneNumber = m.PhoneNumber;
+                viewModel.TagList = string.Join(", ", m.Tags.Select(t => t.Text));
+                viewModel.Description = m.Description;
+                viewModel.FacebookLink = m.FacebookPage;
+                viewModel.Name = m.Name;
 
-            }
-            else
-            {
+                List<OpeningHourSpan> hrs = m.OpeningHours;
 
+                viewModel.OpenTimeMonday = hrs[0].OpenTime;
+                viewModel.OpenTimeTuesday = hrs[1].OpenTime;
+                viewModel.OpenTimeWednesday = hrs[2].OpenTime;
+                viewModel.OpenTimeThursday = hrs[3].OpenTime;
+                viewModel.OpenTimeFriday = hrs[4].OpenTime;
+                viewModel.OpenTimeSaturday = hrs[5].OpenTime;
+                viewModel.OpenTimeSunday = hrs[6].OpenTime;
+
+                viewModel.CloseTimeMonday = hrs[0].CloseTime;
+                viewModel.CloseTimeTuesday = hrs[1].CloseTime;
+                viewModel.CloseTimeWednesday = hrs[2].CloseTime;
+                viewModel.CloseTimeThursday = hrs[3].CloseTime;
+                viewModel.CloseTimeFriday = hrs[4].CloseTime;
+                viewModel.CloseTimeSaturday = hrs[5].CloseTime;
+                viewModel.CloseTimeSunday = hrs[6].CloseTime;
             }
         }
 
@@ -60,10 +82,40 @@ namespace PrettigLokaal.Views
             if (!viewModel.IsValid)
                 return;
 
+            List<string> tagList = viewModel.TagList.Split(',').Select(tag => tag.Trim()).ToList();
+
+            MerchantRegisterModel model = new MerchantRegisterModel()
+            {
+                Name = viewModel.Name,
+                Address = viewModel.Address,
+                ContactEmail = viewModel.ContactEmail,
+                PhoneNumber = viewModel.PhoneNumber,
+                FacebookPage = viewModel.FacebookLink,
+                Description = viewModel.Description,
+
+                OpenTimeMonday = viewModel.OpenTimeMonday,
+                OpenTimeTuesday = viewModel.OpenTimeTuesday,
+                OpenTimeWednesday = viewModel.OpenTimeWednesday,
+                OpenTimeThursday = viewModel.OpenTimeThursday,
+                OpenTimeFriday = viewModel.OpenTimeFriday,
+                OpenTimeSaturday = viewModel.OpenTimeSaturday,
+                OpenTimeSunday = viewModel.OpenTimeSunday,
+
+                CloseTimeMonday = viewModel.CloseTimeMonday,
+                CloseTimeTuesday = viewModel.CloseTimeTuesday,
+                CloseTimeWednesday = viewModel.CloseTimeWednesday,
+                CloseTimeThursday = viewModel.CloseTimeThursday,
+                CloseTimeFriday = viewModel.CloseTimeFriday,
+                CloseTimeSaturday = viewModel.CloseTimeSaturday,
+                CloseTimeSunday = viewModel.CloseTimeSunday,
+
+                Tags = tagList
+            };
+
             if (!API.Get().IsMerchant())
             {
                 mainPage.SetLoading(true);
-                API.Get().RegisterAsMerchant(null, err =>
+                API.Get().RegisterAsMerchant(model, err =>
                 {
                     mainPage.SetLoading(false);
                     if (err != null)
@@ -78,7 +130,7 @@ namespace PrettigLokaal.Views
             else
             {
                 mainPage.SetLoading(true);
-                API.Get().UpdateMerchantDetails(null, err =>
+                API.Get().UpdateMerchantDetails(model, err =>
                 {
                     mainPage.SetLoading(false);
                     if (err != null)
@@ -92,7 +144,29 @@ namespace PrettigLokaal.Views
             }
         }
 
-        private void ChooseFileButton_Click(object sender, RoutedEventArgs e)
+        private void DeleteAccountButton_Click(object sender, RoutedEventArgs e)
+        {
+            Utils.YesNoPrompt(
+                "WAARSCHUWING: Uw handelaarsaccount wordt permanent verwijderd als u doorgaat.\nU verliest mogelijks uw gegevens.\n" + 
+                "Wenst u toch door te gaan?",
+                "Account Verwijderen", () =>
+                {
+                    mainPage.SetLoading(true);
+                    API.Get().TerminateMerchantAccount(err =>
+                    {
+                        mainPage.SetLoading(false);
+                        if (err == null)
+                        {
+                            mainPage.OnMerchantSignInComplete();
+                            Utils.InfoBox("Uw account werd succesvol verwijderd.", "Account verwijderd.");
+                        }
+                        else
+                            Utils.InfoBox("Er is een fout opgetreden:" + err.GetDescription(), "Fout");
+                    });
+                });
+        }
+
+        /*private void ChooseFileButton_Click(object sender, RoutedEventArgs e)
         {
             Utils.PickImageFile(async file =>
             {
@@ -106,37 +180,18 @@ namespace PrettigLokaal.Views
                     stream.Seek(0, SeekOrigin.Begin);
                     viewModel.ImageData = Convert.ToBase64String(buf);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     Utils.InfoBox("Er is een fout opgetreden: " + ex.Message, "Fout");
                 }
             });
         }
 
-        private void DeleteAccountButton_Click(object sender, RoutedEventArgs e)
-        {
-            Utils.YesNoPrompt(
-                "WAARSCHUWING: Uw handelaarsaccount wordt permanent verwijderd als u doorgaat.\nU verliest mogelijks uw gegevens.\n" + 
-                "Wenst u toch door te gaan?",
-                "Account Verwijderen", () =>
-                {
-                    API.Get().TerminateMerchantAccount(err =>
-                    {
-                        if (err == null)
-                        {
-                            mainPage.OnMerchantSignInComplete();
-                            Utils.InfoBox("Uw account werd succesvol verwijderd.", "Account verwijderd.");
-                        }
-                        else
-                            Utils.InfoBox("Er is een fout opgetreden:" + err.GetDescription(), "Fout");
-                    });
-                });
-        }
-
         private void RemoveImage_Click(object sender, RoutedEventArgs e)
         {
             viewModel.ImageData = null;
             viewModel.SelectedImageFile = "Geen bestand geselecteerd.";
-        }
+        }*/
+
     }
 }

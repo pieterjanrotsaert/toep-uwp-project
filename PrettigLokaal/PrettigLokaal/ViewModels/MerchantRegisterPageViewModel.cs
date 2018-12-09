@@ -20,42 +20,24 @@ namespace PrettigLokaal.ViewModels
         private string description = "";
         private string tagList = "";
         private string facebookLink = "";
-        private string selectedImageFile = "Geen bestand geselecteerd.";
-        private string imageData = null; // Base64 imagedata
-        private bool hasImage = false;
-        public StorageFile selectedFile;
 
-        private DateTime openTimeMonday = DateTime.Now;
-        private DateTime openTimeTuesday = DateTime.Now;
-        private DateTime openTimeWednesday = DateTime.Now;
-        private DateTime openTimeThursday = DateTime.Now;
-        private DateTime openTimeFriday = DateTime.Now;
-        private DateTime openTimeSaturday = DateTime.Now;
-        private DateTime openTimeSunday = DateTime.Now;
+        private DateTime openTimeMonday = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1, 9, 0, 0);
+        private DateTime openTimeTuesday = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1, 9, 0, 0);
+        private DateTime openTimeWednesday = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1, 9, 0, 0);
+        private DateTime openTimeThursday = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1, 9, 0, 0);
+        private DateTime openTimeFriday = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1, 9, 0, 0);
+        private DateTime openTimeSaturday = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1, 9, 0, 0);
+        private DateTime openTimeSunday = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1, 9, 0, 0);
 
-        private DateTime closeTimeMonday = DateTime.Now;
-        private DateTime closeTimeTuesday = DateTime.Now;
-        private DateTime closeTimeWednesday = DateTime.Now;
-        private DateTime closeTimeThursday = DateTime.Now;
-        private DateTime closeTimeFriday = DateTime.Now;
-        private DateTime closeTimeSaturday = DateTime.Now;
-        private DateTime closeTimeSunday = DateTime.Now;
-
-        public StorageFile SelectedFile { get { return selectedFile; } set { selectedFile = value; RaisePropertyChanged(); } }
-        public bool HasImage { get { return hasImage; } }
+        private DateTime closeTimeMonday = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1, 18, 0, 0);
+        private DateTime closeTimeTuesday = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1, 18, 0, 0);
+        private DateTime closeTimeWednesday = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1, 18, 0, 0);
+        private DateTime closeTimeThursday = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1, 18, 0, 0);
+        private DateTime closeTimeFriday = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1, 18, 0, 0);
+        private DateTime closeTimeSaturday = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1, 18, 0, 0);
+        private DateTime closeTimeSunday = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1, 18, 0, 0);
 
         public bool IsMerchant { get { return isMerchant; } set { isMerchant = value; RaisePropertyChanged(); } }
-
-        public string SelectedImageFile { get { return selectedImageFile; } set { selectedImageFile = value; RaisePropertyChanged(); } }
-        public string ImageData
-        {
-            get { return imageData; }
-            set
-            {
-                imageData = value; RaisePropertyChanged();
-                hasImage = !string.IsNullOrWhiteSpace(value); RaisePropertyChanged("HasImage");
-            }
-        }
 
         public string Name { get { return name; } set { name = value; RaisePropertyChanged(); } }
         public string PhoneNumber { get { return phoneNumber; } set { phoneNumber = value; RaisePropertyChanged(); } }
@@ -96,7 +78,24 @@ namespace PrettigLokaal.ViewModels
 
         protected override void ValidateSelf()
         {
-            
+            if (string.IsNullOrWhiteSpace(Name))
+                ModelErrors["Name"] = "Dit veld is vereist.";
+            if (string.IsNullOrWhiteSpace(PhoneNumber))
+                ModelErrors["PhoneNumber"] = "Dit veld is vereist.";
+            if (string.IsNullOrWhiteSpace(ContactEmail))
+                ModelErrors["ContactEmail"] = "Dit veld is vereist.";
+            if (string.IsNullOrWhiteSpace(Address))
+                ModelErrors["Address"] = "Dit veld is vereist.";
+            if (string.IsNullOrWhiteSpace(Description))
+                ModelErrors["Description"] = "Dit veld is vereist.";
+            if (string.IsNullOrWhiteSpace(TagList))
+                ModelErrors["TagList"] = "Gelieve tenminste 1 tag in te geven.";
+
+            if(!string.IsNullOrWhiteSpace(FacebookLink))
+            {
+                if(!FacebookLink.Contains("facebook.com/"))
+                    ModelErrors["FacebookLink"] = "Voer een geldige facebooklink in. (bv: 'www.facebook.com/pagina')";
+            }
         }
     }
 }

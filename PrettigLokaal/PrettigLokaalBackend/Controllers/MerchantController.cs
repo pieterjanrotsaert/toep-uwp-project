@@ -114,7 +114,9 @@ namespace PrettigLokaalBackend.Controllers
                 PhoneNumber = model.PhoneNumber,
                 Description = model.Description,
                 FacebookPage = model.FacebookPage,
-                Account = acc
+                Account = acc,
+                Tags = new List<Tag>(),
+                OpeningHours = new List<OpeningHourSpan>()
             };
 
             foreach (var str in model.Tags)

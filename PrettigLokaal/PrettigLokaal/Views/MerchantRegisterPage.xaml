@@ -16,7 +16,7 @@
         <helpers:BitmapConverter x:Key="bitmapConverter"/>
     </Page.Resources>
 
- 
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -65,75 +65,75 @@
         HorizontalScrollBarVisibility="Disabled" 
         VerticalScrollBarVisibility="Visible"  
         Margin="0,0,0,0" >
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
-            <StackPanel x:Name="Panel1" Orientation="Vertical" Grid.Column="1" Grid.ColumnSpan="2" Margin="10, 10, 10, 10">
+                <StackPanel x:Name="Panel1" Orientation="Vertical" Grid.Column="1" Grid.ColumnSpan="2" Margin="10, 10, 10, 10">
 
-                <TextBlock FontWeight="Normal" FontSize="24" Margin="0,0,0,15">Algemene informatie</TextBlock>
+                    <TextBlock FontWeight="Normal" FontSize="24" Margin="0,0,0,15">Algemene informatie</TextBlock>
 
-                <StackPanel Orientation="Vertical" Margin="10,5,0,10">
-                    <TextBlock Text="Naam zaak:"  Grid.Column="1" Margin="5, 5, 5, 5"/>
-                    <TextBox Text="{Binding Name, Mode=TwoWay}" Margin="5, 5, 5, 5"/>
-                    <TextBlock Text="{Binding ModelErrors[Name]}" Foreground="Red"/>
-                </StackPanel>
+                    <StackPanel Orientation="Vertical" Margin="10,5,0,10">
+                        <TextBlock Text="Naam zaak:"  Grid.Column="1" Margin="5, 5, 5, 5"/>
+                        <TextBox Text="{Binding Name, Mode=TwoWay}" Margin="5, 5, 5, 5" TabIndex="0"/>
+                        <TextBlock Text="{Binding ModelErrors[Name]}" Foreground="Red" Margin="5, 0, 0, 0"/>
+                    </StackPanel>
 
-                <StackPanel Orientation="Vertical" Margin="10,5,0,10">
-                    <TextBlock Text="Contact e-mailadres zaak (publiek zichtbaar):"  Grid.Column="1" Margin="5, 5, 5, 5"/>
-                    <TextBox Text="{Binding ContactEmail, Mode=TwoWay}" Margin="5, 5, 5, 5"/>
-                    <TextBlock Text="{Binding ModelErrors[ContactEmail]}" Foreground="Red"/>
-                </StackPanel>
+                    <StackPanel Orientation="Vertical" Margin="10,5,0,10">
+                        <TextBlock Text="Contact e-mailadres zaak (publiek zichtbaar):"  Grid.Column="1" Margin="5, 5, 5, 5"/>
+                        <TextBox Text="{Binding ContactEmail, Mode=TwoWay}" Margin="5, 5, 5, 5" TabIndex="1"/>
+                        <TextBlock Text="{Binding ModelErrors[ContactEmail]}" Foreground="Red" Margin="5, 0, 0, 0"/>
+                    </StackPanel>
 
-                <StackPanel Orientation="Vertical" Margin="10,5,0,10">
-                    <TextBlock Text="Telefoonnummer zaak:"  Grid.Column="1" Margin="5, 5, 5, 5"/>
-                    <TextBox Text="{Binding PhoneNumber, Mode=TwoWay}" Margin="5, 5, 5, 5"/>
-                    <TextBlock Text="{Binding ModelErrors[PhoneNumber]}" Foreground="Red"/>
-                </StackPanel>
+                    <StackPanel Orientation="Vertical" Margin="10,5,0,10">
+                        <TextBlock Text="Telefoonnummer zaak:"  Grid.Column="1" Margin="5, 5, 5, 5"/>
+                        <TextBox Text="{Binding PhoneNumber, Mode=TwoWay}" Margin="5, 5, 5, 5" TabIndex="2"/>
+                        <TextBlock Text="{Binding ModelErrors[PhoneNumber]}" Foreground="Red" Margin="5, 0, 0, 0"/>
+                    </StackPanel>
 
-                <StackPanel Orientation="Vertical" Margin="10,5,0,10">
-                    <TextBlock Text="Adres:"  Grid.Column="1" Margin="5, 5, 5, 5"/>
-                    <TextBox Text="{Binding Address, Mode=TwoWay}" Margin="5, 5, 5, 5"/>
-                    <TextBlock Text="{Binding ModelErrors[Address]}" Foreground="Red"/>
-                </StackPanel>
+                    <StackPanel Orientation="Vertical" Margin="10,5,0,10">
+                        <TextBlock Text="Adres:"  Grid.Column="1" Margin="5, 5, 5, 5"/>
+                        <TextBox Text="{Binding Address, Mode=TwoWay}" Margin="5, 5, 5, 5" TabIndex="3"/>
+                        <TextBlock Text="{Binding ModelErrors[Address]}" Foreground="Red" Margin="5, 0, 0, 0"/>
+                    </StackPanel>
 
-                <StackPanel Orientation="Vertical" Margin="10,5,0,10">
-                    <TextBlock Text="Link Facebook-pagina:"  Grid.Column="1" Margin="5, 5, 5, 5"/>
-                    <TextBox Text="{Binding FacebookLink, Mode=TwoWay}" Margin="5, 5, 5, 5"/>
-                    <TextBlock Text="{Binding ModelErrors[FacebookLink]}" Foreground="Red"/>
-                </StackPanel>
+                    <StackPanel Orientation="Vertical" Margin="10,5,0,10">
+                        <TextBlock Text="Link Facebook-pagina:"  Grid.Column="1" Margin="5, 5, 5, 5"/>
+                        <TextBox Text="{Binding FacebookLink, Mode=TwoWay}" Margin="5, 5, 5, 5" TabIndex="4"/>
+                        <TextBlock Text="{Binding ModelErrors[FacebookLink]}" Foreground="Red" Margin="5, 0, 0, 0"/>
+                    </StackPanel>
 
-                <StackPanel Orientation="Vertical" Margin="10,5,0,10">
-                    <TextBlock Grid.Column="1" Margin="5, 5, 5, 5">
+                    <StackPanel Orientation="Vertical" Margin="10,5,0,10">
+                        <TextBlock Grid.Column="1" Margin="5, 5, 5, 5">
                        Tags (gescheiden door comma's, bv: 'Winkel, Schoenen, Kledij, Voeding'):
                         <LineBreak/>Deze tags maken het makkelijker voor een gebruiker om uw zaak te vinden.
-                    </TextBlock>
-                    <TextBox Text="{Binding TagList, Mode=TwoWay}" Margin="5, 5, 5, 5"/>
-                    <TextBlock Text="{Binding ModelErrors[TagList]}" Foreground="Red"/>
-                </StackPanel>
+                        </TextBlock>
+                        <TextBox Text="{Binding TagList, Mode=TwoWay}" Margin="5, 5, 5, 5" TabIndex="5"/>
+                        <TextBlock Text="{Binding ModelErrors[TagList]}" Foreground="Red" Margin="5, 0, 0, 0"/>
+                    </StackPanel>
 
-                <StackPanel Orientation="Vertical" Margin="10,5,0,10">
-                    <TextBlock Text="Beschrijving zaak:"  Grid.Column="1" Margin="5, 5, 5, 5"/>
-                    <TextBox Text="{Binding Description, Mode=TwoWay}" 
+                    <StackPanel Orientation="Vertical" Margin="10,5,0,10">
+                        <TextBlock Text="Beschrijving zaak:"  Grid.Column="1" Margin="5, 5, 5, 5"/>
+                        <TextBox Text="{Binding Description, Mode=TwoWay}" 
                              Margin="5, 5, 5, 5"
                              TextWrapping="Wrap"
                              AcceptsReturn="True"
-                             MinHeight="120"
+                             MinHeight="120" TabIndex="6"
                              />
-                    <TextBlock Text="{Binding ModelErrors[Description]}" Foreground="Red"/>
-                </StackPanel>
+                        <TextBlock Text="{Binding ModelErrors[Description]}" Foreground="Red" Margin="5, 0, 0, 0"/>
+                    </StackPanel>
 
-            </StackPanel>
+                </StackPanel>
 
                 <StackPanel  x:Name="Panel2" Orientation="Vertical" Grid.Column="4"  Grid.ColumnSpan="2" Margin="10, 10, 10, 10">
 
@@ -158,96 +158,49 @@
                         </Grid.RowDefinitions>
 
                         <TextBlock  Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Margin="5,5,5,5">Maandag:</TextBlock>
-                        <TimePicker Grid.Row="0" Grid.Column="1" Time="{Binding OpenTimeMonday, Mode=TwoWay, Converter={StaticResource timeConverter}}" Margin="5,5,5,5"/>
+                        <TimePicker Grid.Row="0" Grid.Column="1" Time="{Binding OpenTimeMonday, Mode=TwoWay, Converter={StaticResource timeConverter}}" Margin="5,5,5,5" TabIndex="7"/>
                         <TextBlock  Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,5,10,5"> tot</TextBlock>
-                        <TimePicker Grid.Row="0" Grid.Column="3" Time="{Binding CloseTimeMonday, Mode=TwoWay, Converter={StaticResource timeConverter}}" Margin="5,5,5,5"/>
+                        <TimePicker Grid.Row="0" Grid.Column="3" Time="{Binding CloseTimeMonday, Mode=TwoWay, Converter={StaticResource timeConverter}}" Margin="5,5,5,5" TabIndex="8"/>
 
                         <TextBlock  Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="5,5,5,5">Dinsdag:</TextBlock>
-                        <TimePicker Grid.Row="1" Grid.Column="1" Time="{Binding OpenTimeTuesday, Mode=TwoWay, Converter={StaticResource timeConverter}}" Margin="5,5,5,5"/>
+                        <TimePicker Grid.Row="1" Grid.Column="1" Time="{Binding OpenTimeTuesday, Mode=TwoWay, Converter={StaticResource timeConverter}}" Margin="5,5,5,5" TabIndex="9"/>
                         <TextBlock  Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,5,10,5"> tot</TextBlock>
-                        <TimePicker Grid.Row="1" Grid.Column="3" Time="{Binding CloseTimeTuesday, Mode=TwoWay, Converter={StaticResource timeConverter}}" Margin="5,5,5,5"/>
+                        <TimePicker Grid.Row="1" Grid.Column="3" Time="{Binding CloseTimeTuesday, Mode=TwoWay, Converter={StaticResource timeConverter}}" Margin="5,5,5,5" TabIndex="10"/>
 
                         <TextBlock  Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Margin="5,5,5,5">Woensdag:</TextBlock>
-                        <TimePicker Grid.Row="2" Grid.Column="1" Time="{Binding OpenTimeWednesday, Mode=TwoWay, Converter={StaticResource timeConverter}}" Margin="5,5,5,5"/>
+                        <TimePicker Grid.Row="2" Grid.Column="1" Time="{Binding OpenTimeWednesday, Mode=TwoWay, Converter={StaticResource timeConverter}}" Margin="5,5,5,5" TabIndex="11"/>
                         <TextBlock  Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,5,10,5"> tot</TextBlock>
-                        <TimePicker Grid.Row="2" Grid.Column="3" Time="{Binding CloseTimeWednesday, Mode=TwoWay, Converter={StaticResource timeConverter}}" Margin="5,5,5,5"/>
+                        <TimePicker Grid.Row="2" Grid.Column="3" Time="{Binding CloseTimeWednesday, Mode=TwoWay, Converter={StaticResource timeConverter}}" Margin="5,5,5,5" TabIndex="12"/>
 
                         <TextBlock  Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Margin="5,5,5,5">Donderdag:</TextBlock>
-                        <TimePicker Grid.Row="3" Grid.Column="1" Time="{Binding OpenTimeThursday, Mode=TwoWay, Converter={StaticResource timeConverter}}" Margin="5,5,5,5"/>
+                        <TimePicker Grid.Row="3" Grid.Column="1" Time="{Binding OpenTimeThursday, Mode=TwoWay, Converter={StaticResource timeConverter}}" Margin="5,5,5,5" TabIndex="13"/>
                         <TextBlock  Grid.Row="3" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,5,10,5"> tot</TextBlock>
-                        <TimePicker Grid.Row="3" Grid.Column="3" Time="{Binding CloseTimeThursday, Mode=TwoWay, Converter={StaticResource timeConverter}}" Margin="5,5,5,5"/>
+                        <TimePicker Grid.Row="3" Grid.Column="3" Time="{Binding CloseTimeThursday, Mode=TwoWay, Converter={StaticResource timeConverter}}" Margin="5,5,5,5" TabIndex="14"/>
 
                         <TextBlock  Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" Margin="5,5,5,5">Vrijdag:</TextBlock>
-                        <TimePicker Grid.Row="4" Grid.Column="1" Time="{Binding OpenTimeFriday, Mode=TwoWay, Converter={StaticResource timeConverter}}" Margin="5,5,5,5"/>
+                        <TimePicker Grid.Row="4" Grid.Column="1" Time="{Binding OpenTimeFriday, Mode=TwoWay, Converter={StaticResource timeConverter}}" Margin="5,5,5,5" TabIndex="15"/>
                         <TextBlock  Grid.Row="4" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,5,10,5"> tot</TextBlock>
-                        <TimePicker Grid.Row="4" Grid.Column="3" Time="{Binding CloseTimeFriday, Mode=TwoWay, Converter={StaticResource timeConverter}}" Margin="5,5,5,5"/>
+                        <TimePicker Grid.Row="4" Grid.Column="3" Time="{Binding CloseTimeFriday, Mode=TwoWay, Converter={StaticResource timeConverter}}" Margin="5,5,5,5" TabIndex="16"/>
 
                         <TextBlock  Grid.Row="5" Grid.Column="0" VerticalAlignment="Center" Margin="5,5,5,5">Zaterdag:</TextBlock>
-                        <TimePicker Grid.Row="5" Grid.Column="1" Time="{Binding OpenTimeSaturday, Mode=TwoWay, Converter={StaticResource timeConverter}}" Margin="5,5,5,5"/>
+                        <TimePicker Grid.Row="5" Grid.Column="1" Time="{Binding OpenTimeSaturday, Mode=TwoWay, Converter={StaticResource timeConverter}}" Margin="5,5,5,5" TabIndex="17"/>
                         <TextBlock  Grid.Row="5" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,5,10,5"> tot</TextBlock>
-                        <TimePicker Grid.Row="5" Grid.Column="3" Time="{Binding CloseTimeSaturday, Mode=TwoWay, Converter={StaticResource timeConverter}}" Margin="5,5,5,5"/>
+                        <TimePicker Grid.Row="5" Grid.Column="3" Time="{Binding CloseTimeSaturday, Mode=TwoWay, Converter={StaticResource timeConverter}}" Margin="5,5,5,5" TabIndex="18"/>
 
                         <TextBlock  Grid.Row="6" Grid.Column="0" VerticalAlignment="Center" Margin="5,5,5,5">Zondag:</TextBlock>
-                        <TimePicker Grid.Row="6" Grid.Column="1" Time="{Binding OpenTimeSunday, Mode=TwoWay, Converter={StaticResource timeConverter}}" Margin="5,5,5,5"/>
+                        <TimePicker Grid.Row="6" Grid.Column="1" Time="{Binding OpenTimeSunday, Mode=TwoWay, Converter={StaticResource timeConverter}}" Margin="5,5,5,5" TabIndex="19"/>
                         <TextBlock  Grid.Row="6" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,5,10,5"> tot</TextBlock>
-                        <TimePicker Grid.Row="6" Grid.Column="3" Time="{Binding CloseTimeSunday, Mode=TwoWay, Converter={StaticResource timeConverter}}" Margin="5,5,5,5"/>
+                        <TimePicker Grid.Row="6" Grid.Column="3" Time="{Binding CloseTimeSunday, Mode=TwoWay, Converter={StaticResource timeConverter}}" Margin="5,5,5,5" TabIndex="20"/>
 
                     </Grid>
-                    <TextBlock Text="{Binding ModelErrors[OpeningHours]}" Foreground="Red"/>
-
-                    <TextBlock FontWeight="Normal" FontSize="24" Margin="0,15,0,15">Afbeelding</TextBlock>
-
-                    
-
-                    <Grid Margin="15, 5, 15, 5">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-
-                        <Border Grid.Column="1" Margin="15,5,15,5" Background="#33000000">
-                            <Image Source="{Binding ImageData, Mode=OneWay, Converter={StaticResource bitmapConverter}}" Height="200"  Margin="3, 3, 3, 3"/>
-                        </Border>
-                        
-
-                        <Grid Margin="0,5,0,5" Grid.Column="0" >
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-
-                            <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" TextWrapping="Wrap" 
-                                       HorizontalAlignment="Stretch" 
-                                       VerticalAlignment="Center" 
-                                       Width="Auto" 
-                                       Foreground="#FF767676"
-                                       Text="{Binding SelectedImageFile, Mode=OneWay}"/>
-                            <Button Click="ChooseFileButton_Click" Grid.Row="0" Grid.Column="0" Content="Bestand Kiezen" 
-                                    Margin="0, 0, 5, 10"
-                                    HorizontalAlignment="Stretch" VerticalAlignment="Top"></Button>
-
-                            <Button Click="RemoveImage_Click" Grid.Row="0" Grid.Column="1" Content="Verwijderen" 
-                                    Visibility="{Binding HasImage, Mode=OneWay, Converter={StaticResource visibilityConverter}}"
-                                    Margin="5, 0, 0, 10"
-                                    HorizontalAlignment="Stretch" VerticalAlignment="Top"
-                                    Background="#bb0000"
-                                    Foreground="White"></Button>
-                        </Grid>
-                    </Grid>
-
-                    
+                    <TextBlock Text="{Binding ModelErrors[OpeningHours]}" Foreground="Red" Margin="5, 0, 0, 0"/>
 
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="10, 10, 10, 10">
-                        <Button Click="DeleteAccountButton_Click" Content="Mijn Account Verwijderen" Background="#bb0000" Foreground="White" Margin="5, 5, 5, 5" Visibility="{Binding IsMerchant, Mode=OneWay, Converter={StaticResource visibilityConverter} }"/>
-                        <Button Click="SubmitButton_Click" Content="Gegevens Versturen" Margin="5, 5, 5, 5" Background="#66000000"/>
+                        <Button Click="DeleteAccountButton_Click" Content="Mijn Account Verwijderen" Background="#bb0000" Foreground="White" Margin="5, 5, 5, 5" Visibility="{Binding IsMerchant, Mode=OneWay, Converter={StaticResource visibilityConverter} }" TabIndex="24"/>
+                        <Button Click="SubmitButton_Click" Content="Gegevens Versturen" Margin="5, 5, 5, 5" Background="#66000000" Foreground="Black" TabIndex="23"/>
                     </StackPanel>
                 </StackPanel>
             </Grid>
-    </ScrollViewer>
+        </ScrollViewer>
     </Grid>
 </Page>
