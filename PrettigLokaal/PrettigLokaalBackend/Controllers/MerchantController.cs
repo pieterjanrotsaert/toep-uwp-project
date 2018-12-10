@@ -25,16 +25,16 @@ namespace PrettigLokaalBackend.Controllers
 
         }
 
-        [HttpGet]
+        [HttpGet("{id}")]
         [AllowAnonymous]
         public async Task<IActionResult> Get(int id)
         {
             Merchant merchant = await context.Merchants.Where(m => m.Id == id)
-                .Include(m => m.Events).ThenInclude(ev => ev.Image)
-                .Include(m => m.Promotions).ThenInclude(p => p.Image)
-                .Include(m => m.Images)
+                .Include(m => m.Events).ThenInclude(e => e.Image)
+                .Include(m => m.Promotions).ThenInclude(e => e.Image)
                 .Include(m => m.Tags)
                 .Include(m => m.OpeningHours)
+                .Include(m => m.Images)
                 .FirstOrDefaultAsync();
 
             if (merchant == null)
@@ -43,7 +43,26 @@ namespace PrettigLokaalBackend.Controllers
             return Ok(merchant);
         }
 
-        [HttpGet("Find")]
+        [HttpGet("MyAccount")]
+        public async Task<IActionResult> GetMyMerchantData()
+        {
+            Account acc = await GetAccount();
+            Merchant merchant = await context.Merchants
+                .Include(m => m.Events).ThenInclude(e => e.Image)
+                .Include(m => m.Promotions).ThenInclude(e => e.Image)
+                .Include(m => m.Tags)
+                .Include(m => m.OpeningHours)
+                .Include(m => m.Images)
+                .Where(m => m.Account.Id == acc.Id)
+                .FirstOrDefaultAsync();
+
+            if (merchant == null)
+                return Error(ErrorModel.NOT_FOUND);
+
+            return Ok(merchant);
+        }
+
+        [HttpGet("Find/{query}")]
         [AllowAnonymous]
         public async Task<IActionResult> Find(string query)
         {
@@ -57,16 +76,6 @@ namespace PrettigLokaalBackend.Controllers
                 .ToListAsync();
 
             return Ok(merchants);
-        }
-
-        [HttpGet("MyDetails")]
-        public async Task<IActionResult> MyDetails()
-        {
-            Account acc = await GetAccount();
-            if (acc.Merchant == null)
-                return Error(ErrorModel.NOT_A_MERCHANT);
-
-            return await Get(acc.Merchant.Id);
         }
 
         // Returns events for the currently logged in merchant
@@ -190,11 +199,22 @@ namespace PrettigLokaalBackend.Controllers
         public async Task<IActionResult> AddImages([FromBody]List<string> images)
         {
             Account acc = await GetAccount();
+
             if (acc.Merchant == null)
                 return Error(ErrorModel.NOT_A_MERCHANT);
 
+            Merchant merchant = await context.Merchants
+                .Where(m => m.Id == acc.Merchant.Id)
+                .Include(m => m.Images)
+                .FirstOrDefaultAsync();
+
+            if (merchant == null)
+                return Error(ErrorModel.NOT_FOUND);
+
+            if (merchant.Images == null)
+                merchant.Images = new List<Image>();
             foreach (string imgData in images)
-                acc.Merchant.Images.Add(new Image() { Data = imgData });
+                merchant.Images.Add(new Image() { Data = new ImageData { Data = imgData } });
 
             await context.SaveChangesAsync();
             return Ok();

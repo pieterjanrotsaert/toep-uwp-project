@@ -104,6 +104,9 @@
     <Compile Include="..\PrettigLokaalBackend\Models\Domain\Image.cs">
       <Link>Backend\Models\Domain\Image.cs</Link>
     </Compile>
+    <Compile Include="..\PrettigLokaalBackend\Models\Domain\ImageData.cs">
+      <Link>Backend\Models\Domain\ImageData.cs</Link>
+    </Compile>
     <Compile Include="..\PrettigLokaalBackend\Models\Domain\Merchant.cs">
       <Link>Backend\Models\Domain\Merchant.cs</Link>
     </Compile>
@@ -158,6 +161,7 @@
     <Compile Include="ViewModels\Helpers\VisibilityConverter.cs" />
     <Compile Include="ViewModels\LoginPageViewModel.cs" />
     <Compile Include="ViewModels\MainPageViewModel.cs" />
+    <Compile Include="ViewModels\MerchantPanelViewModel.cs" />
     <Compile Include="ViewModels\MerchantRegisterPageViewModel.cs" />
     <Compile Include="ViewModels\RegisterPageViewModel.cs" />
     <Compile Include="Views\ChangePasswordPage.xaml.cs">

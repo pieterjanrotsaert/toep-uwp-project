@@ -19,7 +19,7 @@ namespace PrettigLokaalBackend.Models.Requests
 
         public string GetDescription()
         {
-            string str = GetString();
+            string str = GetString() + " (code " + ErrorCode + ")";
             if (!string.IsNullOrEmpty(Detail))
                 str += ": " + Detail;
             return str;

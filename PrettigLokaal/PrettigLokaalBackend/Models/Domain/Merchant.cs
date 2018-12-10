@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -22,8 +23,9 @@ namespace PrettigLokaalBackend.Models.Domain
         public List<Tag> Tags { get; set; }
 
         [JsonIgnore] public List<MerchantSubscription> Subscriptions { get; set; }
-        [JsonIgnore] public List<Image> Images { get; set; }
-        [JsonIgnore] public List<Event> Events { get; set; }
-        [JsonIgnore] public List<Promotion> Promotions { get; set; }
+
+        public List<Image> Images { get; set; }
+        public List<Event> Events { get; set; }
+        public List<Promotion> Promotions { get; set; }
     }
 }

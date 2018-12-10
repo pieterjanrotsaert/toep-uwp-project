@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PrettigLokaalBackend.Models.Requests;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -25,6 +26,11 @@ namespace PrettigLokaal.Misc
             await dialog.ShowAsync();
             if (onComplete != null)
                 onComplete.Invoke();
+        }
+
+        public static void ErrorBox(ErrorModel err)
+        {
+            InfoBox("Er is een fout opgetreden: " + err.GetDescription(), "Fout");
         }
 
 
@@ -65,6 +71,20 @@ namespace PrettigLokaal.Misc
             StorageFile file = await picker.PickSingleFileAsync();
             if(file != null)
                 callback.Invoke(file);
+        }
+
+        public static async void PickImageFiles(Action<IReadOnlyList<StorageFile>> callback)
+        {
+            var picker = new Windows.Storage.Pickers.FileOpenPicker();
+            picker.ViewMode = Windows.Storage.Pickers.PickerViewMode.Thumbnail;
+            picker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.PicturesLibrary;
+            picker.FileTypeFilter.Add(".jpg");
+            picker.FileTypeFilter.Add(".jpeg");
+            picker.FileTypeFilter.Add(".png");
+            picker.FileTypeFilter.Add(".bmp");
+            var files = await picker.PickMultipleFilesAsync();
+            if (files != null)
+                callback.Invoke(files);
         }
 
 

@@ -407,5 +407,22 @@ namespace PrettigLokaal.Backend
                     RetrieveAccountInfo(callback); // Retrieve & store updated account info.
             });
         }
+        
+        // Retrieves all merchant data of the currently logged in account, including images etc.
+        public void GetAccountMerchantData(Callback<Merchant> callback)
+        {
+            SendGet("/api/merchant/myaccount", callback);
+        }
+
+        // Upload multiple images, each string represents an image encoded in base64.
+        public void UploadMerchantImages(List<string> imageData, VoidCallback callback)
+        {
+            SendPostVoid("/api/merchant/addimages", imageData, callback);
+        }
+
+        public void GetImage(int id, Callback<Image> callback)
+        {
+            SendGet("/api/file/image/" + id, callback);
+        }
     }
 }

@@ -34,6 +34,7 @@ namespace PrettigLokaalBackend.Data
             builder.Entity<Coupon>(MapCoupon);
             builder.Entity<Tag>(MapTag);
             builder.Entity<OpeningHourSpan>(MapMerchantOpeningHourSpan);
+            builder.Entity<ImageData>(MapImageData);
         }
 
         private static void MapAccount(EntityTypeBuilder<Account> builder)
@@ -81,7 +82,7 @@ namespace PrettigLokaalBackend.Data
         {
             builder.ToTable("Image");
             builder.HasKey(p => p.Id);
-            builder.Property(p => p.Data).HasColumnType("nvarchar(MAX)");
+            builder.HasOne(p => p.Data);
         }
 
         private static void MapCoupon(EntityTypeBuilder<Coupon> builder)
@@ -101,6 +102,13 @@ namespace PrettigLokaalBackend.Data
         {
             builder.ToTable("OpeningHourSpan");
             builder.HasKey(p => p.Id);
+        }
+
+        private static void MapImageData(EntityTypeBuilder<ImageData> builder)
+        {
+            builder.ToTable("ImageData");
+            builder.HasKey(p => p.Id);
+            builder.Property(p => p.Data).HasColumnType("nvarchar(MAX)");
         }
     }
 }

@@ -197,7 +197,7 @@
 
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="10, 10, 10, 10">
                         <Button Click="DeleteAccountButton_Click" Content="Mijn Account Verwijderen" Background="#bb0000" Foreground="White" Margin="5, 5, 5, 5" Visibility="{Binding IsMerchant, Mode=OneWay, Converter={StaticResource visibilityConverter} }" TabIndex="24"/>
-                        <Button Click="SubmitButton_Click" Content="Gegevens Versturen" Margin="5, 5, 5, 5" Background="#66000000" Foreground="Black" TabIndex="23"/>
+                        <Button Click="SubmitButton_Click" Content="Gegevens Versturen" Margin="5, 5, 5, 5"  TabIndex="23"/>
                     </StackPanel>
                 </StackPanel>
             </Grid>

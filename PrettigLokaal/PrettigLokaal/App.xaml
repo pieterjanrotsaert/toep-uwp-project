@@ -5,4 +5,28 @@
     xmlns:local="using:PrettigLokaal"
     RequestedTheme="Light">
 
+    <Application.Resources>
+        
+        <ResourceDictionary>
+            <ResourceDictionary.ThemeDictionaries>
+                <!--ResourceDictionary x:Key="Light">
+                    <Color x:Key="SystemAltHighColor">#af0000</Color>
+                    <Color x:Key="SystemAltLowColor">#af0000</Color>
+                    <Color x:Key="SystemAltMediumColor">#af0000</Color>
+                    <Color x:Key="SystemAltMediumHighColor">#af0000</Color>
+                    <Color x:Key="SystemAltMediumLowColor">#af0000</Color>
+                    
+                    <Color x:Key="SystemBaseHighColor">#af0000</Color>
+                    <Color x:Key="SystemBaseLowColor">#af0000</Color>
+                    <Color x:Key="SystemBaseMediumColor">#af0000</Color>
+                    <Color x:Key="SystemBaseMediumHighColor">#af0000</Color>
+                    <Color x:Key="SystemBaseMediumLowColor">#af0000</Color>
+
+                    <SolidColorBrush x:Key="ApplicationPageBackgroundThemeBrush" Color="{StaticResource SystemBaseHighColor}"/>
+                </ResourceDictionary-->
+            </ResourceDictionary.ThemeDictionaries>
+        </ResourceDictionary>
+        
+    </Application.Resources>
+    
 </Application>

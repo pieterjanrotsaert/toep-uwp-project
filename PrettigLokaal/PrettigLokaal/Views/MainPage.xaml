@@ -69,7 +69,7 @@
             <NavigationView.HeaderTemplate>
                 <DataTemplate>
                     <StackPanel>
-                        <TextBlock FontSize="20"
+                        <TextBlock FontSize="18"
                                    HorizontalAlignment="Left"
                                Margin="10 5 0 0"
                                Text="{Binding Title, Mode=OneWay}" FontFamily="Segoe UI">
