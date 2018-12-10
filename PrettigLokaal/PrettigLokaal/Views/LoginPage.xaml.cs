@@ -71,7 +71,7 @@ namespace PrettigLokaal.Views
                         Utils.InfoBox(err.GetDescription(), "Fout");
                 }
                 else
-                    mainPage.OnSignInComplete();
+                    mainPage.OnSignInStatusChanged();
             });
         }
     }

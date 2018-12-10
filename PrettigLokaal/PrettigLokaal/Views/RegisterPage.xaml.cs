@@ -57,7 +57,7 @@ namespace PrettigLokaal.Views
                         Utils.InfoBox("Er is een fout opgetreden: " + err.GetDescription(), "Fout");
                 }
                 else
-                    mainPage.OnSignInComplete();
+                    mainPage.OnSignInStatusChanged();
             });
         }
     }

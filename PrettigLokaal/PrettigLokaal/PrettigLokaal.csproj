@@ -152,6 +152,8 @@
     <Compile Include="Backend\API.cs" />
     <Compile Include="Misc\Utils.cs" />
     <Compile Include="ViewModels\ChangePasswordPageViewModel.cs" />
+    <Compile Include="ViewModels\EditEventPageViewModel.cs" />
+    <Compile Include="ViewModels\EditPromotionPageViewModel.cs" />
     <Compile Include="ViewModels\Helpers\BitmapConverter.cs" />
     <Compile Include="ViewModels\Helpers\DateConverter.cs" />
     <Compile Include="ViewModels\Helpers\InverseVisibilityConverter.cs" />
@@ -169,6 +171,12 @@
     </Compile>
     <Compile Include="Views\DiscoverPage.xaml.cs">
       <DependentUpon>DiscoverPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\EditEventPage.xaml.cs">
+      <DependentUpon>EditEventPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\EditPromotionPage.xaml.cs">
+      <DependentUpon>EditPromotionPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\FeedPage.xaml.cs">
       <DependentUpon>FeedPage.xaml</DependentUpon>
@@ -217,6 +225,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\DiscoverPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\EditEventPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\EditPromotionPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

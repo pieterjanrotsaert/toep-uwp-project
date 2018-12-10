@@ -60,6 +60,8 @@ namespace PrettigLokaal.Views
             mainPage = (MainPage)e.Parameter;
             base.OnNavigatedTo(e);
 
+            mainPage.EnsureNavItemSelected("nav_merchantpanel");
+
             RefreshPage();
         }
 
@@ -106,6 +108,19 @@ namespace PrettigLokaal.Views
         private void DeleteImageButton_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void AddPromotionButton_Click(object sender, RoutedEventArgs e)
+        {
+            mainPage.NavigateToPage(typeof(EditPromotionPage), 
+                new EditPromotionPage.NavigationParams { mainPage = mainPage }, "Promotie Toevoegen");
+
+        }
+
+        private void AddEventButton_Click(object sender, RoutedEventArgs e)
+        {
+            mainPage.NavigateToPage(typeof(EditEventPage),
+                new EditEventPage.NavigationParams { mainPage = mainPage }, "Evenement Toevoegen");
         }
     }
 }

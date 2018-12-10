@@ -17,7 +17,7 @@
 
     <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
 
-        <Grid Margin="10, 10, 10, 10" Height="Auto">
+        <Grid Margin="20, 10, 35, 10" Height="Auto">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
@@ -37,6 +37,9 @@
             <ScrollViewer Grid.Column="0" Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
                 <GridView ItemsSource="{Binding Images, Mode=OneWay}"
                           CanDragItems="False" SelectionMode="None">
+                    <GridView.ItemContainerTransitions>
+                        <TransitionCollection/>
+                    </GridView.ItemContainerTransitions>
                     <GridView.ItemTemplate>
                         <DataTemplate>
                             <Border BorderBrush="{ThemeResource SystemControlAccentAcrylicElementAccentMediumHighBrush}" BorderThickness="1">
@@ -116,8 +119,147 @@
 
             <TextBlock FontSize="26" Margin="0,10,0,10" Grid.Row="2">Evenementen</TextBlock>
 
+            <ScrollViewer Grid.Column="0" Grid.Row="3" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                <GridView ItemsSource="{Binding Events, Mode=OneWay}"
+                          CanDragItems="False" SelectionMode="None">
+                    <GridView.ItemContainerTransitions>
+                        <TransitionCollection/>
+                    </GridView.ItemContainerTransitions>
+                    <GridView.ItemTemplate>
+                        <DataTemplate>
+                            <Border BorderBrush="{ThemeResource SystemControlAccentAcrylicElementAccentMediumHighBrush}" BorderThickness="1">
+                                <Border.Background>
+                                    <AcrylicBrush TintColor="#CCECECEC"/>
+                                </Border.Background>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="150"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <ProgressRing 
+                                                Grid.Column="0"
+                                                Grid.Row="0"
+                                                Grid.RowSpan="2"
+                            
+                                                IsActive="True" 
+                                                HorizontalAlignment="Center" 
+                                                VerticalAlignment="Center" 
+                                                Margin="0,0,0,0" 
+                                                Height="45" 
+                                                Width="45" 
+                                                FontFamily="Segoe UI" 
+                                                Visibility="{Binding IsLoading, Mode=OneWay, Converter={StaticResource visibilityConverter}}"/>
 
+                                    <Image Grid.Column="0" Grid.Row="0" Grid.RowSpan="1"
+                                           Height="150"
+                                           Source="{Binding Data, Mode=OneWay, Converter={StaticResource bitmapConverter}}" 
+                                           HorizontalAlignment="Stretch"
+                                           VerticalAlignment="Stretch"
+                                           Stretch="Uniform"
+                                           />
+
+                                    <Button Click="DeleteImageButton_Click" 
+                                            Tag="{Binding Id}" 
+                                            Content="Verwijderen" Grid.Column="0" Grid.Row="1"
+                                            Margin="5, 8, 5, 8"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"></Button>
+
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
+                    <GridView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <ItemsWrapGrid Orientation="Horizontal"></ItemsWrapGrid>
+                        </ItemsPanelTemplate>
+                    </GridView.ItemsPanel>
+                </GridView>
+            </ScrollViewer>
+
+            <Grid Grid.Column="3" Grid.Row="3" Margin="0, 0, 0, 15" >
+                <Border Margin="5,0,5,0" Background="#25000000" BorderThickness="1" 
+                    MinWidth="210"
+                    BorderBrush="{ThemeResource SystemControlAccentAcrylicElementAccentMediumHighBrush}">
+                    <Button x:Name="AddEventButton" Click="AddEventButton_Click" Content="Evenement Toevoegen" Margin="10,5,10,5"
+                            HorizontalAlignment="Center"></Button>
+                </Border>
+            </Grid>    
+            
             <TextBlock FontSize="26" Margin="0,10,0,10" Grid.Row="4">Promoties</TextBlock>
+
+            <ScrollViewer Grid.Column="0" Grid.Row="5" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                <GridView ItemsSource="{Binding Promotions, Mode=OneWay}"
+                          CanDragItems="False" SelectionMode="None">
+                    <GridView.ItemContainerTransitions>
+                        <TransitionCollection/>
+                    </GridView.ItemContainerTransitions>
+                    <GridView.ItemTemplate>
+                        <DataTemplate>
+                            <Border BorderBrush="{ThemeResource SystemControlAccentAcrylicElementAccentMediumHighBrush}" BorderThickness="1">
+                                <Border.Background>
+                                    <AcrylicBrush TintColor="#CCECECEC"/>
+                                </Border.Background>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="150"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <ProgressRing 
+                                                Grid.Column="0"
+                                                Grid.Row="0"
+                                                Grid.RowSpan="2"
+                            
+                                                IsActive="True" 
+                                                HorizontalAlignment="Center" 
+                                                VerticalAlignment="Center" 
+                                                Margin="0,0,0,0" 
+                                                Height="45" 
+                                                Width="45" 
+                                                FontFamily="Segoe UI" 
+                                                Visibility="{Binding IsLoading, Mode=OneWay, Converter={StaticResource visibilityConverter}}"/>
+
+                                    <Image Grid.Column="0" Grid.Row="0" Grid.RowSpan="1"
+                                           Height="150"
+                                           Source="{Binding Data, Mode=OneWay, Converter={StaticResource bitmapConverter}}" 
+                                           HorizontalAlignment="Stretch"
+                                           VerticalAlignment="Stretch"
+                                           Stretch="Uniform"
+                                           />
+
+                                    <Button Click="DeleteImageButton_Click" 
+                                            Tag="{Binding Id}" 
+                                            Content="Verwijderen" Grid.Column="0" Grid.Row="1"
+                                            Margin="5, 8, 5, 8"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"></Button>
+
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
+                    <GridView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <ItemsWrapGrid Orientation="Horizontal"></ItemsWrapGrid>
+                        </ItemsPanelTemplate>
+                    </GridView.ItemsPanel>
+                </GridView>
+            </ScrollViewer>
+
+            <Grid Grid.Column="1" Grid.Row="5" Margin="0, 0, 0, 15" >
+                <Border Margin="5,0,5,0" Background="#25000000" BorderThickness="1" 
+                    MinWidth="210"
+                    BorderBrush="{ThemeResource SystemControlAccentAcrylicElementAccentMediumHighBrush}" >
+                    <Button x:Name="AddPromotionButton"  Click="AddPromotionButton_Click" Content="Promotie Toevoegen" Margin="10,5,10,5"
+                             HorizontalAlignment="Center"></Button>
+                </Border>
+            </Grid>
 
 
         </Grid>

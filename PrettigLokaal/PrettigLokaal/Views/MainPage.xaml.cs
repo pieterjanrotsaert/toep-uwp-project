@@ -65,7 +65,8 @@ namespace PrettigLokaal
             SelectNavItem(startPage);
         }
 
-        private void SelectNavItem(string tag)
+        // Navigate to an item in the NavView
+        public void SelectNavItem(string tag)
         {
             var item = FindNavItemByTag(startPage);
             if (item != null)
@@ -109,11 +110,27 @@ namespace PrettigLokaal
             NavView.SelectedItem = NavView.SettingsItem; 
         }
 
+        public void EnsureNavItemSelected(string tag)
+        {
+            var item = (NavigationViewItem)NavView.SelectedItem;
+            if (item != null)
+            {
+                if (item.Visibility == Visibility.Collapsed)
+                    return;
+
+                if ((string)item.Tag != tag)
+                    SelectNavItem(tag);
+            }
+            else
+                SelectNavItem(tag);
+        }
+
         private void SigninButton_Tapped(object sender, TappedRoutedEventArgs e)
         {
             ClearNavSelection();
             viewModel.Title = "Aanmelden";
             ContentFrame.Navigate(typeof(LoginPage), this);
+            viewModel.CanGoBack = ContentFrame.CanGoBack;
         }
 
         private void RegisterButton_Tapped(object sender, TappedRoutedEventArgs e)
@@ -121,6 +138,7 @@ namespace PrettigLokaal
             ClearNavSelection();
             viewModel.Title = "Registreren";
             ContentFrame.Navigate(typeof(RegisterPage), this);
+            viewModel.CanGoBack = ContentFrame.CanGoBack;
         }
 
         private void ChangePassword_Tapped(object sender, TappedRoutedEventArgs e)
@@ -128,26 +146,37 @@ namespace PrettigLokaal
             ClearNavSelection();
             viewModel.Title = "Wachtwoord wijzigen";
             ContentFrame.Navigate(typeof(ChangePasswordPage), this);
+            viewModel.CanGoBack = ContentFrame.CanGoBack;
+        }
+
+        public void NavigateToPage(Type pageType, object pageParams, string title)
+        {
+            ClearNavSelection();
+            viewModel.Title = title;
+            ContentFrame.Navigate(pageType, pageParams);
+            viewModel.CanGoBack = ContentFrame.CanGoBack;
         }
     
         public void GoBack()
         {
-            ContentFrame.GoBack();
+            if (ContentFrame.CanGoBack)
+                ContentFrame.GoBack();
         }
 
         public void GoHome()
         {
+            // TODO: Determine proper home item based on loginstatus
             SelectNavItem("nav_discover");
         }
 
-        public void OnSignInComplete()
+        public void OnSignInStatusChanged()
         {
             viewModel.IsLoggedIn = API.Get().IsLoggedIn();
             viewModel.IsMerchant = API.Get().IsMerchant();
             viewModel.ShowMerchantSignup = viewModel.IsLoggedIn && !viewModel.IsMerchant;
         }
 
-        public void OnMerchantSignInComplete()
+        public void OnMerchantSignInStatusChanged()
         {
             viewModel.IsMerchant = API.Get().IsMerchant();
             viewModel.ShowMerchantSignup = API.Get().IsLoggedIn() && !viewModel.IsMerchant;
@@ -193,8 +222,25 @@ namespace PrettigLokaal
                     ContentFrame.Navigate(typeof(MerchantRegisterPage), this);
                     break;
             }
+            viewModel.CanGoBack = ContentFrame.CanGoBack;
         }
 
-        
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            viewModel.CanGoBack = ContentFrame.CanGoBack;
+        }
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            base.OnNavigatedFrom(e);
+            viewModel.CanGoBack = ContentFrame.CanGoBack;
+        }
+
+        private void BackButton_Click(object sender, RoutedEventArgs e)
+        {
+            GoBack();
+            viewModel.CanGoBack = ContentFrame.CanGoBack;
+        }
     }
 }

@@ -37,10 +37,18 @@ namespace PrettigLokaal.Views
             InitializeComponent();
             viewModel = new MerchantRegisterPageViewModel();
             DataContext = viewModel;
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            mainPage = (MainPage)e.Parameter;
+            base.OnNavigatedTo(e);
 
             viewModel.IsMerchant = API.Get().IsMerchant();
             if (viewModel.IsMerchant)
             {
+                mainPage.EnsureNavItemSelected("nav_merchantsettings");
+
                 Merchant m = API.Get().GetAccountInfo().Merchant;
                 viewModel.Address = m.Address;
                 viewModel.ContactEmail = m.ContactEmail;
@@ -68,12 +76,9 @@ namespace PrettigLokaal.Views
                 viewModel.CloseTimeSaturday = hrs[5].CloseTime;
                 viewModel.CloseTimeSunday = hrs[6].CloseTime;
             }
-        }
+            else
+                mainPage.EnsureNavItemSelected("nav_merchantregister");
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
-            mainPage = (MainPage)e.Parameter;
-            base.OnNavigatedTo(e);
         }
 
         private void SubmitButton_Click(object sender, RoutedEventArgs e)
@@ -123,7 +128,7 @@ namespace PrettigLokaal.Views
                     else
                     {
                         Utils.InfoBox("De registratie was succesvol. U bent nu een handelaar en hebt toegang tot extra functionaliteiten.", "Registratie succesvol!");
-                        mainPage.OnMerchantSignInComplete();
+                        mainPage.OnMerchantSignInStatusChanged();
                     }
                 });
             }
@@ -138,7 +143,7 @@ namespace PrettigLokaal.Views
                     else
                     {
                         Utils.InfoBox("Uw gegevens zijn met succes gewijzigd.", "Wijziging succesvol");
-                        mainPage.OnMerchantSignInComplete();
+                        mainPage.OnMerchantSignInStatusChanged();
                     }
                 });
             }
@@ -157,7 +162,7 @@ namespace PrettigLokaal.Views
                         mainPage.SetLoading(false);
                         if (err == null)
                         {
-                            mainPage.OnMerchantSignInComplete();
+                            mainPage.OnMerchantSignInStatusChanged();
                             Utils.InfoBox("Uw account werd succesvol verwijderd.", "Account verwijderd.");
                         }
                         else
