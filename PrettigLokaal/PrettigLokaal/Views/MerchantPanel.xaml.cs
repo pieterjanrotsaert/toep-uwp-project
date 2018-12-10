@@ -38,6 +38,9 @@ namespace PrettigLokaal.Views
                     Utils.ErrorBox(err);
                 else
                 {
+                    viewModel.Promotions = merchant.Promotions;
+                    viewModel.Events = merchant.Events;
+
                     viewModel.Images = merchant.Images;
                     foreach(var img in viewModel.Images)
                     {
