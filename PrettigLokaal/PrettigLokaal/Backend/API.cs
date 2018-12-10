@@ -420,6 +420,11 @@ namespace PrettigLokaal.Backend
             SendPostVoid("/api/merchant/addimages", imageData, callback);
         }
 
+        public void RemoveImage(int id, VoidCallback callback)
+        {
+            SendPostVoid("/api/merchant/removeimage/" + id, null, callback);
+        }
+
         public void GetImage(int id, Callback<Image> callback)
         {
             SendGet("/api/file/image/" + id, callback);

@@ -220,7 +220,7 @@ namespace PrettigLokaalBackend.Controllers
             return Ok();
         }
 
-        [HttpPost("RemoveImage")]
+        [HttpPost("RemoveImage/{id}")]
         public async Task<IActionResult> RemoveImage(int id)
         {
             Account acc = await GetAccount();

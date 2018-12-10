@@ -25,12 +25,14 @@ namespace PrettigLokaal.Views
             DataContext = viewModel;
         }
 
-        private void RefreshPage()
+        private void RefreshPage(bool showLoader = true)
         {
-            mainPage.SetLoading(true);
+            if(showLoader)
+                mainPage.SetLoading(true);
             API.Get().GetAccountMerchantData((merchant, err) =>
             {
-                mainPage.SetLoading(false);
+                if(showLoader)
+                    mainPage.SetLoading(false);
 
                 if (err != null)
                     Utils.ErrorBox(err);
@@ -107,7 +109,25 @@ namespace PrettigLokaal.Views
 
         private void DeleteImageButton_Click(object sender, RoutedEventArgs e)
         {
+            int id = (int)((Button)sender).Tag;
 
+            API.Get().RemoveImage(id, err =>
+            {
+                if (err != null)
+                    Utils.ErrorBox(err);
+                else
+                {
+                    foreach(var img in viewModel.Images)
+                    {
+                        if(img.Id == id)
+                        {
+                            viewModel.Images.Remove(img);
+                            viewModel.Images = viewModel.Images.Select(i => i.Clone()).ToList();
+                            break;
+                        }
+                    }
+                }
+            });
         }
 
         private void AddPromotionButton_Click(object sender, RoutedEventArgs e)
