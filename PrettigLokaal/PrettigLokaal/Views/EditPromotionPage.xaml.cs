@@ -59,11 +59,14 @@ namespace PrettigLokaal.Views
                     byte[] buf = new byte[stream.Length];
                     await stream.ReadAsync(buf, 0, (int)stream.Length);
                     stream.Seek(0, SeekOrigin.Begin);
-                    viewModel.ImageData.Data = Convert.ToBase64String(buf);
+                    ImageData imgData = new ImageData();
+                    imgData.Data = Convert.ToBase64String(buf);
+                    viewModel.ImageData = imgData;
+                    viewModel.ImageSelected = true;
                 }
                 catch (Exception ex)
                 {
-                    Utils.InfoBox("Er is een fout opgetreden: " + ex.Message, "Fout");
+                    Utils.InfoBox("Er is een stront opgetreden: " + ex.Message, "Fout");
                 }
             });
         }
@@ -71,6 +74,7 @@ namespace PrettigLokaal.Views
         private void RemoveImage_Click(object sender, RoutedEventArgs e)
         {
             viewModel.ImageData = null;
+            viewModel.ImageSelected = false;
         }
     }
 }

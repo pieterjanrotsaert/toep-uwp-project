@@ -14,6 +14,7 @@ namespace PrettigLokaal.ViewModels
         private DateTime startDate = DateTime.Now;
         private DateTime endDate = DateTime.Now;
         private ImageData imageData = null;
+        private bool imageSelected = false;
         private bool hasCouponCode = false;
         private string description = "";
 
@@ -21,6 +22,7 @@ namespace PrettigLokaal.ViewModels
         public DateTime StartDate { get { return startDate; } set { startDate = value; RaisePropertyChanged(); } }
         public DateTime EndDate { get { return endDate; } set { endDate = value; RaisePropertyChanged(); } }
         public ImageData ImageData { get { return imageData; } set { imageData = value; RaisePropertyChanged(); } }
+        public bool ImageSelected { get { return imageSelected; } set { imageSelected = value; RaisePropertyChanged(); } }
         public bool HasCouponCode { get { return hasCouponCode; } set { hasCouponCode = value; RaisePropertyChanged(); } }
         public string Description { get { return description; } set { description = value; RaisePropertyChanged(); } }
 

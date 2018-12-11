@@ -12,6 +12,7 @@
     <Page.Resources>
         <helpers:BitmapConverter x:Key="bitmapConverter"/>
         <helpers:DateConverter x:Key="dateConverter"/>
+        <helpers:VisibilityConverter x:Key="visibilityConverter"/>
     </Page.Resources>
 
     <Grid>
@@ -75,14 +76,14 @@
 
                     <StackPanel Margin="10,5,0,10">
                         <TextBlock Text="Yolo fggt:" Grid.Column="0" Margin="5, 5, 5, 5" />
-                        <ToggleSwitch Grid.Column="1" Margin="5, 5, 5, 5" Toggled="{Binding HasCouponCode, Mode=TwoWay}"/>
+                        <ToggleSwitch Grid.Column="1" Margin="5, 5, 5, 5" IsOn="{Binding HasCouponCode, Mode=TwoWay}"/>
                     </StackPanel>
 
-                    <!--<Image Margin="15, 15, 15, 15" Source="{Binding ImageData.Data, Mode=OneWay, Converter={StaticResource bitmapConverter}}"></Image>-->
+                    <Image Margin="15, 15, 15, 15" Source="{Binding ImageData, Mode=OneWay, Converter={StaticResource bitmapConverter}}"></Image>
 
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="10, 10, 10, 10">
                         <Button Click="ChooseFileButton_Click" Content="Foto toevoegen" Margin="5, 5, 5, 5" />
-                        <!--<Button Click="SubmitButton_Click" Content="Gegevens Versturen" Margin="5, 5, 5, 5" />-->
+                        <Button Click="RemoveImage_Click" Content="Foto Verwijderen" Background="Red" Foreground="White" Margin="5, 5, 5, 5" Visibility="{Binding ImageSelected, Mode=OneWay, Converter={StaticResource visibilityConverter}}"/>
                     </StackPanel>
 
                 </StackPanel>
