@@ -205,7 +205,7 @@ namespace PrettigLokaal.Views
             Event ev = viewModel.Events.Where(p => p.Id == id).FirstOrDefault();
 
             mainPage.NavigateToPage(typeof(EditEventPage),
-                new EditEventPage.NavigationParams { mainPage = mainPage, existingEvent = ev }, "Promotie Toevoegen");
+                new EditEventPage.NavigationParams { mainPage = mainPage, existingEvent = ev }, "Evenement Wijzigen");
         }
 
         private void DeletePromotionButton_Click(object sender, RoutedEventArgs e)
@@ -237,7 +237,7 @@ namespace PrettigLokaal.Views
             Promotion prom = viewModel.Promotions.Where(p => p.Id == id).FirstOrDefault();
 
             mainPage.NavigateToPage(typeof(EditPromotionPage),
-                new EditPromotionPage.NavigationParams { mainPage = mainPage, existingPromotion = prom }, "Promotie Toevoegen");
+                new EditPromotionPage.NavigationParams { mainPage = mainPage, existingPromotion = prom }, "Promotie Wijzigen");
         }
 
     }

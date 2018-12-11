@@ -248,6 +248,9 @@ namespace PrettigLokaalBackend.Controllers
             if (acc.Merchant == null)
                 return Error(ErrorModel.NOT_A_MERCHANT);
 
+            if (acc.Merchant.Promotions == null)
+                acc.Merchant.Promotions = new List<Promotion>();
+
             acc.Merchant.Promotions.Add(new Promotion()
             {
                  StartDate = model.StartDate,
@@ -268,6 +271,9 @@ namespace PrettigLokaalBackend.Controllers
             Account acc = await GetAccount();
             if (acc.Merchant == null)
                 return Error(ErrorModel.NOT_A_MERCHANT);
+
+            if (acc.Merchant.Events == null)
+                acc.Merchant.Events = new List<Event>();
 
             acc.Merchant.Events.Add(new Event()
             {
