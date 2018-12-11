@@ -75,7 +75,7 @@
                     </StackPanel>
 
                     <StackPanel Margin="10,5,0,10">
-                        <TextBlock Text="Yolo fggt:" Grid.Column="0" Margin="5, 5, 5, 5" />
+                        <TextBlock Text="Promotie heeft CouponCode:" Grid.Column="0" Margin="5, 5, 5, 5" />
                         <ToggleSwitch Grid.Column="1" Margin="5, 5, 5, 5" IsOn="{Binding HasCouponCode, Mode=TwoWay}"/>
                     </StackPanel>
 
@@ -84,6 +84,10 @@
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="10, 10, 10, 10">
                         <Button Click="ChooseFileButton_Click" Content="Foto toevoegen" Margin="5, 5, 5, 5" />
                         <Button Click="RemoveImage_Click" Content="Foto Verwijderen" Background="Red" Foreground="White" Margin="5, 5, 5, 5" Visibility="{Binding ImageSelected, Mode=OneWay, Converter={StaticResource visibilityConverter}}"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="10, 10, 10, 10">
+                        <Button Click="SubmitButton_Click" Content="Promotie Opslaan" Margin="5, 5, 5, 5" />
                     </StackPanel>
 
                 </StackPanel>

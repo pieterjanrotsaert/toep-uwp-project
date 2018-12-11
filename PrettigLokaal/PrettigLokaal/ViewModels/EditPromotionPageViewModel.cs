@@ -32,11 +32,11 @@ namespace PrettigLokaal.ViewModels
             if (string.IsNullOrWhiteSpace(Name))
                 ModelErrors["Name"] = "Gelieve een geldige naam in te voeren.";
 
-            if (EndDate.CompareTo(DateTime.Now) > 0)
+            if (EndDate.CompareTo(DateTime.Now) < 0)
                 ModelErrors["EndDate"] = "Gelieve een datum na vandaag in te vullen.";
 
-            if (EndDate.CompareTo(StartDate) > 0)
-                ModelErrors["EndDate"] = "Gelieve een geldig start datum in te voeren.";
+            if (EndDate.CompareTo(StartDate) < 0)
+                ModelErrors["StartDate"] = "Gelieve een geldig start datum in te voeren.";
 
             if (ImageData == null)
                 ModelErrors["Image"] = "Gelieve een geldige foto te kiezen.";
