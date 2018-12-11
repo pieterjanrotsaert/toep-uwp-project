@@ -1,4 +1,5 @@
-﻿using PrettigLokaal.ViewModels;
+﻿using PrettigLokaal.Misc;
+using PrettigLokaal.ViewModels;
 using PrettigLokaalBackend.Models.Domain;
 using System;
 using System.Collections.Generic;
@@ -46,6 +47,30 @@ namespace PrettigLokaal.Views
             // TODO: Check if we're editing an existing promotion and initialize the view model if so.
 
             base.OnNavigatedTo(e);
+        }
+
+        private void ChooseFileButton_Click(object sender, RoutedEventArgs e)
+        {
+            Utils.PickImageFile(async file =>
+            {
+                try
+                {
+                    var stream = await file.OpenStreamForReadAsync();
+                    byte[] buf = new byte[stream.Length];
+                    await stream.ReadAsync(buf, 0, (int)stream.Length);
+                    stream.Seek(0, SeekOrigin.Begin);
+                    viewModel.ImageData.Data = Convert.ToBase64String(buf);
+                }
+                catch (Exception ex)
+                {
+                    Utils.InfoBox("Er is een fout opgetreden: " + ex.Message, "Fout");
+                }
+            });
+        }
+
+        private void RemoveImage_Click(object sender, RoutedEventArgs e)
+        {
+            viewModel.ImageData = null;
         }
     }
 }
