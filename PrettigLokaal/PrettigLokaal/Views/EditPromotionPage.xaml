@@ -5,10 +5,92 @@
     xmlns:local="using:PrettigLokaal.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:helpers="using:PrettigLokaal.ViewModels.Helpers"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
+    <Page.Resources>
+        <helpers:BitmapConverter x:Key="bitmapConverter"/>
+        <helpers:DateConverter x:Key="dateConverter"/>
+        <helpers:VisibilityConverter x:Key="visibilityConverter"/>
+    </Page.Resources>
+
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <ScrollViewer 
+        Grid.Row="0"
+        Grid.Column="0"
+        HorizontalScrollBarVisibility="Disabled" 
+        VerticalScrollBarVisibility="Visible"  
+        Margin="0,0,0,0" >
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Orientation="Vertical" Grid.Column="1" Grid.ColumnSpan="1" Margin="10, 10, 10, 10">
+
+                    <TextBlock FontWeight="Normal" FontSize="24" Margin="0,0,0,15">Nieuwe Promotie</TextBlock>
+
+                    <StackPanel Orientation="Vertical" Margin="10,5,0,10">
+                        <TextBlock Text="Naam promotie:"  Grid.Column="1" Margin="5, 5, 5, 5"/>
+                        <TextBox Text="{Binding Name, Mode=TwoWay}" Margin="5, 5, 5, 5" TabIndex="0"/>
+                        <TextBlock Text="{Binding ModelErrors[Name]}" Foreground="Red" Margin="5, 0, 0, 0"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Vertical" Margin="10,5,0,10">
+                        <TextBlock Text="Voer de startdatum van de promotie in:"  Margin="5, 5, 5, 5"/>
+                        <DatePicker Date="{Binding StartDate, Mode=TwoWay, Converter={StaticResource dateConverter}}" Margin="5, 5, 5, 5"  HorizontalAlignment="Stretch" MaxWidth="999"></DatePicker>
+                        <TextBlock Text="{Binding ModelErrors[StartDate]}" Foreground="Red"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Vertical" Margin="10,5,0,10">
+                        <TextBlock Text="Voer de einddatum van de promotie in:"  Margin="5, 5, 5, 5"/>
+                        <DatePicker Date="{Binding EndDate, Mode=TwoWay, Converter={StaticResource dateConverter}}" Margin="5, 5, 5, 5"  HorizontalAlignment="Stretch" MaxWidth="999"></DatePicker>
+                        <TextBlock Text="{Binding ModelErrors[EndDate]}" Foreground="Red"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Vertical" Margin="10,5,0,10">
+                        <TextBlock Text="Beschrijving promotie:"  Grid.Column="1" Margin="5, 5, 5, 5"/>
+                        <TextBox Text="{Binding Description, Mode=TwoWay}" 
+                             Margin="5, 5, 5, 5"
+                             TextWrapping="Wrap"
+                             AcceptsReturn="True"
+                             MinHeight="120" TabIndex="6"
+                             />
+                        <TextBlock Text="{Binding ModelErrors[Description]}" Foreground="Red" Margin="5, 0, 0, 0"/>
+                    </StackPanel>
+
+                    <StackPanel Margin="10,5,0,10">
+                        <TextBlock Text="Yolo fggt:" Grid.Column="0" Margin="5, 5, 5, 5" />
+                        <ToggleSwitch Grid.Column="1" Margin="5, 5, 5, 5" IsOn="{Binding HasCouponCode, Mode=TwoWay}"/>
+                    </StackPanel>
+
+                    <Image Margin="15, 15, 15, 15" Source="{Binding ImageData, Mode=OneWay, Converter={StaticResource bitmapConverter}}"></Image>
+
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="10, 10, 10, 10">
+                        <Button Click="ChooseFileButton_Click" Content="Foto toevoegen" Margin="5, 5, 5, 5" />
+                        <Button Click="RemoveImage_Click" Content="Foto Verwijderen" Background="Red" Foreground="White" Margin="5, 5, 5, 5" Visibility="{Binding ImageSelected, Mode=OneWay, Converter={StaticResource visibilityConverter}}"/>
+                    </StackPanel>
+
+                </StackPanel>
+
+            </Grid>
+            
+        </ScrollViewer>
 
     </Grid>
 </Page>
