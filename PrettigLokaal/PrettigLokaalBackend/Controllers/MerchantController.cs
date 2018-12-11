@@ -339,7 +339,7 @@ namespace PrettigLokaalBackend.Controllers
             return Ok();
         }
 
-        [HttpPost("RemovePromotion")]
+        [HttpPost("RemovePromotion/{id}")]
         public async Task<IActionResult> RemovePromotion(int id)
         {
             Account acc = await GetAccount();
@@ -360,7 +360,7 @@ namespace PrettigLokaalBackend.Controllers
             return Ok();
         }
 
-        [HttpPost("RemoveEvent")]
+        [HttpPost("RemoveEvent/{id}")]
         public async Task<IActionResult> RemoveEvent(int id)
         {
             Account acc = await GetAccount();

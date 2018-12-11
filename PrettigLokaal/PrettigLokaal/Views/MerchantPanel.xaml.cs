@@ -41,6 +41,7 @@ namespace PrettigLokaal.Views
                     viewModel.Promotions = merchant.Promotions;
                     viewModel.Events = merchant.Events;
 
+                    // Download general images
                     viewModel.Images = merchant.Images;
                     foreach(var img in viewModel.Images)
                     {
@@ -54,6 +55,35 @@ namespace PrettigLokaal.Views
                             .Select(m =>  m.Id == img.Id ? new PrettigLokaalBackend.Models.Domain.Image(img.Id, img.Data.Data, false) : m.Clone())
                             .ToList();
 
+                        });
+                    }
+
+                    // Download event images
+                    foreach (var ev in viewModel.Events)
+                    {
+                        API.Get().GetImage(ev.Image.Id, (downloadedImage, err2) =>
+                        {
+                            if (err2 == null)
+                                ev.ImageData = downloadedImage.Data;
+
+                            viewModel.Events = viewModel.Events
+                            .Select(m => m.Id == ev.Id ? new Event(ev) { ImageDataLoading = false } : m.Clone())
+                            .ToList();
+
+                        });
+                    }
+
+                    // Download Promotion images
+                    foreach (var prom in viewModel.Promotions)
+                    {
+                        API.Get().GetImage(prom.Image.Id, (downloadedImage, err2) =>
+                        {
+                            if (err2 == null)
+                                prom.ImageData = downloadedImage.Data;
+
+                            viewModel.Promotions = viewModel.Promotions
+                            .Select(m => m.Id == prom.Id ? new Promotion(prom) { ImageDataLoading = false } : m.Clone())
+                            .ToList();
                         });
                     }
                 }
@@ -145,5 +175,70 @@ namespace PrettigLokaal.Views
             mainPage.NavigateToPage(typeof(EditEventPage),
                 new EditEventPage.NavigationParams { mainPage = mainPage }, "Evenement Toevoegen");
         }
+
+        private void DeleteEventButton_Click(object sender, RoutedEventArgs e)
+        {
+            int id = (int)((Button)sender).Tag;
+            API.Get().RemoveEvent(id, err =>
+            {
+                if (err != null)
+                    Utils.ErrorBox(err);
+                else
+                {
+                    foreach (var ev in viewModel.Events)
+                    {
+                        if (ev.Id == id)
+                        {
+                            viewModel.Events.Remove(ev);
+                            viewModel.Events = viewModel.Events.Select(i => i.Clone()).ToList();
+                            break;
+                        }
+                    }
+                }
+            });
+        }
+
+        private void EditEventButton_Click(object sender, RoutedEventArgs e)
+        {
+            int id = (int)((Button)sender).Tag;
+
+            Event ev = viewModel.Events.Where(p => p.Id == id).FirstOrDefault();
+
+            mainPage.NavigateToPage(typeof(EditEventPage),
+                new EditEventPage.NavigationParams { mainPage = mainPage, existingEvent = ev }, "Promotie Toevoegen");
+        }
+
+        private void DeletePromotionButton_Click(object sender, RoutedEventArgs e)
+        {
+            int id = (int)((Button)sender).Tag;
+            API.Get().RemovePromotion(id, err =>
+            {
+                if (err != null)
+                    Utils.ErrorBox(err);
+                else
+                {
+                    foreach (var ev in viewModel.Promotions)
+                    {
+                        if (ev.Id == id)
+                        {
+                            viewModel.Promotions.Remove(ev);
+                            viewModel.Promotions = viewModel.Promotions.Select(i => i.Clone()).ToList();
+                            break;
+                        }
+                    }
+                }
+            });
+        }
+
+        private void EditPromotionButton_Click(object sender, RoutedEventArgs e)
+        {
+            int id = (int)((Button)sender).Tag;
+
+            Promotion prom = viewModel.Promotions.Where(p => p.Id == id).FirstOrDefault();
+
+            mainPage.NavigateToPage(typeof(EditPromotionPage),
+                new EditPromotionPage.NavigationParams { mainPage = mainPage, existingPromotion = prom }, "Promotie Toevoegen");
+        }
+
     }
 }

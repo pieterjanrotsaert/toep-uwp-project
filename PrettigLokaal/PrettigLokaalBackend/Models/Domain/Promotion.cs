@@ -17,5 +17,29 @@ namespace PrettigLokaalBackend.Models.Domain
         [JsonIgnore] public Merchant Organizer { get; set; }
         public bool HasCouponCode { get; set; } = false;
         public string Description { get; set; }
+
+        [NotMapped] [JsonIgnore] public ImageData ImageData { get; set; } // Used by the frontend only
+        [NotMapped] [JsonIgnore] public bool ImageDataLoading { get; set; } = true;
+
+
+        public Promotion() { }
+        public Promotion(Promotion other)
+        {
+            Id = other.Id;
+            Name = other.Name;
+            StartDate = other.StartDate;
+            EndDate = other.EndDate;
+            Image = other.Image;
+            Organizer = other.Organizer;
+            Description = other.Description;
+            HasCouponCode = other.HasCouponCode;
+            ImageData = other.ImageData;
+            ImageDataLoading = other.ImageDataLoading;
+        }
+
+        public Promotion Clone()
+        {
+            return new Promotion(this);
+        }
     }
 }

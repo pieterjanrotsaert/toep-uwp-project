@@ -19,5 +19,30 @@ namespace PrettigLokaalBackend.Models.Domain
 
         public string Description { get; set; }
         public string PlaceDescription { get; set; }
+
+        [NotMapped] [JsonIgnore] public ImageData ImageData { get; set; } // Used by the frontend only
+        [NotMapped] [JsonIgnore] public bool ImageDataLoading { get; set; } = true;
+
+        public Event() { }
+        public Event(Event other)
+        {
+            Id = other.Id;
+            Name = other.Name; 
+            StartDate = other.StartDate;
+            EndDate = other.EndDate;
+            Image = other.Image; 
+            Organizer = other.Organizer;
+            Description = other.Description;
+            PlaceDescription = other.PlaceDescription;
+            ImageData = other.ImageData;
+            ImageDataLoading = other.ImageDataLoading;
+        }
+
+        public Event Clone()
+        {
+            return new Event(this);
+        }
+
+
     }
 }

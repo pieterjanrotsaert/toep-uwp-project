@@ -23,7 +23,7 @@ namespace PrettigLokaal.Views
         public struct NavigationParams
         {
             public MainPage mainPage;
-            public Promotion existingEvent;
+            public Promotion existingPromotion;
         }
 
         MainPage mainPage;
@@ -41,7 +41,7 @@ namespace PrettigLokaal.Views
         {
             NavigationParams args = (NavigationParams)e.Parameter;
             mainPage = args.mainPage;
-            existingPromotion = args.existingEvent; // Null if creating a new promotion, not-null if editing an existing promotion
+            existingPromotion = args.existingPromotion; // Null if creating a new promotion, not-null if editing an existing promotion
 
             // TODO: Check if we're editing an existing promotion and initialize the view model if so.
 

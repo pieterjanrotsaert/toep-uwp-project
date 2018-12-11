@@ -429,5 +429,16 @@ namespace PrettigLokaal.Backend
         {
             SendGet("/api/file/image/" + id, callback);
         }
+
+        public void RemovePromotion(int id, VoidCallback callback)
+        {
+            SendPostVoid("/api/merchant/removepromotion/" + id, null, callback);
+        }
+
+        public void RemoveEvent(int id, VoidCallback callback)
+        {
+            SendPostVoid("/api/merchant/removeevent/" + id, null, callback);
+        }
+
     }
 }

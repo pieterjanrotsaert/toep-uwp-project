@@ -156,6 +156,8 @@
     <Compile Include="ViewModels\EditPromotionPageViewModel.cs" />
     <Compile Include="ViewModels\Helpers\BitmapConverter.cs" />
     <Compile Include="ViewModels\Helpers\DateConverter.cs" />
+    <Compile Include="ViewModels\Helpers\DateTextConverter.cs" />
+    <Compile Include="ViewModels\Helpers\HasCouponCodeConverter.cs" />
     <Compile Include="ViewModels\Helpers\InverseVisibilityConverter.cs" />
     <Compile Include="ViewModels\Helpers\ModelErrors.cs" />
     <Compile Include="ViewModels\Helpers\TimeConverter.cs" />
