@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Core;
@@ -68,7 +69,7 @@ namespace PrettigLokaal
         // Navigate to an item in the NavView
         public void SelectNavItem(string tag)
         {
-            var item = FindNavItemByTag(startPage);
+            var item = FindNavItemByTag(tag);
             if (item != null)
                 NavView.SelectedItem = item;
         }
@@ -97,6 +98,7 @@ namespace PrettigLokaal
                         viewModel.IsMerchant = false;
                         viewModel.IsLoggedIn = false;
                         viewModel.ShowMerchantSignup = false;
+                        OnSignInStatusChanged();
                     });
                 });
             }
@@ -165,8 +167,10 @@ namespace PrettigLokaal
 
         public void GoHome()
         {
-            // TODO: Determine proper home item based on loginstatus
-            SelectNavItem("nav_discover");
+            if(API.Get().IsLoggedIn())
+                SelectNavItem("nav_feed");
+            else
+                SelectNavItem("nav_discover");
         }
 
         public void OnSignInStatusChanged()
@@ -174,12 +178,19 @@ namespace PrettigLokaal
             viewModel.IsLoggedIn = API.Get().IsLoggedIn();
             viewModel.IsMerchant = API.Get().IsMerchant();
             viewModel.ShowMerchantSignup = viewModel.IsLoggedIn && !viewModel.IsMerchant;
+
+            GoHome();
         }
 
         public void OnMerchantSignInStatusChanged()
         {
             viewModel.IsMerchant = API.Get().IsMerchant();
             viewModel.ShowMerchantSignup = API.Get().IsLoggedIn() && !viewModel.IsMerchant;
+
+            if (viewModel.IsMerchant)
+                SelectNavItem("nav_merchantpanel");
+            else
+                GoHome();
         }
 
         public void SetLoading(bool state)

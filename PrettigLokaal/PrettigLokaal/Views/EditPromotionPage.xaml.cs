@@ -115,9 +115,8 @@ namespace PrettigLokaal.Views
                 promotionModel.Id = existingPromotion.Id;
                 API.Get().UpdatePromotion(promotionModel, err =>
                 {
-                    if (err == null)
-                        Utils.InfoBox("Uw promotie werd succesvol upgedate", "Promotie updated.");
-                    else
+                    mainPage.SetLoading(false);
+                    if (err != null)
                         Utils.InfoBox("Er is een fout opgetreden:" + err.GetDescription(), "Fout");
                     mainPage.GoBack();
                 });
@@ -126,9 +125,8 @@ namespace PrettigLokaal.Views
             {
                 API.Get().AddPromotion(promotionModel, err =>
                 {
-                    if (err == null)
-                        Utils.InfoBox("Uw promotie werd succesvol aangemaakt", "Promotie aangemaakt.");
-                    else
+                    mainPage.SetLoading(false);
+                    if (err != null)
                         Utils.InfoBox("Er is een fout opgetreden:" + err.GetDescription(), "Fout");
                     mainPage.GoBack();
                 });

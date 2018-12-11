@@ -51,6 +51,7 @@ namespace PrettigLokaal.Views
             API.Get().ChangePassword(viewModel.OldPassword, viewModel.Password, err =>
             {
                 mainPage.SetLoading(false);
+                mainPage.GoHome();
 
                 if (err == null)
                     Utils.InfoBox("Uw wachtwoord werd met succes gewijzigd!", "Wachtwoord gewijzigd");

@@ -48,10 +48,10 @@ namespace PrettigLokaal.Views
             mainPage = args.mainPage;
             existingEvent = args.existingEvent; // Null if creating a new event, not-null if editing an existing event
 
-            // TODO: Check if we're editing an existing event and initialize the view model if so.
+            // Check if we're editing an existing event and initialize the view model if so.
             if (existingEvent != null)
             {
-                viewModel.TitleString = "Event Aanpassen";
+                viewModel.TitleString = "Evenement Aanpassen";
                 viewModel.Name = existingEvent.Name;
                 viewModel.StartDate = existingEvent.StartDate;
                 viewModel.EndDate = existingEvent.EndDate;
@@ -60,6 +60,8 @@ namespace PrettigLokaal.Views
                 viewModel.Description = existingEvent.Description;
                 viewModel.PlaceDescription = existingEvent.PlaceDescription;
             }
+            else
+                viewModel.TitleString = "Nieuw evenement maken";
 
             base.OnNavigatedTo(e);
         }
@@ -116,9 +118,8 @@ namespace PrettigLokaal.Views
                 eventModel.Id = existingEvent.Id;
                 API.Get().UpdateEvent(eventModel, err =>
                 {
-                    if (err == null)
-                        Utils.InfoBox("Uw promotie werd succesvol upgedate", "Promotie updated.");
-                    else
+                    mainPage.SetLoading(false);
+                    if (err != null)
                         Utils.InfoBox("Er is een fout opgetreden:" + err.GetDescription(), "Fout");
                     mainPage.GoBack();
                 });
@@ -127,9 +128,8 @@ namespace PrettigLokaal.Views
             {
                 API.Get().AddEvent(eventModel, err =>
                 {
-                    if (err == null)
-                        Utils.InfoBox("Uw promotie werd succesvol aangemaakt", "Promotie aangemaakt.");
-                    else
+                    mainPage.SetLoading(false);
+                    if (err != null)
                         Utils.InfoBox("Er is een fout opgetreden:" + err.GetDescription(), "Fout");
                     mainPage.GoBack();
                 });

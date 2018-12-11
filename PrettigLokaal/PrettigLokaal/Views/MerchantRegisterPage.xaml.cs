@@ -127,7 +127,7 @@ namespace PrettigLokaal.Views
                         Utils.InfoBox("Er is een fout opgetreden: " + err.GetDescription(), "Fout");
                     else
                     {
-                        Utils.InfoBox("De registratie was succesvol. U bent nu een handelaar en hebt toegang tot extra functionaliteiten.", "Registratie succesvol!");
+                        //Utils.InfoBox("De registratie was succesvol. U bent nu een handelaar en hebt toegang tot extra functionaliteiten.", "Registratie succesvol!");
                         mainPage.OnMerchantSignInStatusChanged();
                     }
                 });
@@ -142,7 +142,7 @@ namespace PrettigLokaal.Views
                         Utils.InfoBox("Er is een fout opgetreden: " + err.GetDescription(), "Fout");
                     else
                     {
-                        Utils.InfoBox("Uw gegevens zijn met succes gewijzigd.", "Wijziging succesvol");
+                        //Utils.InfoBox("Uw gegevens zijn met succes gewijzigd.", "Wijziging succesvol");
                         mainPage.OnMerchantSignInStatusChanged();
                     }
                 });
