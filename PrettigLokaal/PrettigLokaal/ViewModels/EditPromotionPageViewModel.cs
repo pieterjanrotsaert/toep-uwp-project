@@ -17,6 +17,7 @@ namespace PrettigLokaal.ViewModels
         private bool imageSelected = false;
         private bool hasCouponCode = false;
         private string description = "";
+        private string titleString = "";
 
         public string Name { get { return name; } set { name = value; RaisePropertyChanged(); } }
         public DateTime StartDate { get { return startDate; } set { startDate = value; RaisePropertyChanged(); } }
@@ -25,6 +26,7 @@ namespace PrettigLokaal.ViewModels
         public bool ImageSelected { get { return imageSelected; } set { imageSelected = value; RaisePropertyChanged(); } }
         public bool HasCouponCode { get { return hasCouponCode; } set { hasCouponCode = value; RaisePropertyChanged(); } }
         public string Description { get { return description; } set { description = value; RaisePropertyChanged(); } }
+        public string TitleString { get { return titleString; } set { titleString = value; RaisePropertyChanged(); } }
 
         protected override void ValidateSelf()
         {

@@ -452,7 +452,7 @@ namespace PrettigLokaal.Backend
 
         public void AddEvent(MerchantAddEventModel model, VoidCallback callback)
         {
-            SendPostVoid("/api/merchant/addpromotion", model, callback);
+            SendPostVoid("/api/merchant/addevent", model, callback);
         }
 
         public void UpdateEvent(MerchantAddEventModel model, VoidCallback callback)

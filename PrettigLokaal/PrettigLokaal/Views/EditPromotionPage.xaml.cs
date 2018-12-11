@@ -44,11 +44,13 @@ namespace PrettigLokaal.Views
         {
             NavigationParams args = (NavigationParams)e.Parameter;
             mainPage = args.mainPage;
+            viewModel.TitleString = "Nieuwe Promotie";
             existingPromotion = args.existingPromotion; // Null if creating a new promotion, not-null if editing an existing promotion
 
             // TODO: Check if we're editing an existing promotion and initialize the view model if so.
             if(existingPromotion != null)
             {
+                viewModel.TitleString = "Promotie Aanpassen";
                 viewModel.Name = existingPromotion.Name;
                 viewModel.StartDate = existingPromotion.StartDate;
                 viewModel.EndDate = existingPromotion.EndDate;
@@ -78,7 +80,7 @@ namespace PrettigLokaal.Views
                 }
                 catch (Exception ex)
                 {
-                    Utils.InfoBox("Er is een stront opgetreden: " + ex.Message, "Fout");
+                    Utils.InfoBox("Er is een fout opgetreden: " + ex.Message, "Fout");
                 }
             });
         }
@@ -106,13 +108,13 @@ namespace PrettigLokaal.Views
                 HasCouponCode = viewModel.HasCouponCode,
                 Image = img
             };
-            
+
+            mainPage.SetLoading(true);
             if (existingPromotion != null)
             {
                 promotionModel.Id = existingPromotion.Id;
                 API.Get().UpdatePromotion(promotionModel, err =>
                 {
-                    mainPage.SetLoading(true);
                     if (err == null)
                         Utils.InfoBox("Uw promotie werd succesvol upgedate", "Promotie updated.");
                     else
@@ -124,7 +126,6 @@ namespace PrettigLokaal.Views
             {
                 API.Get().AddPromotion(promotionModel, err =>
                 {
-                    mainPage.SetLoading(true);
                     if (err == null)
                         Utils.InfoBox("Uw promotie werd succesvol aangemaakt", "Promotie aangemaakt.");
                     else

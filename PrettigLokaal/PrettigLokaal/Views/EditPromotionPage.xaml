@@ -43,7 +43,7 @@
 
                 <StackPanel Orientation="Vertical" Grid.Column="1" Grid.ColumnSpan="1" Margin="10, 10, 10, 10">
 
-                    <TextBlock FontWeight="Normal" FontSize="24" Margin="0,0,0,15">Nieuwe Promotie</TextBlock>
+                    <TextBlock FontWeight="Normal" FontSize="24" Margin="0,0,0,15" Text="{Binding TitleText, Mode=OneWay}"/>
 
                     <StackPanel Orientation="Vertical" Margin="10,5,0,10">
                         <TextBlock Text="Naam promotie:"  Grid.Column="1" Margin="5, 5, 5, 5"/>
@@ -69,7 +69,7 @@
                              Margin="5, 5, 5, 5"
                              TextWrapping="Wrap"
                              AcceptsReturn="True"
-                             MinHeight="120" TabIndex="6"
+                             MinHeight="120"
                              />
                         <TextBlock Text="{Binding ModelErrors[Description]}" Foreground="Red" Margin="5, 0, 0, 0"/>
                     </StackPanel>
