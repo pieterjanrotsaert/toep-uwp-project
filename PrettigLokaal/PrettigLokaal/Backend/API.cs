@@ -135,6 +135,11 @@ namespace PrettigLokaal.Backend
             SetToken("");
         }
 
+        public void AbortRequests()
+        {
+            client.CancelPendingRequests();
+        }
+
         // Sends a request to the Backend, and parses the result into a model of type T.
         private async void Send<T>(HttpMethod method, string path, object requestModel, Callback<T> callback)
         {
@@ -147,7 +152,7 @@ namespace PrettigLokaal.Backend
             {
                 response = await client.SendAsync(request);
             }
-            catch(HttpRequestException ex)
+            catch(Exception ex)
             {
                 callback.Invoke(default(T), new ErrorModel(ErrorModel.NETWORK_ERROR, ex.Message));
                 return; 
@@ -185,7 +190,7 @@ namespace PrettigLokaal.Backend
             {
                 response = await client.SendAsync(request);
             }
-            catch (HttpRequestException ex)
+            catch (Exception ex)
             {
                 callback.Invoke(new ErrorModel(ErrorModel.NETWORK_ERROR, ex.Message));
                 return;
@@ -463,6 +468,21 @@ namespace PrettigLokaal.Backend
         public void FindMerchants(string searchQry, Callback<List<Merchant>> callback)
         {
             SendGet("/api/merchant/find/" + Uri.EscapeDataString(searchQry), callback);
+        }
+
+        public void IsSubscribed(int merchantId, Callback<SimpleBoolModel> callback)
+        {
+            SendGet("/api/user/checksubscription/" + merchantId, callback);
+        }
+
+        public void Subscribe(int merchantId, VoidCallback callback)
+        {
+            SendPostVoid("/api/user/subscribe/" + merchantId, null, callback);
+        }
+
+        public void Unsubscribe(int merchantId, VoidCallback callback)
+        {
+            SendPostVoid("/api/user/unsubscribe/" + merchantId, null, callback);
         }
 
     }
