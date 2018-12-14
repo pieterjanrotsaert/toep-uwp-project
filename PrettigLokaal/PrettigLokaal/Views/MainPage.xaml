@@ -23,22 +23,21 @@
             FontFamily="Segoe UI">
             
             <NavigationView.MenuItems>
+                
                 <NavigationViewItemHeader Content="Hoofdmenu"></NavigationViewItemHeader>
+                
                 <NavigationViewItem Content="Feed" Tag="nav_feed" Visibility="{Binding IsLoggedIn, Mode=OneWay, Converter={StaticResource visibilityConverter}}">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE762;"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
+                
                 <NavigationViewItem Content="Ontdek" Tag="nav_discover">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE762;"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <NavigationViewItem Content="Mijn Couponcodes" Tag="nav_coupons" FontFamily="Segoe UI">
-                    <NavigationViewItem.Icon>
-                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE762;"/>
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
+                
 
                 <NavigationViewItemSeparator/>
                 <NavigationViewItemHeader Content="Handelaar" Visibility="{Binding IsLoggedIn, Mode=OneWay, Converter={StaticResource visibilityConverter}}">
@@ -65,7 +64,7 @@
             </NavigationView.MenuItems>
 
             <NavigationView.AutoSuggestBox>
-                <AutoSuggestBox x:Name="SearchBox" QueryIcon="Find" PlaceholderText="Zoek naar handelaars..."/>
+                <AutoSuggestBox x:Name="SearchBox" QuerySubmitted="SearchBox_QuerySubmitted" QueryIcon="Find" PlaceholderText="Zoek naar handelaars..."/>
             </NavigationView.AutoSuggestBox>
 
             <NavigationView.HeaderTemplate>

@@ -5,9 +5,16 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
+#if(!BACKEND)
+using PrettigLokaal.ViewModels.Helpers;
+#endif 
+
 namespace PrettigLokaalBackend.Models.Domain
 {
     public class Merchant
+#if(!BACKEND) 
+        : ViewModelBase 
+#endif 
     {
         public int Id { get; set; }
         [JsonIgnore] public Account Account { get; set; } // The account this merchant belongs to.
@@ -27,5 +34,10 @@ namespace PrettigLokaalBackend.Models.Domain
         public List<Image> Images { get; set; }
         public List<Event> Events { get; set; }
         public List<Promotion> Promotions { get; set; }
+
+#if (!BACKEND)
+        protected override void ValidateSelf(){}
+#endif 
+
     }
 }

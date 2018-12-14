@@ -71,41 +71,12 @@ namespace PrettigLokaalBackend.Controllers
             List<Merchant> merchants = await context.Merchants
                 .Include(m => m.Tags)
                 .Include(m => m.OpeningHours)
+                .Include(m => m.Images)
                 .Where(m => keywords.Count(kw => m.Name.Contains(kw) || m.Address.Contains(kw) || 
                                            m.Description.Contains(kw) || (m.Tags.Count(tag => tag.Text.Contains(kw)) > 0)) > 0)
                 .ToListAsync();
 
             return Ok(merchants);
-        }
-
-        // Returns events for the currently logged in merchant
-        [HttpGet("MyEvents")]
-        public async Task<IActionResult> MyEvents()
-        {
-            int accId = GetAccountId();
-            Merchant merchant = await context.Merchants.Where(m => m.Account.Id == accId)
-                .Include(m => m.Events).ThenInclude(ev => ev.Image)
-                .FirstOrDefaultAsync();
-
-            if (merchant == null)
-                return Error(ErrorModel.NOT_A_MERCHANT);
-
-            return Ok(merchant.Events);
-        }
-
-        // Returns promotions for the currently logged in merchant
-        [HttpGet("MyPromotions")]
-        public async Task<IActionResult> MyPromotions()
-        {
-            int accId = GetAccountId();
-            Merchant merchant = await context.Merchants.Where(m => m.Account.Id == accId)
-                .Include(m => m.Promotions).ThenInclude(p => p.Image)
-                .FirstOrDefaultAsync();
-
-            if (merchant == null)
-                return Error(ErrorModel.NOT_A_MERCHANT);
-
-            return Ok(merchant.Promotions);
         }
 
         [HttpPost("Register")]

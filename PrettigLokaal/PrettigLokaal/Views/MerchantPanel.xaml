@@ -13,6 +13,7 @@
         <helpers:BitmapConverter x:Key="bitmapConverter"/>
         <helpers:VisibilityConverter x:Key="visibilityConverter"/>
         <helpers:InverseVisibilityConverter x:Key="invVisibilityConverter"/>
+        <helpers:InverseBooleanConverter x:Key="invBoolConverter"/>
 
         <helpers:DateTextConverter x:Key="dateTextConverter"/>
         <helpers:HasCouponCodeConverter x:Key="couponConverter"/>
@@ -77,7 +78,7 @@
                                            Source="{Binding Data, Mode=OneWay, Converter={StaticResource bitmapConverter}}" 
                                            HorizontalAlignment="Stretch"
                                            VerticalAlignment="Stretch"
-                                           Stretch="Uniform"
+                                           Stretch="UniformToFill"
                                            />
 
                                     <Button Click="DeleteImageButton_Click" 
@@ -172,7 +173,7 @@
                                            Source="{Binding ImageData, Mode=OneWay, Converter={StaticResource bitmapConverter}}" 
                                            HorizontalAlignment="Stretch"
                                            VerticalAlignment="Stretch"
-                                           Stretch="Uniform"
+                                           Stretch="UniformToFill"
                                            />
 
                                     <Grid Grid.Row="3" Margin="5, 1, 5, 5">
@@ -200,6 +201,7 @@
                                             Content="Bewerken" Grid.Column="1" Grid.Row="1"
                                             Margin="5, 8, 5, 8"
                                             HorizontalAlignment="Stretch"
+                                            IsEnabled="{Binding IsLoading, Mode=OneWay, Converter={StaticResource invBoolConverter}}"
                                             VerticalAlignment="Center"></Button>
                                     </Grid>
                                     
@@ -275,7 +277,7 @@
                                            Source="{Binding ImageData, Mode=OneWay, Converter={StaticResource bitmapConverter}}" 
                                            HorizontalAlignment="Stretch"
                                            VerticalAlignment="Stretch"
-                                           Stretch="Uniform"
+                                           Stretch="UniformToFill"
                                            />
 
                                     <Grid Grid.Row="3" Margin="5, 1, 5, 5">
@@ -303,6 +305,7 @@
                                             Content="Bewerken" Grid.Column="1" Grid.Row="1"
                                             Margin="5, 8, 5, 8"
                                             HorizontalAlignment="Stretch"
+                                            IsEnabled="{Binding IsLoading, Mode=OneWay, Converter={StaticResource invBoolConverter}}"
                                             VerticalAlignment="Center"></Button>
                                     </Grid>
 

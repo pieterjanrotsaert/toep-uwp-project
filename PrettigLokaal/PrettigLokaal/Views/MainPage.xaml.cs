@@ -216,10 +216,6 @@ namespace PrettigLokaal
                     viewModel.Title = "Ontdek";
                     ContentFrame.Navigate(typeof(DiscoverPage), this);
                     break;
-                case "nav_coupons":
-                    viewModel.Title = "Coupons";
-                    ContentFrame.Navigate(typeof(MyCouponsPage), this);
-                    break;
                 case "nav_merchantpanel":
                     viewModel.Title = "Zaakbeheer";
                     ContentFrame.Navigate(typeof(MerchantPanel), this);
@@ -252,6 +248,11 @@ namespace PrettigLokaal
         {
             GoBack();
             viewModel.CanGoBack = ContentFrame.CanGoBack;
+        }
+
+        private void SearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+        {
+            NavigateToPage(typeof(FindPage), new FindPage.NavigationParams() { mainPage = this, searchQry = sender.Text }, "Zoek handelaars");
         }
     }
 }

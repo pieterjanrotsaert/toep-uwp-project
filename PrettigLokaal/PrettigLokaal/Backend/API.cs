@@ -460,5 +460,10 @@ namespace PrettigLokaal.Backend
             SendPostVoid("/api/merchant/updateevent", model, callback);
         }
 
+        public void FindMerchants(string searchQry, Callback<List<Merchant>> callback)
+        {
+            SendGet("/api/merchant/find/" + Uri.EscapeDataString(searchQry), callback);
+        }
+
     }
 }
