@@ -17,6 +17,8 @@ namespace PrettigLokaalBackend.Models.Domain
 
         [JsonIgnore] public Merchant Organizer { get; set; }
 
+        public int OrganizerId { get; set; }
+
         public string Description { get; set; }
         public string PlaceDescription { get; set; }
 
@@ -36,6 +38,7 @@ namespace PrettigLokaalBackend.Models.Domain
             PlaceDescription = other.PlaceDescription;
             ImageData = other.ImageData;
             ImageDataLoading = other.ImageDataLoading;
+            OrganizerId = other.OrganizerId;
         }
 
         public Event Clone()

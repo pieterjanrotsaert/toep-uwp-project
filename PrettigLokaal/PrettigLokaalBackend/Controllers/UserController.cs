@@ -26,6 +26,59 @@ namespace PrettigLokaalBackend.Controllers
 
         }
 
+        [HttpGet("feed")]
+        public async Task<IActionResult> GetFeed()
+        {
+            var accId = GetAccountId();
+            FeedModel model = new FeedModel();
+
+            model.FollowedMerchants = await context.Merchants
+                .Where(m => m.Subscriptions.Any(sub => sub.Account.Id == accId))
+                .Include(m => m.Images)
+                .Include(m => m.Tags)
+                .Include(m => m.Events)
+                .Include(m => m.Promotions)
+                .Include(m => m.OpeningHours)
+                .ToListAsync();
+
+            model.Events = await context.Events
+                .Where(ev => ev.StartDate.CompareTo(DateTime.Now) <= 0 && 
+                        ev.EndDate.CompareTo(DateTime.Now) >= 0 && model.FollowedMerchants.Contains(ev.Organizer))
+                .Include(ev => ev.Image)
+                .ToListAsync();
+
+            model.Promotions = await context.Promotions
+                .Where(ev => ev.StartDate.CompareTo(DateTime.Now) <= 0 &&
+                        ev.EndDate.CompareTo(DateTime.Now) >= 0 && model.FollowedMerchants.Contains(ev.Organizer))
+                .Include(ev => ev.Image)
+                .ToListAsync();
+
+            model.FeaturedMerchants = new List<Merchant>();
+            foreach(var merchant in model.FollowedMerchants)
+            {
+                foreach(var ev in merchant.Events)
+                {
+                    if(model.Events.Contains(ev))
+                    {
+                        model.FeaturedMerchants.Add(merchant);
+                        break;
+                    }
+                }
+
+                if (!model.FeaturedMerchants.Contains(merchant))
+                    foreach (var prom in merchant.Promotions)
+                    {
+                        if (model.Promotions.Contains(prom))
+                        {
+                            model.FeaturedMerchants.Add(merchant);
+                            break;
+                        }
+                    }
+            }
+
+            return Ok(model);
+        }
+
         [HttpGet("checksubscription/{id}")]
         public async Task<IActionResult> CheckSubscription(int id)
         {

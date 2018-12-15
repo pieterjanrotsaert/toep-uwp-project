@@ -3,13 +3,340 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:PrettigLokaal"
+    xmlns:helpers="using:PrettigLokaal.ViewModels.Helpers"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
-        <TextBlock Margin="0,414,628,0" HorizontalAlignment="Right" Height="125" VerticalAlignment="Top" Width="122">feed</TextBlock>
+    <Page.Resources>
+        <helpers:VisibilityConverter x:Key="visibilityConverter"/>
+        <helpers:InverseVisibilityConverter x:Key="invVisibilityConverter"/>
+        <helpers:BitmapConverter x:Key="bitmapConverter"/>
+        <helpers:DateTextConverter x:Key="dateTextConverter"/>
+        <helpers:HasCouponCodeConverter x:Key="couponConverter"/>
+    </Page.Resources>
 
-    </Grid>
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+        <Grid Margin="10, 10, 10, 10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            
+            
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel x:Name="Stack1" Orientation="Vertical" Grid.Column="0" Grid.Row="0">
+                <TextBlock FontSize="22" FontWeight="Normal" Margin="10, 10, 10, 0">Promoties</TextBlock>
+                <Grid>
+                    <TextBlock Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#ff333333">Er zijn geen lopende promoties.</TextBlock>
+                    <FlipView  Height="400" Margin="10, 10, 10, 10" ItemsSource="{Binding Promotions, Mode=OneWay}">
+                        <FlipView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid Background="#ff333333">
+                                        <ProgressRing 
+                                        Grid.Row="0" Grid.Column="0"
+                                        DataContext="{Binding Image, Mode=OneWay}"
+                                        IsActive="True" 
+                                        HorizontalAlignment="Center" 
+                                        VerticalAlignment="Center" 
+                                        Visibility="{Binding IsLoading, Mode=OneWay, Converter={StaticResource visibilityConverter}}" Margin="0,0,0,0" Height="45" Width="45" FontFamily="Segoe UI" />
+
+                                        <Image 
+                                        Grid.Row="0" Grid.Column="0"
+                                        DataContext="{Binding Image, Mode=OneWay}"
+                                        Visibility="{Binding IsLoading, Mode=OneWay, Converter={StaticResource invVisibilityConverter}}"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Stretch"
+                                        Stretch="Uniform"
+                                        Source="{Binding Data, Mode=OneWay, Converter={StaticResource bitmapConverter}}"/>
+
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+
+                                            <Button Tag="{Binding Id, Mode=OneWay}" Click="ShowCouponButton_Click" Grid.Row="0" Content="Coupon Weergeven" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5, 5, 5, 5"
+                                                Visibility="{Binding HasCouponCode, Mode=OneWay, Converter={StaticResource visibilityConverter}}" Background="#44ffffff" Foreground="White">
+
+                                                <Button.Resources>
+                                                    <ResourceDictionary>
+                                                        <ResourceDictionary.ThemeDictionaries>
+                                                            <ResourceDictionary x:Key="Light">
+                                                                <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="White"/>
+                                                                <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="#88ffffff"/>
+                                                            </ResourceDictionary>
+                                                        </ResourceDictionary.ThemeDictionaries>
+                                                    </ResourceDictionary>
+                                                </Button.Resources>
+                                            </Button>
+
+                                            <Button Tag="{Binding OrganizerId, Mode=OneWay}" Click="MerchantButton_Click" Grid.Row="0" Content="Bezoek Handelaar" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5, 5, 5, 5"
+                                                 Background="#44ffffff" Foreground="White">
+
+                                                <Button.Resources>
+                                                    <ResourceDictionary>
+                                                        <ResourceDictionary.ThemeDictionaries>
+                                                            <ResourceDictionary x:Key="Light">
+                                                                <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="White"/>
+                                                                <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="#88ffffff"/>
+                                                            </ResourceDictionary>
+                                                        </ResourceDictionary.ThemeDictionaries>
+                                                    </ResourceDictionary>
+                                                </Button.Resources>
+                                            </Button>
+
+                                            <TextBlock Grid.Row="2" Text="{Binding Name, Mode=OneWay}" Foreground="White" Margin="5, 5, 5, 0"  Grid.Column="0" FontWeight="Bold" FontSize="20" />
+
+
+                                            <TextBlock Grid.Row="3" Text="{Binding HasCouponCode, Mode=OneWay, Converter={StaticResource couponConverter}}" Foreground="White" Margin="5, 0, 5, 5" Grid.Column="0" FontWeight="Normal" FontSize="14" FontStyle="Italic" />
+
+                                            <StackPanel Orientation="Horizontal" Grid.Row="3" HorizontalAlignment="Right">
+                                                <TextBlock Text="{Binding StartDate, Mode=OneWay, Converter={StaticResource dateTextConverter}}" Foreground="White" Margin="5, 0, 2, 5" FontWeight="Normal" FontSize="14" FontStyle="Italic" />
+                                                <TextBlock Text="-" Foreground="White" Margin="2, 0, 2, 5" Grid.Column="0" FontWeight="Normal" FontSize="14" FontStyle="Italic" />
+                                                <TextBlock Text="{Binding EndDate, Mode=OneWay, Converter={StaticResource dateTextConverter}}" Foreground="White" Margin="2, 0, 5, 5" FontWeight="Normal" FontSize="14" FontStyle="Italic" />
+                                            </StackPanel>
+
+                                            <TextBlock Grid.Row="4" Text="{Binding Description, Mode=OneWay}" Foreground="White" Margin="5, 0, 5, 5" Grid.Column="0" FontWeight="Normal" FontSize="15" />
+                                        </Grid>
+
+                                    </Grid>
+                                </Grid>
+                            </DataTemplate>
+                        </FlipView.ItemTemplate>
+                    </FlipView>
+                </Grid>
+            </StackPanel>
+
+            <StackPanel x:Name="Stack2" Orientation="Vertical" Grid.Column="1" Grid.Row="0">
+                <TextBlock FontSize="22" FontWeight="Normal" Margin="10, 10, 10, 0">Evenementen</TextBlock>
+                <Grid>
+                    <TextBlock Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#ff333333">Er zijn geen lopende evenementen.</TextBlock>
+                    <FlipView  Height="400" Margin="10, 10, 10, 10" ItemsSource="{Binding Events, Mode=OneWay}">
+                        <FlipView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid Background="#ff333333">
+                                        <ProgressRing 
+                                    Grid.Row="0" Grid.Column="0"
+                                    DataContext="{Binding Image, Mode=OneWay}"
+                                IsActive="True" 
+                                HorizontalAlignment="Center" 
+                                VerticalAlignment="Center" 
+                                Visibility="{Binding IsLoading, Mode=OneWay, Converter={StaticResource visibilityConverter}}" Margin="0,0,0,0" Height="45" Width="45" FontFamily="Segoe UI" />
+
+                                        <Image 
+                                    Grid.Row="0" Grid.Column="0"
+                                    DataContext="{Binding Image, Mode=OneWay}"
+                                Visibility="{Binding IsLoading, Mode=OneWay, Converter={StaticResource invVisibilityConverter}}"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                Stretch="Uniform"
+                                Source="{Binding Data, Mode=OneWay, Converter={StaticResource bitmapConverter}}"/>
+
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+
+                                            <Button Tag="{Binding OrganizerId, Mode=OneWay}" Click="MerchantButton_Click" Grid.Row="0" Content="Bezoek Handelaar" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5, 5, 5, 5"
+                                                 Background="#44ffffff" Foreground="White">
+
+                                                <Button.Resources>
+                                                    <ResourceDictionary>
+                                                        <ResourceDictionary.ThemeDictionaries>
+                                                            <ResourceDictionary x:Key="Light">
+                                                                <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="White"/>
+                                                                <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="#88ffffff"/>
+                                                            </ResourceDictionary>
+                                                        </ResourceDictionary.ThemeDictionaries>
+                                                    </ResourceDictionary>
+                                                </Button.Resources>
+                                            </Button>
+
+                                            <TextBlock Grid.Row="1" Text="{Binding Name, Mode=OneWay}" Foreground="White" Margin="5, 5, 5, 0"  Grid.Column="0" FontWeight="Bold" FontSize="20" />
+
+
+                                            <TextBlock Grid.Row="2" Text="{Binding PlaceDescription, Mode=OneWay}" Foreground="White" Margin="5, 0, 5, 5" Grid.Column="0" FontWeight="Normal" FontSize="14" FontStyle="Italic" />
+
+                                            <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Right">
+                                                <TextBlock Text="{Binding StartDate, Mode=OneWay, Converter={StaticResource dateTextConverter}}" Foreground="White" Margin="5, 0, 2, 5" FontWeight="Normal" FontSize="14" FontStyle="Italic" />
+                                                <TextBlock Text="-" Foreground="White" Margin="2, 0, 2, 5" Grid.Column="0" FontWeight="Normal" FontSize="14" FontStyle="Italic" />
+                                                <TextBlock Text="{Binding EndDate, Mode=OneWay, Converter={StaticResource dateTextConverter}}" Foreground="White" Margin="2, 0, 5, 5" FontWeight="Normal" FontSize="14" FontStyle="Italic" />
+                                            </StackPanel>
+
+                                            <TextBlock Grid.Row="3" Text="{Binding Description, Mode=OneWay}" Foreground="White" Margin="5, 0, 5, 5" Grid.Column="0" FontWeight="Normal" FontSize="15" />
+                                        </Grid>
+
+                                    </Grid>
+                                </Grid>
+                            </DataTemplate>
+                        </FlipView.ItemTemplate>
+                    </FlipView>
+                </Grid>
+            </StackPanel>
+
+
+            <StackPanel x:Name="Stack3" Orientation="Vertical" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2">
+                <TextBlock FontSize="22" FontWeight="Normal" Margin="10, 10, 10, 0">In de kijker</TextBlock>
+                <GridView ItemsSource="{Binding FeaturedMerchants, Mode=OneWay}" SelectionMode="None">
+                    <GridView.Resources>
+                        <Style TargetType="GridViewItem">
+                            <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                        </Style>
+                    </GridView.Resources>
+                    <GridView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <VariableSizedWrapGrid Orientation="Horizontal"></VariableSizedWrapGrid>
+                        </ItemsPanelTemplate>
+                    </GridView.ItemsPanel>
+                    <GridView.ItemTemplate>
+                        <DataTemplate>
+                            <Border Margin="10, 10, 10, 10" 
+                                BorderThickness="2" 
+                                VerticalAlignment="Stretch"
+                                HorizontalAlignment="Stretch"
+                                BorderBrush="{ThemeResource SystemControlBackgroundAccentBrush}">
+                                <Grid
+                                VerticalAlignment="Stretch"
+                                HorizontalAlignment="Stretch"
+                                MaxWidth="200">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+
+                                    <FlipView Grid.Row="0" Grid.Column="0" ItemsSource="{Binding Images, Mode=OneWay}" Width="200" Height="150">
+                                        <FlipView.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid>
+                                                    <ProgressRing 
+                                                IsActive="True" 
+                                                HorizontalAlignment="Center" 
+                                                VerticalAlignment="Center" 
+                                                Visibility="{Binding IsLoading, Mode=OneWay, Converter={StaticResource visibilityConverter}}" Margin="0,0,0,0" Height="45" Width="45" FontFamily="Segoe UI" />
+
+                                                    <Image 
+                                                    Visibility="{Binding IsLoading, Mode=OneWay, Converter={StaticResource invVisibilityConverter}}"
+                                                    HorizontalAlignment="Stretch"
+                                                    VerticalAlignment="Stretch"
+                                                    Stretch="UniformToFill"
+                                                    Source="{Binding Data, Mode=OneWay, Converter={StaticResource bitmapConverter}}"/>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </FlipView.ItemTemplate>
+                                    </FlipView>
+
+                                    <TextBlock TextWrapping="Wrap" Grid.Row="1" Margin="5, 5, 5, 0" FontSize="16" Text="{Binding Name, Mode=OneWay}" FontWeight="Bold"></TextBlock>
+                                    <TextBlock TextWrapping="Wrap" Grid.Row="2" Margin="5, 0, 5, 0" FontSize="13" Text="{Binding Address, Mode=OneWay}" FontWeight="Bold" FontStyle="Italic"></TextBlock>
+                                    <TextBlock TextWrapping="Wrap" Grid.Row="3" Margin="5, 0, 5, 0" FontSize="13" Text="{Binding PhoneNumber, Mode=OneWay}" FontWeight="Normal" FontStyle="Italic"></TextBlock>
+                                    <TextBlock TextWrapping="Wrap" Grid.Row="4" Margin="5, 5, 5, 5" FontSize="14" Text="{Binding Description, Mode=OneWay}"></TextBlock>
+                                    <Button Tag="{Binding Id, Mode=OneWay}" HorizontalAlignment="Stretch" Click="MerchantButton_Click" Grid.Row="5" Margin="5, 5, 5, 5" Content="Bekijken"/>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
+                </GridView>
+            </StackPanel>
+
+            <StackPanel x:Name="Stack4" Orientation="Vertical" Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2">
+                <TextBlock FontSize="22" FontWeight="Normal" Margin="10, 10, 10, 0">Handelaars die je volgt</TextBlock>
+                <TextBlock Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" 
+                           VerticalAlignment="Center" Foreground="#ff333333" 
+                           Visibility="{Binding NotFollowing, Mode=OneWay, Converter={StaticResource visibilityConverter}}"
+                           Margin="10, 10, 10, 10">U volgt momenteel geen handelaars.</TextBlock>
+                <GridView ItemsSource="{Binding FollowedMerchants, Mode=OneWay}" SelectionMode="None">
+                    <GridView.Resources>
+                        <Style TargetType="GridViewItem">
+                            <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                        </Style>
+                    </GridView.Resources>
+                    <GridView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <VariableSizedWrapGrid Orientation="Horizontal"></VariableSizedWrapGrid>
+                        </ItemsPanelTemplate>
+                    </GridView.ItemsPanel>
+                    <GridView.ItemTemplate>
+                        <DataTemplate>
+                            <Border Margin="10, 10, 10, 10" 
+                                BorderThickness="2" 
+                                VerticalAlignment="Stretch"
+                                HorizontalAlignment="Stretch"
+                                BorderBrush="{ThemeResource SystemControlBackgroundAccentBrush}">
+                                <Grid
+                                VerticalAlignment="Stretch"
+                                HorizontalAlignment="Stretch"
+                                MaxWidth="200">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+
+                                    <FlipView Grid.Row="0" Grid.Column="0" ItemsSource="{Binding Images, Mode=OneWay}" Width="200" Height="150">
+                                        <FlipView.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid>
+                                                    <ProgressRing 
+                                                IsActive="True" 
+                                                HorizontalAlignment="Center" 
+                                                VerticalAlignment="Center" 
+                                                Visibility="{Binding IsLoading, Mode=OneWay, Converter={StaticResource visibilityConverter}}" Margin="0,0,0,0" Height="45" Width="45" FontFamily="Segoe UI" />
+
+                                                    <Image 
+                                                    Visibility="{Binding IsLoading, Mode=OneWay, Converter={StaticResource invVisibilityConverter}}"
+                                                    HorizontalAlignment="Stretch"
+                                                    VerticalAlignment="Stretch"
+                                                    Stretch="UniformToFill"
+                                                    Source="{Binding Data, Mode=OneWay, Converter={StaticResource bitmapConverter}}"/>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </FlipView.ItemTemplate>
+                                    </FlipView>
+
+                                    <TextBlock TextWrapping="Wrap" Grid.Row="1" Margin="5, 5, 5, 0" FontSize="16" Text="{Binding Name, Mode=OneWay}" FontWeight="Bold"></TextBlock>
+                                    <TextBlock TextWrapping="Wrap" Grid.Row="2" Margin="5, 0, 5, 0" FontSize="13" Text="{Binding Address, Mode=OneWay}" FontWeight="Bold" FontStyle="Italic"></TextBlock>
+                                    <TextBlock TextWrapping="Wrap" Grid.Row="3" Margin="5, 0, 5, 0" FontSize="13" Text="{Binding PhoneNumber, Mode=OneWay}" FontWeight="Normal" FontStyle="Italic"></TextBlock>
+                                    <TextBlock TextWrapping="Wrap" Grid.Row="4" Margin="5, 5, 5, 5" FontSize="14" Text="{Binding Description, Mode=OneWay}"></TextBlock>
+                                    <Button Tag="{Binding Id, Mode=OneWay}" HorizontalAlignment="Stretch" Click="MerchantButton_Click" Grid.Row="5" Margin="5, 5, 5, 5" Content="Bekijken"/>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
+                </GridView>
+            </StackPanel>
+
+        </Grid>
+    </ScrollViewer>
 </Page>
