@@ -131,6 +131,11 @@
                     <GridView.ItemContainerTransitions>
                         <TransitionCollection/>
                     </GridView.ItemContainerTransitions>
+                    <GridView.Resources>
+                        <Style TargetType="GridViewItem">
+                            <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                        </Style>
+                    </GridView.Resources>
 
                     <GridView.ItemTemplate>
                         <DataTemplate >
@@ -236,6 +241,11 @@
                     <GridView.ItemContainerTransitions>
                         <TransitionCollection/>
                     </GridView.ItemContainerTransitions>
+                    <GridView.Resources>
+                        <Style TargetType="GridViewItem">
+                            <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                        </Style>
+                    </GridView.Resources>
                     <GridView.ItemTemplate>
                         <DataTemplate>
                             <Border VerticalAlignment="Top" BorderBrush="{ThemeResource SystemControlAccentAcrylicElementAccentMediumHighBrush}" BorderThickness="1">

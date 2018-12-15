@@ -50,8 +50,8 @@ namespace PrettigLokaalBackend.Data
             builder.ToTable("Merchant");
             builder.HasKey(p => p.Id);
             builder.HasMany(p => p.Images).WithOne(p => p.Merchant).OnDelete(DeleteBehavior.Cascade);
-            builder.HasMany(p => p.Events).WithOne(p => p.Organizer).OnDelete(DeleteBehavior.Cascade);
-            builder.HasMany(p => p.Promotions).WithOne(p => p.Organizer).OnDelete(DeleteBehavior.Cascade);
+            builder.HasMany(p => p.Events).WithOne(p => p.Organizer).OnDelete(DeleteBehavior.Cascade).HasForeignKey(p => p.OrganizerId);
+            builder.HasMany(p => p.Promotions).WithOne(p => p.Organizer).OnDelete(DeleteBehavior.Cascade).HasForeignKey(p => p.OrganizerId);
             builder.HasMany(p => p.Tags);
             builder.HasMany(p => p.OpeningHours);
         }

@@ -128,6 +128,9 @@
     <Compile Include="..\PrettigLokaalBackend\Models\Requests\ErrorModel.cs">
       <Link>Backend\Models\Requests\ErrorModel.cs</Link>
     </Compile>
+    <Compile Include="..\PrettigLokaalBackend\Models\Requests\FeedModel.cs">
+      <Link>Backend\Models\Requests\FeedModel.cs</Link>
+    </Compile>
     <Compile Include="..\PrettigLokaalBackend\Models\Requests\LoginModel.cs">
       <Link>Backend\Models\Requests\LoginModel.cs</Link>
     </Compile>
@@ -158,6 +161,7 @@
     <Compile Include="ViewModels\DiscoverPageViewModel.cs" />
     <Compile Include="ViewModels\EditEventPageViewModel.cs" />
     <Compile Include="ViewModels\EditPromotionPageViewModel.cs" />
+    <Compile Include="ViewModels\FeedPageViewModel.cs" />
     <Compile Include="ViewModels\FindPageViewModel.cs" />
     <Compile Include="ViewModels\Helpers\BitmapConverter.cs" />
     <Compile Include="ViewModels\Helpers\DateConverter.cs" />

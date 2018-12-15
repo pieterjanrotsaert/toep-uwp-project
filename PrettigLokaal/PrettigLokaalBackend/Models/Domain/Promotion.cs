@@ -18,6 +18,8 @@ namespace PrettigLokaalBackend.Models.Domain
         public bool HasCouponCode { get; set; } = false;
         public string Description { get; set; }
 
+        public int OrganizerId { get; set; }
+
         [NotMapped] [JsonIgnore] public ImageData ImageData { get; set; } // Used by the frontend only
         [NotMapped] [JsonIgnore] public bool ImageDataLoading { get; set; } = true;
 
@@ -35,6 +37,7 @@ namespace PrettigLokaalBackend.Models.Domain
             HasCouponCode = other.HasCouponCode;
             ImageData = other.ImageData;
             ImageDataLoading = other.ImageDataLoading;
+            OrganizerId = other.OrganizerId;
         }
 
         public Promotion Clone()

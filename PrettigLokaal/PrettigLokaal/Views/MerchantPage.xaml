@@ -84,8 +84,6 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-            
-
 
             <FlipView Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" DataContext="{Binding Merchant}" ItemsSource="{Binding Images, Mode=OneWay}">
             <FlipView.ItemTemplate>

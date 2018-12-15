@@ -495,5 +495,10 @@ namespace PrettigLokaal.Backend
             SendPostVoid("/api/user/unsubscribe/" + merchantId, null, callback);
         }
 
+        public void GetFeed(Callback<FeedModel> callback)
+        {
+            SendGet("/api/user/feed", callback);
+        }
+
     }
 }
