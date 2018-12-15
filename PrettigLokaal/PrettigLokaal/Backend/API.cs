@@ -465,5 +465,10 @@ namespace PrettigLokaal.Backend
             SendGet("/api/merchant/find/" + Uri.EscapeDataString(searchQry), callback);
         }
 
+        public void GetFeaturedMerchants(Callback<List<Merchant>> callback)
+        {
+            SendGet("/api/merchant/featured", callback);
+        }
+
     }
 }
