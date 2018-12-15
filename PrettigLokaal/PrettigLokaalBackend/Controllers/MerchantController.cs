@@ -366,7 +366,8 @@ namespace PrettigLokaalBackend.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Featured()
         {
-            List<Merchant> merchants = await context.Merchants.Where(m => m.Promotions.Where(p => 0 > p.EndDate.CompareTo(DateTime.Now)).Count() > 1)   //Het aantal promoties dat nog actief zijn.
+            List<Merchant> merchants = await context.Merchants.OrderByDescending(m => m.Promotions.Where(p => 0 < p.EndDate.CompareTo(DateTime.Now)).Count() + m.Events.Where(e => 0 < e.EndDate.CompareTo(DateTime.Now)).Count())   //Het aantal promoties & events dat nog actief zijn.
+                .Take(10)
                 .Include(m => m.Events).ThenInclude(e => e.Image)
                 .Include(m => m.Promotions).ThenInclude(e => e.Image)
                 .Include(m => m.Tags)
@@ -379,6 +380,25 @@ namespace PrettigLokaalBackend.Controllers
 
             return Ok(merchants);
         }
-       
+
+        [HttpGet("Recently")]
+        [AllowAnonymous]
+        public async Task<IActionResult> Recently()
+        {
+            List<Merchant> merchants = await context.Merchants.OrderByDescending(m => m.Id)
+                .Take(10)
+                .Include(m => m.Events).ThenInclude(e => e.Image)
+                .Include(m => m.Promotions).ThenInclude(e => e.Image)
+                .Include(m => m.Tags)
+                .Include(m => m.OpeningHours)
+                .Include(m => m.Images)
+                .ToListAsync();
+
+            if (merchants == null)
+                return Error(ErrorModel.NOT_FOUND);
+
+            return Ok(merchants);
+        }
+
     }
 }

@@ -474,6 +474,12 @@ namespace PrettigLokaal.Backend
         {
             SendGet("/api/merchant/featured", callback);
         }
+
+        public void GetRecentlyAddedMerchants(Callback<List<Merchant>> callback)
+        {
+            SendGet("/api/merchant/recently", callback);
+        }
+
         public void IsSubscribed(int merchantId, Callback<SimpleBoolModel> callback)
         {
             SendGet("/api/user/checksubscription/" + merchantId, callback);

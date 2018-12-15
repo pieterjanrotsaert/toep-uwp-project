@@ -5,53 +5,221 @@
     xmlns:local="using:PrettigLokaal"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:helpers="using:PrettigLokaal.ViewModels.Helpers"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Page.Resources>
+        <helpers:VisibilityConverter x:Key="visibilityConverter"/>
+        <helpers:InverseVisibilityConverter x:Key="invVisibilityConverter"/>
+        <helpers:BitmapConverter x:Key="bitmapConverter"/>
+        <helpers:DateTextConverter x:Key="dateTextConverter"/>
+        <helpers:HasCouponCodeConverter x:Key="couponConverter"/>
+    </Page.Resources>
 
     <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
 
         <Grid Margin="20, 10, 35, 10" Height="Auto">
 
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            
+
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <TextBlock FontSize="25" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="8">Featured</TextBlock>
+            <ProgressRing 
+            Grid.Row="1"
+            IsActive="True" 
+            HorizontalAlignment="Center" 
+            VerticalAlignment="Center" 
+            Visibility="{Binding IsLoading, Mode=OneWay, Converter={StaticResource visibilityConverter}}" Margin="0,0,0,0" Height="45" Width="45" FontFamily="Segoe UI" />
 
-            <TextBlock Grid.Column="0" Grid.Row="1" Text="{Binding Merchants}"></TextBlock>
-            <FlipView ItemsSource="{Binding Merchants}">
+            <StackPanel Visibility="{Binding IsLoading, Mode=OneWay, Converter={StaticResource invVisibilityConverter}}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock FontSize="25" Grid.Column="0" FontFamily="Segoe UI">In de kijker</TextBlock>
+                    <FlipView Grid.Row="1" ItemsSource="{Binding FeaturedMerchants, Mode=OneWay}" Height="450px" Background="White">
+                        <FlipView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <GridView Grid.Row="0" Grid.Column="0" ItemsSource="{Binding Images, Mode=OneWay}" 
+                                    ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                    ScrollViewer.HorizontalScrollMode="Auto"
+                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                    ScrollViewer.VerticalScrollMode="Disabled"
+                                    SelectionMode="None">
+                                        <GridView.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition/>
+                                                    </Grid.RowDefinitions>
 
-            </FlipView>
+                                                    <ProgressRing 
+                                                    IsActive="True" 
+                                                    HorizontalAlignment="Center" 
+                                                    VerticalAlignment="Center" 
+                                                    Visibility="{Binding IsLoading, Mode=OneWay, Converter={StaticResource visibilityConverter}}" Margin="0,0,0,0" Height="45" Width="45" FontFamily="Segoe UI" />
 
+                                                    <Image
+                                                    Grid.Column="0" Grid.Row="0"
+                                                    Visibility="{Binding IsLoading, Mode=OneWay, Converter={StaticResource invVisibilityConverter}}"
+                                                    HorizontalAlignment="Stretch"
+                                                    VerticalAlignment="Stretch"
+                                                    Stretch="UniformToFill"
+                                                    Source="{Binding Data, Mode=OneWay, Converter={StaticResource bitmapConverter}}"/>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </GridView.ItemTemplate>
+                                        <GridView.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <ItemsWrapGrid Orientation="Vertical" />
+                                            </ItemsPanelTemplate>
+                                        </GridView.ItemsPanel>
+                                    </GridView>
+                                    <StackPanel VerticalAlignment="Bottom" Margin="20,20,20,20">
+                                        <TextBlock
+                                        Text="{Binding Name}"
+                                        FontSize="30"
+                                        Foreground="White"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Bottom"
+                                        Visibility="{Binding IsLoading, Mode=OneWay, Converter={StaticResource invVisibilityConverter}}"/>
+                                        <TextBlock
+                                        Text="{Binding Description}"
+                                        FontSize="20"
+                                        Foreground="White"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Bottom"
+                                        Visibility="{Binding IsLoading, Mode=OneWay, Converter={StaticResource invVisibilityConverter}}"/>
+                                    </StackPanel>
+                                    
+                                </Grid>
+                            </DataTemplate>
+                        </FlipView.ItemTemplate>
+                    </FlipView>
+                </Grid>
+                
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    
+                    <TextBlock FontSize="25" Grid.Column="0" Grid.Row="0" FontFamily="Segoe UI">Nieuwste Promoties!</TextBlock>
+                    <TextBlock FontSize="25" Grid.Column="1" Grid.Row="0" FontFamily="Segoe UI">Nieuwste Evenementen!</TextBlock>
 
+                    
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock FontSize="25" Grid.Column="0" FontFamily="Segoe UI">Onlangs Toegevoegd</TextBlock>
+                    <FlipView Grid.Row="1" ItemsSource="{Binding RecentlyAddedMerchants, Mode=OneWay}" Height="450px" Background="White">
+                        <FlipView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <GridView Grid.Row="0" Grid.Column="0" ItemsSource="{Binding Images, Mode=OneWay}" 
+                                    ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                    ScrollViewer.HorizontalScrollMode="Auto"
+                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                    ScrollViewer.VerticalScrollMode="Disabled"
+                                    SelectionMode="None">
+                                        <GridView.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition/>
+                                                    </Grid.RowDefinitions>
 
-            <TextBlock FontSize="25" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="8">Hot Right Now!</TextBlock>
-            <TextBlock FontSize="25" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="8">Recently Added!</TextBlock>
+                                                    <ProgressRing 
+                                                    IsActive="True" 
+                                                    HorizontalAlignment="Center" 
+                                                    VerticalAlignment="Center" 
+                                                    Visibility="{Binding IsLoading, Mode=OneWay, Converter={StaticResource visibilityConverter}}" Margin="0,0,0,0" Height="45" Width="45" FontFamily="Segoe UI" />
+
+                                                    <Image
+                                                    Grid.Column="0" Grid.Row="0"
+                                                    Visibility="{Binding IsLoading, Mode=OneWay, Converter={StaticResource invVisibilityConverter}}"
+                                                    HorizontalAlignment="Stretch"
+                                                    VerticalAlignment="Stretch"
+                                                    Stretch="UniformToFill"
+                                                    Source="{Binding Data, Mode=OneWay, Converter={StaticResource bitmapConverter}}"/>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </GridView.ItemTemplate>
+                                        <GridView.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <ItemsWrapGrid Orientation="Vertical" />
+                                            </ItemsPanelTemplate>
+                                        </GridView.ItemsPanel>
+                                    </GridView>
+                                    <StackPanel VerticalAlignment="Bottom" Margin="20,20,20,20">
+                                        <TextBlock
+                                        Text="{Binding Name}"
+                                        FontSize="30"
+                                        Foreground="White"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Bottom"
+                                        Visibility="{Binding IsLoading, Mode=OneWay, Converter={StaticResource invVisibilityConverter}}"/>
+                                        <TextBlock
+                                        Text="{Binding Description}"
+                                        FontSize="20"
+                                        Foreground="White"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Bottom"
+                                        Visibility="{Binding IsLoading, Mode=OneWay, Converter={StaticResource invVisibilityConverter}}"/>
+                                    </StackPanel>
+
+                                </Grid>
+                            </DataTemplate>
+                        </FlipView.ItemTemplate>
+                    </FlipView>
+                </Grid>
+            </StackPanel>
+
             
+
             
 
+
+            
         </Grid>
-        
     </ScrollViewer>
-    
 </Page>
