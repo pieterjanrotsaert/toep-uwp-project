@@ -9,6 +9,7 @@ using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Core;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -76,6 +77,25 @@ namespace PrettigLokaal
 
             // Extend view into titlebar
             CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
+
+            var titleBar = ApplicationView.GetForCurrentView().TitleBar;
+
+            // Set active window colors
+            titleBar.ForegroundColor = Windows.UI.Colors.Black;
+            titleBar.BackgroundColor = Windows.UI.Color.FromArgb(255, 0, 129, 212);
+
+            titleBar.ButtonForegroundColor = Windows.UI.Colors.Black;
+            titleBar.ButtonBackgroundColor = Windows.UI.Color.FromArgb(0, 0, 129, 212);
+            titleBar.ButtonHoverForegroundColor = Windows.UI.Colors.White;
+            titleBar.ButtonHoverBackgroundColor = Windows.UI.Color.FromArgb(50, 145, 193, 231);
+            titleBar.ButtonPressedForegroundColor = Windows.UI.Colors.Gray;
+            titleBar.ButtonPressedBackgroundColor =  Windows.UI.Color.FromArgb(100, 31, 90, 162);
+
+            // Set inactive window colors
+            titleBar.InactiveForegroundColor = Windows.UI.Colors.Gray;
+            titleBar.InactiveBackgroundColor = Windows.UI.Color.FromArgb(0, 95, 175, 239);
+            titleBar.ButtonInactiveForegroundColor = Windows.UI.Colors.Gray;
+            titleBar.ButtonInactiveBackgroundColor = Windows.UI.Color.FromArgb(0, 95, 175, 239);
         }
 
         /// <summary>
