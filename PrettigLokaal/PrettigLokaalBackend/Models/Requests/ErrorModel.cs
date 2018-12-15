@@ -38,6 +38,7 @@ namespace PrettigLokaalBackend.Models.Requests
 
         public const int ALREADY_A_MERCHANT     = 100;
         public const int NOT_A_MERCHANT         = 101;
+        public const int ALREADY_SUBSCRIBED = 102;
 
         public const int NOT_FOUND              = 404;
 

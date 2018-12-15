@@ -35,6 +35,7 @@ namespace PrettigLokaalBackend.Controllers.Extensions
                     .ThenInclude(m => m.Promotions)
                 .Include(a => a.Merchant)
                     .ThenInclude(m => m.Events)
+                .Include(a => a.Subscriptions)
                 .FirstOrDefaultAsync();
         }
 
@@ -49,6 +50,7 @@ namespace PrettigLokaalBackend.Controllers.Extensions
                     .ThenInclude(m => m.Promotions)
                 .Include(a => a.Merchant)
                     .ThenInclude(m => m.Events)
+                .Include(a => a.Subscriptions)
                 .FirstOrDefaultAsync();
         }
 

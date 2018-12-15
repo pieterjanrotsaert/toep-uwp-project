@@ -143,6 +143,9 @@
     <Compile Include="..\PrettigLokaalBackend\Models\Requests\MerchantRegisterModel.cs">
       <Link>Backend\Models\Requests\MerchantRegisterModel.cs</Link>
     </Compile>
+    <Compile Include="..\PrettigLokaalBackend\Models\Requests\SimpleBoolModel.cs">
+      <Link>Backend\Models\Requests\SimpleBoolModel.cs</Link>
+    </Compile>
     <Compile Include="..\PrettigLokaalBackend\Models\Requests\UpdatePasswordModel.cs">
       <Link>Backend\Models\Requests\UpdatePasswordModel.cs</Link>
     </Compile>
@@ -168,6 +171,7 @@
     <Compile Include="ViewModels\Helpers\VisibilityConverter.cs" />
     <Compile Include="ViewModels\LoginPageViewModel.cs" />
     <Compile Include="ViewModels\MainPageViewModel.cs" />
+    <Compile Include="ViewModels\MerchantPageViewModel.cs" />
     <Compile Include="ViewModels\MerchantPanelViewModel.cs" />
     <Compile Include="ViewModels\MerchantRegisterPageViewModel.cs" />
     <Compile Include="ViewModels\RegisterPageViewModel.cs" />

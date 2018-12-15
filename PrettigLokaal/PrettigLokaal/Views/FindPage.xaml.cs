@@ -48,6 +48,13 @@ namespace PrettigLokaal.Views
             Refresh();
         }
 
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            base.OnNavigatedFrom(e);
+            viewModel.Merchants = new ObservableCollection<Merchant>();
+            API.Get().AbortRequests();
+        }
+
         private void Refresh()
         {
             viewModel.IsLoading = true;
@@ -59,6 +66,7 @@ namespace PrettigLokaal.Views
                     Utils.ErrorBox(err);
                 else
                 {
+
                     viewModel.ResultCount = merchants.Count;
                     foreach (var merchant in merchants)
                     {
@@ -70,6 +78,9 @@ namespace PrettigLokaal.Views
                                 var imgIndex = merchant.Images.IndexOf(img);
                                 API.Get().GetImage(img.Id, (downloadedImage, err2) =>
                                 {
+                                    if (err2 != null)
+                                        return;
+
                                     List <Image> newImages = new List<Image>();
                                     foreach(var image in merchant.Images)
                                         newImages.Add(image);
@@ -85,8 +96,6 @@ namespace PrettigLokaal.Views
                     }
                 }
             });
-
-
         }
 
         private void PageSearchBox_KeyDown(object sender, KeyRoutedEventArgs e)

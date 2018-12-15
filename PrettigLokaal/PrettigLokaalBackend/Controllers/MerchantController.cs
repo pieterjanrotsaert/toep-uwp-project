@@ -72,6 +72,10 @@ namespace PrettigLokaalBackend.Controllers
                 .Include(m => m.Tags)
                 .Include(m => m.OpeningHours)
                 .Include(m => m.Images)
+                .Include(m => m.Events)
+                    .ThenInclude(e => e.Image)
+                .Include(m => m.Promotions)
+                    .ThenInclude(p => p.Image)
                 .Where(m => keywords.Count(kw => m.Name.Contains(kw) || m.Address.Contains(kw) || 
                                            m.Description.Contains(kw) || (m.Tags.Count(tag => tag.Text.Contains(kw)) > 0)) > 0)
                 .ToListAsync();
