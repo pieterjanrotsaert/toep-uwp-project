@@ -158,6 +158,7 @@
     <Compile Include="Backend\API.cs" />
     <Compile Include="Misc\Utils.cs" />
     <Compile Include="ViewModels\ChangePasswordPageViewModel.cs" />
+    <Compile Include="ViewModels\DiscoverPageViewModel.cs" />
     <Compile Include="ViewModels\EditEventPageViewModel.cs" />
     <Compile Include="ViewModels\EditPromotionPageViewModel.cs" />
     <Compile Include="ViewModels\FeedPageViewModel.cs" />

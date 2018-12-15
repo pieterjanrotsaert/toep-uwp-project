@@ -8,7 +8,50 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
-        <TextBlock Margin="0,417,631,0" HorizontalAlignment="Right" Height="125" VerticalAlignment="Top" Width="217">discoerpage</TextBlock>
-    </Grid>
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+
+        <Grid Margin="20, 10, 35, 10" Height="Auto">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock FontSize="25" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="8">Featured</TextBlock>
+
+            <TextBlock Grid.Column="0" Grid.Row="1" Text="{Binding Merchants}"></TextBlock>
+            <FlipView ItemsSource="{Binding Merchants}">
+
+            </FlipView>
+
+
+
+            <TextBlock FontSize="25" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="8">Hot Right Now!</TextBlock>
+            <TextBlock FontSize="25" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="8">Recently Added!</TextBlock>
+            
+            
+
+        </Grid>
+        
+    </ScrollViewer>
+    
 </Page>
