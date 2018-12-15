@@ -38,6 +38,17 @@ namespace PrettigLokaal
             viewModel = new MainPageViewModel();
             DataContext = viewModel;
 
+            ContentFrame.Navigated += ContentFrame_Navigated;
+
+            // Register a handler for BackRequested events and set the  
+            // visibility of the Back button  
+            SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
+            SystemNavigationManager.GetForCurrentView().BackRequested += OnBackRequested;
+            SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility =
+                ContentFrame.CanGoBack ?
+                AppViewBackButtonVisibility.Visible :
+                AppViewBackButtonVisibility.Collapsed;
+
             API.Get().Init(err =>
             {
                 viewModel.IsLoggedIn = API.Get().IsLoggedIn();
@@ -56,6 +67,19 @@ namespace PrettigLokaal
                 if (navViewLoaded)
                     SelectNavItem(startPage);
             });
+        }
+
+        private void OnBackRequested(object sender, BackRequestedEventArgs e)
+        {
+            GoBack();
+        }
+
+        private void ContentFrame_Navigated(object sender, NavigationEventArgs e)
+        {
+            SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility =
+                ((Frame)sender).CanGoBack ?
+                AppViewBackButtonVisibility.Visible :
+                AppViewBackButtonVisibility.Collapsed;
         }
 
         private void NavView_Loaded(object sender, RoutedEventArgs e)
