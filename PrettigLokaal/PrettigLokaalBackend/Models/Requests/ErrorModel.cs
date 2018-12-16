@@ -51,6 +51,16 @@ namespace PrettigLokaalBackend.Models.Requests
             switch (code)
             {
                 case EMAIL_ALREADY_IN_USE: return "E-Mailadres is reeds in gebruik.";
+                case INVALID_PASSWORD: return "Het opgegeven wachtwoord is onjuist.";
+                case INVALID_USERNAME: return "De opgegeven gebruikersnaam is onjuist.";
+                case ALREADY_A_MERCHANT: return "U bent reeds een handelaar.";
+                case NOT_A_MERCHANT: return "U bent geen handelaar.";
+                case ALREADY_SUBSCRIBED: return "U volgt deze handelaar reeds.";
+                case NOT_FOUND: return "De opgrevraagde gegevens konden niet gevonden worden";
+                case HTTP_ERROR: return "HTTP Fout";
+                case NOT_LOGGED_IN: return "U bent niet ingelogd.";
+                case NETWORK_ERROR: return "Netwerkfout";
+
                 default: return "Ongekende fout";
             }
         }
