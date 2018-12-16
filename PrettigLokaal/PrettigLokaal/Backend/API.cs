@@ -28,7 +28,7 @@ namespace PrettigLokaal.Backend
 #if DEBUG
         private const string ENDPOINT     = "https://localhost:3001";
 #else
-        private const string ENDPOINT     = "http://localhost:3000";
+        private const string ENDPOINT     = "https://18.216.31.168:5001";
 #endif 
 
         private PasswordVault passwordVault = new PasswordVault();
