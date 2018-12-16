@@ -15,6 +15,7 @@
         <helpers:BitmapConverter x:Key="bitmapConverter"/>
         <helpers:DateTextConverter x:Key="dateTextConverter"/>
         <helpers:HasCouponCodeConverter x:Key="couponConverter"/>
+        <helpers:LineConverter x:Key="lineConverter"/>
     </Page.Resources>
 
     <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
@@ -55,7 +56,7 @@
                                         Visibility="{Binding IsLoading, Mode=OneWay, Converter={StaticResource invVisibilityConverter}}"
                                         HorizontalAlignment="Stretch"
                                         VerticalAlignment="Stretch"
-                                        Stretch="Uniform"
+                                        Stretch="UniformToFill"
                                         Source="{Binding Data, Mode=OneWay, Converter={StaticResource bitmapConverter}}"/>
 
                                         <Grid>
@@ -143,7 +144,7 @@
                                 Visibility="{Binding IsLoading, Mode=OneWay, Converter={StaticResource invVisibilityConverter}}"
                                 HorizontalAlignment="Stretch"
                                 VerticalAlignment="Stretch"
-                                Stretch="Uniform"
+                                Stretch="UniformToFill"
                                 Source="{Binding Data, Mode=OneWay, Converter={StaticResource bitmapConverter}}"/>
 
                                         <Grid>
@@ -209,7 +210,7 @@
                     <GridView.ItemTemplate>
                         <DataTemplate>
                             <Border Margin="10, 10, 10, 10" 
-                                BorderThickness="2" 
+                                BorderThickness="1" 
                                 VerticalAlignment="Stretch"
                                 HorizontalAlignment="Stretch"
                                 BorderBrush="{ThemeResource SystemControlBackgroundAccentBrush}">
@@ -251,10 +252,10 @@
                                         </FlipView.ItemTemplate>
                                     </FlipView>
 
-                                    <TextBlock TextWrapping="Wrap" Grid.Row="1" Margin="5, 5, 5, 0" FontSize="16" Text="{Binding Name, Mode=OneWay}" FontWeight="Bold"></TextBlock>
-                                    <TextBlock TextWrapping="Wrap" Grid.Row="2" Margin="5, 0, 5, 0" FontSize="13" Text="{Binding Address, Mode=OneWay}" FontWeight="Bold" FontStyle="Italic"></TextBlock>
-                                    <TextBlock TextWrapping="Wrap" Grid.Row="3" Margin="5, 0, 5, 0" FontSize="13" Text="{Binding PhoneNumber, Mode=OneWay}" FontWeight="Normal" FontStyle="Italic"></TextBlock>
-                                    <TextBlock TextWrapping="Wrap" Grid.Row="4" Margin="5, 5, 5, 5" FontSize="14" Text="{Binding Description, Mode=OneWay}"></TextBlock>
+                                    <TextBlock TextWrapping="NoWrap" Grid.Row="1" Margin="5, 5, 5, 0" FontSize="16" Text="{Binding Name, Mode=OneWay, Converter={StaticResource lineConverter}}" FontWeight="Bold"></TextBlock>
+                                    <TextBlock TextWrapping="NoWrap" Grid.Row="2" Margin="5, 0, 5, 0" FontSize="13" Text="{Binding Address, Mode=OneWay, Converter={StaticResource lineConverter}}" FontWeight="Bold" FontStyle="Italic"></TextBlock>
+                                    <TextBlock TextWrapping="NoWrap" Grid.Row="3" Margin="5, 0, 5, 0" FontSize="13" Text="{Binding PhoneNumber, Mode=OneWay, Converter={StaticResource lineConverter}}" FontWeight="Normal" FontStyle="Italic"></TextBlock>
+                                    <TextBlock TextWrapping="NoWrap" Grid.Row="4" Margin="5, 5, 5, 5" FontSize="14" Text="{Binding Description, Mode=OneWay, Converter={StaticResource lineConverter}}"></TextBlock>
                                     <Button Tag="{Binding Id, Mode=OneWay}" HorizontalAlignment="Stretch" Click="MerchantButton_Click" Grid.Row="5" Margin="5, 5, 5, 5" Content="Bekijken"/>
                                 </Grid>
                             </Border>
@@ -283,7 +284,7 @@
                     <GridView.ItemTemplate>
                         <DataTemplate>
                             <Border Margin="10, 10, 10, 10" 
-                                BorderThickness="2" 
+                                BorderThickness="1" 
                                 VerticalAlignment="Stretch"
                                 HorizontalAlignment="Stretch"
                                 BorderBrush="{ThemeResource SystemControlBackgroundAccentBrush}">
@@ -325,10 +326,10 @@
                                         </FlipView.ItemTemplate>
                                     </FlipView>
 
-                                    <TextBlock TextWrapping="Wrap" Grid.Row="1" Margin="5, 5, 5, 0" FontSize="16" Text="{Binding Name, Mode=OneWay}" FontWeight="Bold"></TextBlock>
-                                    <TextBlock TextWrapping="Wrap" Grid.Row="2" Margin="5, 0, 5, 0" FontSize="13" Text="{Binding Address, Mode=OneWay}" FontWeight="Bold" FontStyle="Italic"></TextBlock>
-                                    <TextBlock TextWrapping="Wrap" Grid.Row="3" Margin="5, 0, 5, 0" FontSize="13" Text="{Binding PhoneNumber, Mode=OneWay}" FontWeight="Normal" FontStyle="Italic"></TextBlock>
-                                    <TextBlock TextWrapping="Wrap" Grid.Row="4" Margin="5, 5, 5, 5" FontSize="14" Text="{Binding Description, Mode=OneWay}"></TextBlock>
+                                    <TextBlock TextWrapping="NoWrap" Grid.Row="1" Margin="5, 5, 5, 0" FontSize="16" Text="{Binding Name, Mode=OneWay, Converter={StaticResource lineConverter}}" FontWeight="Bold"></TextBlock>
+                                    <TextBlock TextWrapping="NoWrap" Grid.Row="2" Margin="5, 0, 5, 0" FontSize="13" Text="{Binding Address, Mode=OneWay, Converter={StaticResource lineConverter}}" FontWeight="Bold" FontStyle="Italic"></TextBlock>
+                                    <TextBlock TextWrapping="NoWrap" Grid.Row="3" Margin="5, 0, 5, 0" FontSize="13" Text="{Binding PhoneNumber, Mode=OneWay, Converter={StaticResource lineConverter}}" FontWeight="Normal" FontStyle="Italic"></TextBlock>
+                                    <TextBlock TextWrapping="NoWrap" Grid.Row="4" Margin="5, 5, 5, 5" FontSize="14" Text="{Binding Description, Mode=OneWay, Converter={StaticResource lineConverter}}"></TextBlock>
                                     <Button Tag="{Binding Id, Mode=OneWay}" HorizontalAlignment="Stretch" Click="MerchantButton_Click" Grid.Row="5" Margin="5, 5, 5, 5" Content="Bekijken"/>
                                 </Grid>
                             </Border>

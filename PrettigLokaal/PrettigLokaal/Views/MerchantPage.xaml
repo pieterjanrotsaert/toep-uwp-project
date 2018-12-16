@@ -266,7 +266,7 @@
                             Visibility="{Binding IsLoading, Mode=OneWay, Converter={StaticResource invVisibilityConverter}}"
                             HorizontalAlignment="Stretch"
                             VerticalAlignment="Stretch"
-                            Stretch="Uniform"
+                            Stretch="UniformToFill"
                             Source="{Binding Data, Mode=OneWay, Converter={StaticResource bitmapConverter}}"/>
 
                                 <Grid>
@@ -335,7 +335,7 @@
                             Visibility="{Binding IsLoading, Mode=OneWay, Converter={StaticResource invVisibilityConverter}}"
                             HorizontalAlignment="Stretch"
                             VerticalAlignment="Stretch"
-                            Stretch="Uniform"
+                            Stretch="UniformToFill"
                             Source="{Binding Data, Mode=OneWay, Converter={StaticResource bitmapConverter}}"/>
 
                                 <Grid>

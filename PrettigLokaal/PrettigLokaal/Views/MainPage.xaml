@@ -28,13 +28,13 @@
                 
                 <NavigationViewItem Content="Feed" Tag="nav_feed" Visibility="{Binding IsLoggedIn, Mode=OneWay, Converter={StaticResource visibilityConverter}}">
                     <NavigationViewItem.Icon>
-                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE762;"/>
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE728;"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
                 
                 <NavigationViewItem Content="Ontdek" Tag="nav_discover">
                     <NavigationViewItem.Icon>
-                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE762;"/>
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE7B3;"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
                 
