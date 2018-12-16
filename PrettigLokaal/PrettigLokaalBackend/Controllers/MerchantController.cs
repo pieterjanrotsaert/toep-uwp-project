@@ -367,64 +367,60 @@ namespace PrettigLokaalBackend.Controllers
         public async Task<IActionResult> Discover()
         {
             DiscoverModel model = new DiscoverModel();
-            model.FeaturedMerchants = await context.Merchants.OrderByDescending(m => m.Promotions.Where(p => 0 <= p.EndDate.CompareTo(DateTime.Now)).Count() + m.Events.Where(e => 0 <= e.EndDate.CompareTo(DateTime.Now)).Count())
-                .Take(10)
+
+            List<Merchant> allMerchants = await context.Merchants
+                .Include(m => m.Events)
+                    .ThenInclude(ev => ev.Image)
+                .Include(m => m.Promotions)
+                    .ThenInclude(prom => prom.Image)
                 .Include(m => m.Tags)
                 .Include(m => m.OpeningHours)
                 .Include(m => m.Images)
-                .Include(m => m.Events)
-                    .ThenInclude(e => e.Image)
-                .Include(m => m.Promotions)
-                    .ThenInclude(p => p.Image)
                 .ToListAsync();
-
-            if (model.FeaturedMerchants == null)
-                return Error(ErrorModel.NOT_FOUND);
-
-            model.RecentlyAddedMerchants = await context.Merchants.OrderByDescending(m => m.Id)
-                .Take(10)
-                .Include(m => m.Tags)
-                .Include(m => m.OpeningHours)
-                .Include(m => m.Images)
-                .Include(m => m.Events)
-                    .ThenInclude(e => e.Image)
-                .Include(m => m.Promotions)
-                    .ThenInclude(p => p.Image)
-                .ToListAsync();
-
-            if (model.RecentlyAddedMerchants == null)
-                return Error(ErrorModel.NOT_FOUND);
 
             model.Events = await context.Events
-                .Where(ev => ev.EndDate.CompareTo(DateTime.Now) >= 0)
-                .OrderByDescending(ev => ev.Id)
-                .Take(20)
+                .Where(ev => ev.StartDate.CompareTo(DateTime.Now) <= 0 &&
+                        ev.EndDate.CompareTo(DateTime.Now) >= 0)
                 .Include(ev => ev.Image)
+                .OrderByDescending(ev => ev.StartDate)
                 .ToListAsync();
 
-            model.EventPromotionMerchants = await context.Merchants
-                .Where(m => m.Events.Any(ev => model.Events.Contains(ev)) || m.Promotions.Any(pr => model.Promotions.Contains(pr)))
-                .Include(m => m.Tags)
-                .Include(m => m.OpeningHours)
-                .Include(m => m.Images)
-                .Include(m => m.Events)
-                    .ThenInclude(e => e.Image)
-                .Include(m => m.Promotions)
-                    .ThenInclude(p => p.Image)
-                .ToListAsync();
-
-            if (model.Events == null)
-                return Error(ErrorModel.NOT_FOUND);
 
             model.Promotions = await context.Promotions
-                .Where(p => p.EndDate.CompareTo(DateTime.Now) >= 0)
-                .OrderByDescending(p => p.Id)
-                .Take(20)
-                .Include(p => p.Image)
+                .Where(ev => ev.StartDate.CompareTo(DateTime.Now) <= 0 &&
+                        ev.EndDate.CompareTo(DateTime.Now) >= 0)
+                .Include(ev => ev.Image)
+                .OrderByDescending(ev => ev.StartDate)
                 .ToListAsync();
 
-            if (model.Promotions == null)
-                return Error(ErrorModel.NOT_FOUND);
+            // Clone so we don't trigger entity changes
+            model.Events = model.Events.Select(ev => new Event(ev)).ToList();
+            model.Promotions = model.Promotions.Select(prom => new Promotion(prom)).ToList();
+
+            foreach(var ev in model.Events)
+                ev.Organizer = allMerchants.Where(m => m.Id == ev.OrganizerId).FirstOrDefault();
+
+            foreach (var prom in model.Promotions)
+                prom.Organizer = allMerchants.Where(m => m.Id == prom.OrganizerId).FirstOrDefault();
+
+            model.FeaturedMerchants = new List<Merchant>();
+            foreach(var ev in model.Events)
+            {
+                if (!model.FeaturedMerchants.Contains(ev.Organizer))
+                    model.FeaturedMerchants.Add(ev.Organizer);
+            }
+            foreach (var prom in model.Promotions)
+            {
+                if (!model.FeaturedMerchants.Contains(prom.Organizer))
+                    model.FeaturedMerchants.Add(prom.Organizer);
+            }
+
+            model.RecentlyAddedMerchants = allMerchants.OrderByDescending(m => m.Id).Take(10).ToList();
+
+            if (model.RecentlyAddedMerchants == null)
+                model.RecentlyAddedMerchants = new List<Merchant>();
+
+            model.EventPromotionMerchants = model.FeaturedMerchants;
 
             return Ok(model);
         }

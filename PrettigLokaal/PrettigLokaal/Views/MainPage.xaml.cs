@@ -276,7 +276,8 @@ namespace PrettigLokaal
 
         private void SearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
-            NavigateToPage(typeof(FindPage), new FindPage.NavigationParams() { mainPage = this, searchQry = sender.Text }, "Zoek handelaars");
+            if(!string.IsNullOrWhiteSpace(sender.Text))
+                NavigateToPage(typeof(FindPage), new FindPage.NavigationParams() { mainPage = this, searchQry = sender.Text }, "Zoek handelaars");
         }
     }
 }

@@ -73,9 +73,15 @@
                         <!--<Button x:Name="BackButton" Click="BackButton_Click" HorizontalAlignment="Left" VerticalAlignment="Center" 
                                 Style="{StaticResource NavigationBackButtonNormalStyle}"
                                 IsEnabled="{Binding CanGoBack, Mode=OneWay}"/>-->
+
                         <TextBlock FontSize="18"
                                    HorizontalAlignment="Left"
-                               Margin="10 5 0 0"
+                               Margin="10 5 2 0"
+                               Text="PrettigLokaal -" FontFamily="Segoe UI">
+                        </TextBlock>
+                        <TextBlock FontSize="18"
+                                   HorizontalAlignment="Left"
+                               Margin="2 5 0 0"
                                Text="{Binding Title, Mode=OneWay}" FontFamily="Segoe UI">
                         </TextBlock>
                     </StackPanel>
