@@ -172,6 +172,7 @@
     <Compile Include="ViewModels\Helpers\HasCouponCodeConverter.cs" />
     <Compile Include="ViewModels\Helpers\InverseBooleanConverter.cs" />
     <Compile Include="ViewModels\Helpers\InverseVisibilityConverter.cs" />
+    <Compile Include="ViewModels\Helpers\LineConverter.cs" />
     <Compile Include="ViewModels\Helpers\ModelErrors.cs" />
     <Compile Include="ViewModels\Helpers\TimeConverter.cs" />
     <Compile Include="ViewModels\Helpers\ViewModelBase.cs" />
