@@ -264,8 +264,8 @@
                                 Grid.Row="0" Grid.Column="0"
                                 DataContext="{Binding Image, Mode=OneWay}"
                             Visibility="{Binding IsLoading, Mode=OneWay, Converter={StaticResource invVisibilityConverter}}"
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Stretch"
+                            HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
                             Stretch="UniformToFill"
                             Source="{Binding Data, Mode=OneWay, Converter={StaticResource bitmapConverter}}"/>
 
@@ -333,8 +333,8 @@
                                 Grid.Row="0" Grid.Column="0"
                                 DataContext="{Binding Image, Mode=OneWay}"
                             Visibility="{Binding IsLoading, Mode=OneWay, Converter={StaticResource invVisibilityConverter}}"
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Stretch"
+                            HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
                             Stretch="UniformToFill"
                             Source="{Binding Data, Mode=OneWay, Converter={StaticResource bitmapConverter}}"/>
 
