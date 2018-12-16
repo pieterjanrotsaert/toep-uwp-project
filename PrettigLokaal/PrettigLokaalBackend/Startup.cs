@@ -5,6 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DinkToPdf;
+using DinkToPdf.Contracts;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -36,6 +38,8 @@ namespace PrettigLokaalBackend
             {
                 options.UseSqlServer(Configuration["Data:ConnectionString"]);
             });
+
+            services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
 
             var signConfig = new ConfigurationBuilder()
                                 .SetBasePath(Directory.GetCurrentDirectory())
