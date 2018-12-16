@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using PrettigLokaalBackend.Models.Domain;
 using Windows.Storage;
 using System.Security.Authentication;
+using System.IO;
 
 namespace PrettigLokaal.Backend
 {
@@ -493,6 +494,40 @@ namespace PrettigLokaal.Backend
         public void GetFeed(Callback<FeedModel> callback)
         {
             SendGet("/api/user/feed", callback);
+        }
+
+        public async Task downloadPdfAsync(int id, Callback<Stream> callback)
+        {
+            try
+            {
+                var response = await client.GetAsync(ENDPOINT + "/api/File/pdf/" + id.ToString());
+
+                if (response.IsSuccessStatusCode)
+                    callback.Invoke(await response.Content.ReadAsStreamAsync(), null);
+                else
+                {
+                    if ((int)response.StatusCode == 422) // Http Status 422: Unprocessable Entity (Backend uses this to throw errors)
+                        callback.Invoke(null, JsonConvert.DeserializeObject<ErrorModel>(await response.Content.ReadAsStringAsync()));
+                    else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized) // Happens when the token expires or is invalid.
+                    {
+                        ClearToken();
+                        callback.Invoke(null, new ErrorModel(ErrorModel.NOT_LOGGED_IN));
+                    }
+                    else
+                    {
+                        ErrorModel err = new ErrorModel(ErrorModel.HTTP_ERROR,
+                                                        "Error " + response.StatusCode.ToString() + ": " + response.ReasonPhrase);
+                        callback.Invoke(null, err);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                callback.Invoke(null, new ErrorModel(ErrorModel.NETWORK_ERROR, ex.Message));
+                return;
+            }
+
+            
         }
 
     }

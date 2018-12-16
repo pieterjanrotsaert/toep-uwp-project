@@ -89,9 +89,6 @@ namespace PrettigLokaalBackend.Controllers
                           *{{
                                 font-family: Verdana, Geneva, sans-serif;
                             }}
-                        body{{
-                            background-color: #c1d9ff;
-                        }}
                             h1{{
                                 padding-top: 3em;
                                 text-align: center;
@@ -111,20 +108,22 @@ namespace PrettigLokaalBackend.Controllers
                   <title>Promotion</title>
                 </head>
                 <body>
+                <img src='https://localhost:3001/Assets/Square150x150Logo.scale-200.png' height='200' style='position: absolute; top:50px; left:700px;'>
                   <h1>{0}</h1>
                 	<div id='details'>
+                    <p></p>
                     <p> Zaak: {1}</p>
-                	<p>	Adress: {2}</p>
+                	<p>	Adres: {2}</p>
                 	<p>	Beschrijving: {3}</p>
                 	<p>	Geldig vanaf: {4}</p>
-                	<p>	Tot: {5}</p>
-                	<div id='img'>
-                        <img src='{6}' height='200'>
-                		<img src='{7}' height='200' style='float: right; margin-right: 2em;'>
+                	<p>	Geldig tot: {5}</p>
+                	<div id='img' style='padding-top: 5em;'>
+                        <img src='{6}' height='250'>
+                		<img src='https://localhost:3001/Assets/sample.png' height='250' style='float: right; margin-right: 2em;'>
                 	</div>
                   </div>
                 </body>
-                </html>", pr.Name, pr.Organizer.Name, pr.Organizer.Address, pr.Description, pr.StartDate.ToLongDateString(), pr.EndDate.ToLongDateString(), "data:image/png;base64," + pr.Image.Data.Data, "C:/Users/Jeffrey Waegneer/Documents/School/3TIN/UWP/toep-uwp-project/PrettigLokaal/PrettigLokaalBackend/Assets/sample.png");
+                </html>", pr.Name, pr.Organizer.Name, pr.Organizer.Address, pr.Description, pr.StartDate.ToShortDateString(), pr.EndDate.ToShortDateString(), "data:image/png;base64," + pr.Image.Data.Data);
 
             return html;
         }

@@ -83,7 +83,7 @@ namespace PrettigLokaalBackend
             }
 
             context.Database.EnsureCreated();
-
+            app.UseStaticFiles();
             app.UseHttpsRedirection();
             app.UseMvc();
         }
