@@ -362,42 +362,71 @@ namespace PrettigLokaalBackend.Controllers
             return Ok();
         }
 
-        [HttpGet("Featured")]
+        [HttpGet("Discover")]
         [AllowAnonymous]
-        public async Task<IActionResult> Featured()
+        public async Task<IActionResult> Discover()
         {
-            List<Merchant> merchants = await context.Merchants.OrderByDescending(m => m.Promotions.Where(p => 0 < p.EndDate.CompareTo(DateTime.Now)).Count() + m.Events.Where(e => 0 < e.EndDate.CompareTo(DateTime.Now)).Count())   //Het aantal promoties & events dat nog actief zijn.
+            DiscoverModel model = new DiscoverModel();
+            model.FeaturedMerchants = await context.Merchants.OrderByDescending(m => m.Promotions.Where(p => 0 <= p.EndDate.CompareTo(DateTime.Now)).Count() + m.Events.Where(e => 0 <= e.EndDate.CompareTo(DateTime.Now)).Count())
                 .Take(10)
-                .Include(m => m.Events).ThenInclude(e => e.Image)
-                .Include(m => m.Promotions).ThenInclude(e => e.Image)
                 .Include(m => m.Tags)
                 .Include(m => m.OpeningHours)
                 .Include(m => m.Images)
+                .Include(m => m.Events)
+                    .ThenInclude(e => e.Image)
+                .Include(m => m.Promotions)
+                    .ThenInclude(p => p.Image)
                 .ToListAsync();
 
-            if (merchants == null)
+            if (model.FeaturedMerchants == null)
                 return Error(ErrorModel.NOT_FOUND);
 
-            return Ok(merchants);
-        }
-
-        [HttpGet("Recently")]
-        [AllowAnonymous]
-        public async Task<IActionResult> Recently()
-        {
-            List<Merchant> merchants = await context.Merchants.OrderByDescending(m => m.Id)
+            model.RecentlyAddedMerchants = await context.Merchants.OrderByDescending(m => m.Id)
                 .Take(10)
-                .Include(m => m.Events).ThenInclude(e => e.Image)
-                .Include(m => m.Promotions).ThenInclude(e => e.Image)
                 .Include(m => m.Tags)
                 .Include(m => m.OpeningHours)
                 .Include(m => m.Images)
+                .Include(m => m.Events)
+                    .ThenInclude(e => e.Image)
+                .Include(m => m.Promotions)
+                    .ThenInclude(p => p.Image)
                 .ToListAsync();
 
-            if (merchants == null)
+            if (model.RecentlyAddedMerchants == null)
                 return Error(ErrorModel.NOT_FOUND);
 
-            return Ok(merchants);
+            model.Events = await context.Events
+                .Where(ev => ev.EndDate.CompareTo(DateTime.Now) >= 0)
+                .OrderByDescending(ev => ev.Id)
+                .Take(20)
+                .Include(ev => ev.Image)
+                .ToListAsync();
+
+            model.EventPromotionMerchants = await context.Merchants
+                .Where(m => m.Events.Any(ev => model.Events.Contains(ev)) || m.Promotions.Any(pr => model.Promotions.Contains(pr)))
+                .Include(m => m.Tags)
+                .Include(m => m.OpeningHours)
+                .Include(m => m.Images)
+                .Include(m => m.Events)
+                    .ThenInclude(e => e.Image)
+                .Include(m => m.Promotions)
+                    .ThenInclude(p => p.Image)
+                .ToListAsync();
+
+            if (model.Events == null)
+                return Error(ErrorModel.NOT_FOUND);
+
+            model.Promotions = await context.Promotions
+                .Where(p => p.EndDate.CompareTo(DateTime.Now) >= 0)
+                .OrderByDescending(p => p.Id)
+                .Take(20)
+                .Include(p => p.Image)
+                .ToListAsync();
+
+            if (model.Promotions == null)
+                return Error(ErrorModel.NOT_FOUND);
+
+            return Ok(model);
         }
 
     }

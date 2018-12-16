@@ -19,7 +19,7 @@
 
     <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
 
-        <Grid Margin="20, 10, 35, 10" Height="Auto">
+        <Grid Margin="30, 20, 45, 20" Height="Auto">
 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
@@ -38,7 +38,7 @@
             Visibility="{Binding IsLoading, Mode=OneWay, Converter={StaticResource visibilityConverter}}" Margin="0,0,0,0" Height="45" Width="45" FontFamily="Segoe UI" />
 
             <StackPanel Visibility="{Binding IsLoading, Mode=OneWay, Converter={StaticResource invVisibilityConverter}}">
-                <Grid>
+                <Grid Margin="10,10,10,10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
@@ -47,10 +47,10 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <TextBlock FontSize="25" Grid.Column="0" FontFamily="Segoe UI">In de kijker</TextBlock>
-                    <FlipView Grid.Row="1" ItemsSource="{Binding FeaturedMerchants, Mode=OneWay}" Height="450px" Background="White">
+                    <FlipView Grid.Row="1" ItemsSource="{Binding FeaturedMerchants, Mode=OneWay}" Height="450px" Background="#00000000">
                         <FlipView.ItemTemplate>
                             <DataTemplate>
-                                <Grid>
+                                <Grid PointerPressed="FeaturedMerchantClicked" Tag="{Binding Id}">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition/>
                                     </Grid.ColumnDefinitions>
@@ -117,8 +117,8 @@
                         </FlipView.ItemTemplate>
                     </FlipView>
                 </Grid>
-                
-                <Grid>
+
+                <Grid Margin="10,10,10,10" ColumnSpacing="20">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
@@ -131,9 +131,177 @@
                     <TextBlock FontSize="25" Grid.Column="0" Grid.Row="0" FontFamily="Segoe UI">Nieuwste Promoties!</TextBlock>
                     <TextBlock FontSize="25" Grid.Column="1" Grid.Row="0" FontFamily="Segoe UI">Nieuwste Evenementen!</TextBlock>
 
-                    
+                    <GridView Grid.Row="1" Grid.Column="0" ItemsSource="{Binding Promotions, Mode=OneWay}" 
+                              ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                              ScrollViewer.HorizontalScrollMode="Auto"
+                              ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                              ScrollViewer.VerticalScrollMode="Disabled"
+                              SelectionMode="Single">
+
+                        <GridView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Height="300px">
+                                    <Grid Background="#ff333333">
+                                        <ProgressRing 
+                                        Grid.Row="0" Grid.Column="0"
+                                        DataContext="{Binding Image, Mode=OneWay}"
+                                        IsActive="True" 
+                                        HorizontalAlignment="Center" 
+                                        VerticalAlignment="Center" 
+                                        Visibility="{Binding IsLoading, Mode=OneWay, Converter={StaticResource visibilityConverter}}" Margin="0,0,0,0" Height="45" Width="45" FontFamily="Segoe UI" />
+
+                                        <Image 
+                                        Grid.Row="0" Grid.Column="0"
+                                        DataContext="{Binding Image, Mode=OneWay}"
+                                        Visibility="{Binding IsLoading, Mode=OneWay, Converter={StaticResource invVisibilityConverter}}"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Stretch"
+                                        Stretch="Uniform"
+                                        Source="{Binding Data, Mode=OneWay, Converter={StaticResource bitmapConverter}}"/>
+
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+
+                                            <Button Tag="{Binding Id, Mode=OneWay}" Click="ShowCouponButton_Click" Grid.Row="0" Content="Coupon Weergeven" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5, 5, 5, 5"
+                                                Visibility="{Binding HasCouponCode, Mode=OneWay, Converter={StaticResource visibilityConverter}}" Background="#44ffffff" Foreground="White">
+
+                                                <Button.Resources>
+                                                    <ResourceDictionary>
+                                                        <ResourceDictionary.ThemeDictionaries>
+                                                            <ResourceDictionary x:Key="Light">
+                                                                <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="White"/>
+                                                                <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="#88ffffff"/>
+                                                            </ResourceDictionary>
+                                                        </ResourceDictionary.ThemeDictionaries>
+                                                    </ResourceDictionary>
+                                                </Button.Resources>
+                                            </Button>
+
+                                            <Button Tag="{Binding OrganizerId, Mode=OneWay}" Click="MerchantButton_Click" Grid.Row="0" Content="Bezoek Handelaar" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5, 5, 5, 5"
+                                                 Background="#44ffffff" Foreground="White">
+
+                                                <Button.Resources>
+                                                    <ResourceDictionary>
+                                                        <ResourceDictionary.ThemeDictionaries>
+                                                            <ResourceDictionary x:Key="Light">
+                                                                <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="White"/>
+                                                                <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="#88ffffff"/>
+                                                            </ResourceDictionary>
+                                                        </ResourceDictionary.ThemeDictionaries>
+                                                    </ResourceDictionary>
+                                                </Button.Resources>
+                                            </Button>
+
+                                            <TextBlock Grid.Row="2" Text="{Binding Name, Mode=OneWay}" Foreground="White" Margin="5, 5, 5, 0"  Grid.Column="0" FontWeight="Bold" FontSize="20" />
+
+
+                                            <TextBlock Grid.Row="3" Text="{Binding HasCouponCode, Mode=OneWay, Converter={StaticResource couponConverter}}" Foreground="White" Margin="5, 0, 5, 5" Grid.Column="0" FontWeight="Normal" FontSize="14" FontStyle="Italic" />
+
+                                            <StackPanel Orientation="Horizontal" Grid.Row="3" HorizontalAlignment="Right">
+                                                <TextBlock Text="{Binding StartDate, Mode=OneWay, Converter={StaticResource dateTextConverter}}" Foreground="White" Margin="5, 0, 2, 5" FontWeight="Normal" FontSize="14" FontStyle="Italic" />
+                                                <TextBlock Text="-" Foreground="White" Margin="2, 0, 2, 5" Grid.Column="0" FontWeight="Normal" FontSize="14" FontStyle="Italic" />
+                                                <TextBlock Text="{Binding EndDate, Mode=OneWay, Converter={StaticResource dateTextConverter}}" Foreground="White" Margin="2, 0, 5, 5" FontWeight="Normal" FontSize="14" FontStyle="Italic" />
+                                            </StackPanel>
+
+                                            <TextBlock Grid.Row="4" Text="{Binding Description, Mode=OneWay}" Foreground="White" Margin="5, 0, 5, 5" Grid.Column="0" FontWeight="Normal" FontSize="15" />
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
+                            </DataTemplate>
+                        </GridView.ItemTemplate>
+                        <GridView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <ItemsWrapGrid MaximumRowsOrColumns="1"/>
+                            </ItemsPanelTemplate>
+                        </GridView.ItemsPanel>
+                    </GridView>
+
+                    <GridView Grid.Row="1" Grid.Column="1" ItemsSource="{Binding Events, Mode=OneWay}" 
+                              ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                              ScrollViewer.HorizontalScrollMode="Auto"
+                              ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                              ScrollViewer.VerticalScrollMode="Disabled"
+                              SelectionMode="Single">
+
+                        <GridView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid PointerPressed="RecentlyAddedMerchantClicked" Tag="{Binding Id}" Height="300px">
+                                    <Grid Background="#ff333333">
+                                        <ProgressRing 
+                                    Grid.Row="0" Grid.Column="0"
+                                    DataContext="{Binding Image, Mode=OneWay}"
+                                IsActive="True" 
+                                HorizontalAlignment="Center" 
+                                VerticalAlignment="Center" 
+                                Visibility="{Binding IsLoading, Mode=OneWay, Converter={StaticResource visibilityConverter}}" Margin="0,0,0,0" Height="45" Width="45" FontFamily="Segoe UI" />
+
+                                        <Image 
+                                    Grid.Row="0" Grid.Column="0"
+                                    DataContext="{Binding Image, Mode=OneWay}"
+                                Visibility="{Binding IsLoading, Mode=OneWay, Converter={StaticResource invVisibilityConverter}}"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                Stretch="Uniform"
+                                Source="{Binding Data, Mode=OneWay, Converter={StaticResource bitmapConverter}}"/>
+
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+
+                                            <Button Tag="{Binding OrganizerId, Mode=OneWay}" Click="MerchantButton_Click" Grid.Row="0" Content="Bezoek Handelaar" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5, 5, 5, 5"
+                                                 Background="#44ffffff" Foreground="White">
+
+                                                <Button.Resources>
+                                                    <ResourceDictionary>
+                                                        <ResourceDictionary.ThemeDictionaries>
+                                                            <ResourceDictionary x:Key="Light">
+                                                                <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="White"/>
+                                                                <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="#88ffffff"/>
+                                                            </ResourceDictionary>
+                                                        </ResourceDictionary.ThemeDictionaries>
+                                                    </ResourceDictionary>
+                                                </Button.Resources>
+                                            </Button>
+
+                                            <TextBlock Grid.Row="1" Text="{Binding Name, Mode=OneWay}" Foreground="White" Margin="5, 5, 5, 0"  Grid.Column="0" FontWeight="Bold" FontSize="20" />
+
+
+                                            <TextBlock Grid.Row="2" Text="{Binding PlaceDescription, Mode=OneWay}" Foreground="White" Margin="5, 0, 5, 5" Grid.Column="0" FontWeight="Normal" FontSize="14" FontStyle="Italic" />
+
+                                            <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Right">
+                                                <TextBlock Text="{Binding StartDate, Mode=OneWay, Converter={StaticResource dateTextConverter}}" Foreground="White" Margin="5, 0, 2, 5" FontWeight="Normal" FontSize="14" FontStyle="Italic" />
+                                                <TextBlock Text="-" Foreground="White" Margin="2, 0, 2, 5" Grid.Column="0" FontWeight="Normal" FontSize="14" FontStyle="Italic" />
+                                                <TextBlock Text="{Binding EndDate, Mode=OneWay, Converter={StaticResource dateTextConverter}}" Foreground="White" Margin="2, 0, 5, 5" FontWeight="Normal" FontSize="14" FontStyle="Italic" />
+                                            </StackPanel>
+
+                                            <TextBlock Grid.Row="3" Text="{Binding Description, Mode=OneWay}" Foreground="White" Margin="5, 0, 5, 5" Grid.Column="0" FontWeight="Normal" FontSize="15" />
+                                        </Grid>
+
+                                    </Grid>
+                                </Grid>
+                            </DataTemplate>
+                        </GridView.ItemTemplate>
+                        <GridView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <ItemsWrapGrid MaximumRowsOrColumns="1"/>
+                            </ItemsPanelTemplate>
+                        </GridView.ItemsPanel>
+                    </GridView>
                 </Grid>
-                <Grid>
+                
+                <Grid Margin="10,10,10,10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
@@ -142,7 +310,7 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <TextBlock FontSize="25" Grid.Column="0" FontFamily="Segoe UI">Onlangs Toegevoegd</TextBlock>
-                    <FlipView Grid.Row="1" ItemsSource="{Binding RecentlyAddedMerchants, Mode=OneWay}" Height="450px" Background="White">
+                    <FlipView Grid.Row="1" ItemsSource="{Binding RecentlyAddedMerchants, Mode=OneWay}" Height="450px" Background="#00000000">
                         <FlipView.ItemTemplate>
                             <DataTemplate>
                                 <Grid>

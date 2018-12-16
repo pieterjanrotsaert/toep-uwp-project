@@ -125,6 +125,9 @@
     <Compile Include="..\PrettigLokaalBackend\Models\Requests\CreateUserModel.cs">
       <Link>Backend\Models\Requests\CreateUserModel.cs</Link>
     </Compile>
+    <Compile Include="..\PrettigLokaalBackend\Models\Requests\DiscoverModel.cs">
+      <Link>Backend\Models\Requests\DiscoverModel.cs</Link>
+    </Compile>
     <Compile Include="..\PrettigLokaalBackend\Models\Requests\ErrorModel.cs">
       <Link>Backend\Models\Requests\ErrorModel.cs</Link>
     </Compile>

@@ -470,14 +470,9 @@ namespace PrettigLokaal.Backend
             SendGet("/api/merchant/find/" + Uri.EscapeDataString(searchQry), callback);
         }
 
-        public void GetFeaturedMerchants(Callback<List<Merchant>> callback)
+        public void GetDiscover(Callback<DiscoverModel> callback)
         {
-            SendGet("/api/merchant/featured", callback);
-        }
-
-        public void GetRecentlyAddedMerchants(Callback<List<Merchant>> callback)
-        {
-            SendGet("/api/merchant/recently", callback);
+            SendGet("/api/merchant/discover", callback);
         }
 
         public void IsSubscribed(int merchantId, Callback<SimpleBoolModel> callback)
