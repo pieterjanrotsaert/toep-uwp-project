@@ -30,14 +30,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <ProgressRing 
-            Grid.Row="1"
-            IsActive="True" 
-            HorizontalAlignment="Center" 
-            VerticalAlignment="Center" 
-            Visibility="{Binding IsLoading, Mode=OneWay, Converter={StaticResource visibilityConverter}}" Margin="0,0,0,0" Height="45" Width="45" FontFamily="Segoe UI" />
-
-            <StackPanel Visibility="{Binding IsLoading, Mode=OneWay, Converter={StaticResource invVisibilityConverter}}">
+            <StackPanel>
                 <Grid Margin="10,10,10,10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
@@ -46,8 +39,17 @@
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <TextBlock FontSize="25" Grid.Column="0" FontFamily="Segoe UI">In de kijker</TextBlock>
-                    <FlipView Grid.Row="1" ItemsSource="{Binding FeaturedMerchants, Mode=OneWay}" Height="450px" Background="#00000000">
+
+                    <ProgressRing 
+                    Grid.Row="1"
+                    IsActive="True" 
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Center" 
+                    Visibility="{Binding IsLoading, Mode=OneWay, Converter={StaticResource visibilityConverter}}" 
+                        Margin="0,0,0,0" Height="45" Width="45" FontFamily="Segoe UI" />
+
+                    <TextBlock FontSize="25" Grid.Column="0" FontFamily="Segoe UI" Margin="0, 0, 0, 10">In de kijker</TextBlock>
+                    <FlipView Grid.Row="1" ItemsSource="{Binding FeaturedMerchants, Mode=OneWay}" Height="450" Background="#00000000">
                         <FlipView.ItemTemplate>
                             <DataTemplate>
                                 <Grid PointerPressed="FeaturedMerchantClicked" Tag="{Binding Id}">
@@ -57,59 +59,44 @@
                                     <Grid.RowDefinitions>
                                         <RowDefinition/>
                                     </Grid.RowDefinitions>
-                                    <GridView Grid.Row="0" Grid.Column="0" ItemsSource="{Binding Images, Mode=OneWay}" 
-                                    ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                                    ScrollViewer.HorizontalScrollMode="Auto"
-                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                    ScrollViewer.VerticalScrollMode="Disabled"
-                                    SelectionMode="None">
-                                        <GridView.ItemTemplate>
-                                            <DataTemplate>
-                                                <Grid>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="*"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <Grid.RowDefinitions>
-                                                        <RowDefinition/>
-                                                    </Grid.RowDefinitions>
 
-                                                    <ProgressRing 
-                                                    IsActive="True" 
-                                                    HorizontalAlignment="Center" 
-                                                    VerticalAlignment="Center" 
-                                                    Visibility="{Binding IsLoading, Mode=OneWay, Converter={StaticResource visibilityConverter}}" Margin="0,0,0,0" Height="45" Width="45" FontFamily="Segoe UI" />
+                                    <Grid DataContext="{Binding Images[0]}">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
 
-                                                    <Image
-                                                    Grid.Column="0" Grid.Row="0"
-                                                    Visibility="{Binding IsLoading, Mode=OneWay, Converter={StaticResource invVisibilityConverter}}"
-                                                    HorizontalAlignment="Stretch"
-                                                    VerticalAlignment="Stretch"
-                                                    Stretch="UniformToFill"
-                                                    Source="{Binding Data, Mode=OneWay, Converter={StaticResource bitmapConverter}}"/>
-                                                </Grid>
-                                            </DataTemplate>
-                                        </GridView.ItemTemplate>
-                                        <GridView.ItemsPanel>
-                                            <ItemsPanelTemplate>
-                                                <ItemsWrapGrid Orientation="Vertical" />
-                                            </ItemsPanelTemplate>
-                                        </GridView.ItemsPanel>
-                                    </GridView>
+                                        <ProgressRing 
+                                        IsActive="True" 
+                                        HorizontalAlignment="Center" 
+                                        VerticalAlignment="Center" 
+                                        Visibility="{Binding IsLoading, Mode=OneWay, Converter={StaticResource visibilityConverter}}" Margin="0,0,0,0" Height="45" Width="45" FontFamily="Segoe UI" />
+
+                                        <Image
+                                        Grid.Column="0" Grid.Row="0"
+                                        Visibility="{Binding IsLoading, Mode=OneWay, Converter={StaticResource invVisibilityConverter}}"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Stretch="UniformToFill"
+                                        Source="{Binding Data, Mode=OneWay, Converter={StaticResource bitmapConverter}}"/>
+                                    </Grid>
+                                            
+                                    
                                     <StackPanel VerticalAlignment="Bottom" Margin="20,20,20,20">
                                         <TextBlock
                                         Text="{Binding Name}"
                                         FontSize="30"
                                         Foreground="White"
                                         HorizontalAlignment="Left"
-                                        VerticalAlignment="Bottom"
-                                        Visibility="{Binding IsLoading, Mode=OneWay, Converter={StaticResource invVisibilityConverter}}"/>
+                                        VerticalAlignment="Bottom"/>
                                         <TextBlock
                                         Text="{Binding Description}"
-                                        FontSize="20"
+                                        FontSize="16"
                                         Foreground="White"
                                         HorizontalAlignment="Left"
-                                        VerticalAlignment="Bottom"
-                                        Visibility="{Binding IsLoading, Mode=OneWay, Converter={StaticResource invVisibilityConverter}}"/>
+                                        VerticalAlignment="Bottom"/>
                                     </StackPanel>
                                     
                                 </Grid>
@@ -128,19 +115,13 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     
-                    <TextBlock FontSize="25" Grid.Column="0" Grid.Row="0" FontFamily="Segoe UI">Nieuwste Promoties!</TextBlock>
-                    <TextBlock FontSize="25" Grid.Column="1" Grid.Row="0" FontFamily="Segoe UI">Nieuwste Evenementen!</TextBlock>
+                    <TextBlock FontSize="25" Grid.Column="0" Grid.Row="0" FontFamily="Segoe UI" Margin="0, 0, 0, 10">Nieuwste Promoties</TextBlock>
+                    <TextBlock FontSize="25" Grid.Column="1" Grid.Row="0" FontFamily="Segoe UI" Margin="0, 0, 0, 10">Nieuwste Evenementen</TextBlock>
 
-                    <GridView Grid.Row="1" Grid.Column="0" ItemsSource="{Binding Promotions, Mode=OneWay}" 
-                              ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                              ScrollViewer.HorizontalScrollMode="Auto"
-                              ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                              ScrollViewer.VerticalScrollMode="Disabled"
-                              SelectionMode="Single">
-
-                        <GridView.ItemTemplate>
+                    <FlipView Grid.Row="1" Grid.Column="0"  Height="300" ItemsSource="{Binding Promotions, Mode=OneWay}">
+                        <FlipView.ItemTemplate>
                             <DataTemplate>
-                                <Grid Height="300px">
+                                <Grid>
                                     <Grid Background="#ff333333">
                                         <ProgressRing 
                                         Grid.Row="0" Grid.Column="0"
@@ -154,9 +135,9 @@
                                         Grid.Row="0" Grid.Column="0"
                                         DataContext="{Binding Image, Mode=OneWay}"
                                         Visibility="{Binding IsLoading, Mode=OneWay, Converter={StaticResource invVisibilityConverter}}"
-                                        HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Stretch"
-                                        Stretch="Uniform"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Stretch="UniformToFill"
                                         Source="{Binding Data, Mode=OneWay, Converter={StaticResource bitmapConverter}}"/>
 
                                         <Grid>
@@ -215,24 +196,14 @@
                                     </Grid>
                                 </Grid>
                             </DataTemplate>
-                        </GridView.ItemTemplate>
-                        <GridView.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <ItemsWrapGrid MaximumRowsOrColumns="1"/>
-                            </ItemsPanelTemplate>
-                        </GridView.ItemsPanel>
-                    </GridView>
+                        </FlipView.ItemTemplate>
+                    </FlipView>
 
-                    <GridView Grid.Row="1" Grid.Column="1" ItemsSource="{Binding Events, Mode=OneWay}" 
-                              ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                              ScrollViewer.HorizontalScrollMode="Auto"
-                              ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                              ScrollViewer.VerticalScrollMode="Disabled"
-                              SelectionMode="Single">
+                    <FlipView Grid.Row="1" Grid.Column="1"  Height="300" ItemsSource="{Binding Events, Mode=OneWay}">
 
-                        <GridView.ItemTemplate>
+                        <FlipView.ItemTemplate>
                             <DataTemplate>
-                                <Grid PointerPressed="RecentlyAddedMerchantClicked" Tag="{Binding Id}" Height="300px">
+                                <Grid Height="300px">
                                     <Grid Background="#ff333333">
                                         <ProgressRing 
                                     Grid.Row="0" Grid.Column="0"
@@ -246,9 +217,9 @@
                                     Grid.Row="0" Grid.Column="0"
                                     DataContext="{Binding Image, Mode=OneWay}"
                                 Visibility="{Binding IsLoading, Mode=OneWay, Converter={StaticResource invVisibilityConverter}}"
-                                HorizontalAlignment="Stretch"
-                                VerticalAlignment="Stretch"
-                                Stretch="Uniform"
+                                HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                Stretch="UniformToFill"
                                 Source="{Binding Data, Mode=OneWay, Converter={StaticResource bitmapConverter}}"/>
 
                                         <Grid>
@@ -292,13 +263,8 @@
                                     </Grid>
                                 </Grid>
                             </DataTemplate>
-                        </GridView.ItemTemplate>
-                        <GridView.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <ItemsWrapGrid MaximumRowsOrColumns="1"/>
-                            </ItemsPanelTemplate>
-                        </GridView.ItemsPanel>
-                    </GridView>
+                        </FlipView.ItemTemplate>
+                    </FlipView>
                 </Grid>
                 
                 <Grid Margin="10,10,10,10">
@@ -309,70 +275,55 @@
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <TextBlock FontSize="25" Grid.Column="0" FontFamily="Segoe UI">Onlangs Toegevoegd</TextBlock>
+                    <TextBlock FontSize="25" Grid.Column="0" FontFamily="Segoe UI" Margin="0, 0, 0, 10">Onlangs Toegevoegd</TextBlock>
                     <FlipView Grid.Row="1" ItemsSource="{Binding RecentlyAddedMerchants, Mode=OneWay}" Height="450px" Background="#00000000">
                         <FlipView.ItemTemplate>
                             <DataTemplate>
-                                <Grid>
+                                <Grid PointerPressed="RecentlyAddedMerchantClicked" Tag="{Binding Id}">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition/>
                                     </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
                                         <RowDefinition/>
                                     </Grid.RowDefinitions>
-                                    <GridView Grid.Row="0" Grid.Column="0" ItemsSource="{Binding Images, Mode=OneWay}" 
-                                    ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                                    ScrollViewer.HorizontalScrollMode="Auto"
-                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                    ScrollViewer.VerticalScrollMode="Disabled"
-                                    SelectionMode="None">
-                                        <GridView.ItemTemplate>
-                                            <DataTemplate>
-                                                <Grid>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <Grid.RowDefinitions>
-                                                        <RowDefinition/>
-                                                    </Grid.RowDefinitions>
 
-                                                    <ProgressRing 
-                                                    IsActive="True" 
-                                                    HorizontalAlignment="Center" 
-                                                    VerticalAlignment="Center" 
-                                                    Visibility="{Binding IsLoading, Mode=OneWay, Converter={StaticResource visibilityConverter}}" Margin="0,0,0,0" Height="45" Width="45" FontFamily="Segoe UI" />
+                                    <Grid DataContext="{Binding Images[0]}">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
 
-                                                    <Image
-                                                    Grid.Column="0" Grid.Row="0"
-                                                    Visibility="{Binding IsLoading, Mode=OneWay, Converter={StaticResource invVisibilityConverter}}"
-                                                    HorizontalAlignment="Stretch"
-                                                    VerticalAlignment="Stretch"
-                                                    Stretch="UniformToFill"
-                                                    Source="{Binding Data, Mode=OneWay, Converter={StaticResource bitmapConverter}}"/>
-                                                </Grid>
-                                            </DataTemplate>
-                                        </GridView.ItemTemplate>
-                                        <GridView.ItemsPanel>
-                                            <ItemsPanelTemplate>
-                                                <ItemsWrapGrid Orientation="Vertical" />
-                                            </ItemsPanelTemplate>
-                                        </GridView.ItemsPanel>
-                                    </GridView>
+                                        <ProgressRing 
+                                        IsActive="True" 
+                                        HorizontalAlignment="Center" 
+                                        VerticalAlignment="Center" 
+                                        Visibility="{Binding IsLoading, Mode=OneWay, Converter={StaticResource visibilityConverter}}" Margin="0,0,0,0" Height="45" Width="45" FontFamily="Segoe UI" />
+
+                                        <Image
+                                        Grid.Column="0" Grid.Row="0"
+                                        Visibility="{Binding IsLoading, Mode=OneWay, Converter={StaticResource invVisibilityConverter}}"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Stretch="UniformToFill"
+                                        Source="{Binding Data, Mode=OneWay, Converter={StaticResource bitmapConverter}}"/>
+                                    </Grid>
+
+
                                     <StackPanel VerticalAlignment="Bottom" Margin="20,20,20,20">
                                         <TextBlock
                                         Text="{Binding Name}"
                                         FontSize="30"
                                         Foreground="White"
                                         HorizontalAlignment="Left"
-                                        VerticalAlignment="Bottom"
-                                        Visibility="{Binding IsLoading, Mode=OneWay, Converter={StaticResource invVisibilityConverter}}"/>
+                                        VerticalAlignment="Bottom"/>
                                         <TextBlock
                                         Text="{Binding Description}"
-                                        FontSize="20"
+                                        FontSize="16"
                                         Foreground="White"
                                         HorizontalAlignment="Left"
-                                        VerticalAlignment="Bottom"
-                                        Visibility="{Binding IsLoading, Mode=OneWay, Converter={StaticResource invVisibilityConverter}}"/>
+                                        VerticalAlignment="Bottom"/>
                                     </StackPanel>
 
                                 </Grid>

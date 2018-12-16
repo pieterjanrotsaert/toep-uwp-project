@@ -36,8 +36,10 @@ namespace PrettigLokaal
         {
             if (showLoader)
                 ViewModel.IsLoading = true;
+            mainPage.SetLoading(true);
             API.Get().GetDiscover((model, err) =>
             {
+                mainPage.SetLoading(false);
                 ViewModel.IsLoading = false;
                 if (err != null)
                     Utils.ErrorBox(err);
