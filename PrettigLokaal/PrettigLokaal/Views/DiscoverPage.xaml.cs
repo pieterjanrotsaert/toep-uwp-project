@@ -164,7 +164,7 @@ namespace PrettigLokaal
         private void RecentlyAddedMerchantClicked(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             int id = (int)((Windows.UI.Xaml.Controls.Grid)sender).Tag;
-            var merchant = ViewModel.FeaturedMerchants.Where(m => m.Id == id).FirstOrDefault();
+            var merchant = ViewModel.RecentlyAddedMerchants.Where(m => m.Id == id).FirstOrDefault();
             mainPage.NavigateToPage(typeof(MerchantPage),
                 new MerchantPage.NavigationParams() { mainPage = mainPage, merchant = merchant },
                 merchant.Name);
