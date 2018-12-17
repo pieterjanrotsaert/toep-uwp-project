@@ -12,10 +12,23 @@
          
 #### Om dit project te starten vanuit Visual Studio:
 
+##### Optie 1: Lokale uitvoering
+
 1. Voer eerste PrettigLokaalBackend uit zonder te debuggen. (Bv. door Ctrl+F5 te drukken.)
 Zorg dat deze in de achtergrond loopt.
 
+BELANGRIJK: Verander het profiel naar 'PrettigLokaalBackend' (dus NIET 'IIS Express'),
+            ga dan naar project properties van PrettigLokaalBackend en zet 'Launch Browser' af, 
+            en verander de 'App URL' naar 'https://localhost:5001'.
+
 2. Voer vervolgens de App (PrettigLokaal) uit.
+
+##### Optie 2: Uitvoeren gebruik makend van externe server
+
+Zet simpelweg de configuratie op 'Release' bij de app en voer deze uit m.b.v. Ctrl + F5.
+
+U hoeft de backend niet te builden of te runnen, de release build van de app is voorgeconfigureerd om met 
+een externe server te verbinden waar de backend reeds online staat.
 
 #### Beschikbare Test Accounts
 
