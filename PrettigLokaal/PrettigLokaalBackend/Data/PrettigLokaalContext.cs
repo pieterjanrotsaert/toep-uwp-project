@@ -60,8 +60,8 @@ namespace PrettigLokaalBackend.Data
         {
             builder.ToTable("MerchantSubscription");
             builder.HasKey(p => p.Id);
-            builder.HasOne(p => p.Merchant).WithMany(p => p.Subscriptions);
-            builder.HasOne(p => p.Account).WithMany(p => p.Subscriptions);
+            builder.HasOne(p => p.Merchant).WithMany(p => p.Subscriptions).OnDelete(DeleteBehavior.Cascade);
+            builder.HasOne(p => p.Account).WithMany(p => p.Subscriptions).OnDelete(DeleteBehavior.Cascade);
         }
 
         private static void MapEvent(EntityTypeBuilder<Event> builder)
