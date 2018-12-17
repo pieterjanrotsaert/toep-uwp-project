@@ -25,3 +25,11 @@ Indien het toch wenselijk is om met een ander account in te loggen zijn deze acc
 > NOOT: Deze accounts zijn alleen beschikbaar als u de standaard database (18.188.130.207) gebruikt.
         Als u zelf een nieuwe DB aanmaakt zal die natuurlijk aanvankelijk geen accounts bevatten.
         
+
+1. Verkoper: <br/>
+>Login naam: 'verkoper' <br/>
+>Login wachtwoord: 'verkoper'
+
+2. Gewone gebruiker: <br/> 
+>Login naam: 'klant' <br/>
+>Login wachtwoord: 'klant'
