@@ -66,7 +66,7 @@ namespace PrettigLokaalBackend.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Find(string query)
         {
-            string[] keywords = query.Split(new char[] { ' ', '\t', '\n', '\r' });
+            string[] keywords = query.ToLower().Split(new char[] { ' ', '\t', '\n', '\r' });
 
             List<Merchant> merchants = await context.Merchants
                 .Include(m => m.Tags)
@@ -76,8 +76,8 @@ namespace PrettigLokaalBackend.Controllers
                     .ThenInclude(e => e.Image)
                 .Include(m => m.Promotions)
                     .ThenInclude(p => p.Image)
-                .Where(m => keywords.Count(kw => m.Name.Contains(kw) || m.Address.Contains(kw) || 
-                                           m.Description.Contains(kw) || (m.Tags.Count(tag => tag.Text.Contains(kw)) > 0)) > 0)
+                .Where(m => keywords.Count(kw => m.Name.ToLower().Contains(kw) || m.Address.ToLower().Contains(kw) || 
+                                           m.Description.ToLower().Contains(kw) || (m.Tags.Count(tag => tag.Text.ToLower().Contains(kw)) > 0)) > 0)
                 .ToListAsync();
 
             return Ok(merchants);
