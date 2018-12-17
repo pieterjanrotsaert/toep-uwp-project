@@ -1,9 +1,11 @@
-﻿using PrettigLokaal.Backend;
+﻿using System;
+using PrettigLokaal.Backend;
 using PrettigLokaal.Misc;
 using PrettigLokaal.ViewModels;
 using PrettigLokaal.Views;
 using PrettigLokaalBackend.Models.Domain;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Windows.UI.Xaml.Navigation;
 
@@ -143,9 +145,25 @@ namespace PrettigLokaal
             });
         }
 
-        private void ShowCouponButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        private async void ShowCouponButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
-
+            Utils.InfoBox("Pdf wordt gegenereerd", "Pdf");
+            Windows.System.LauncherOptions options = new Windows.System.LauncherOptions();
+            options.ContentType = "application/pdf";
+            await API.Get().downloadPdfAsync((int)((Windows.UI.Xaml.Controls.Button)sender).Tag, async (stream, err) =>
+            {
+                string fileName = "Coupon.pdf";
+                Windows.Storage.StorageFolder storageFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
+                Windows.Storage.StorageFile storageFile = await storageFolder.CreateFileAsync(fileName, Windows.Storage.CreationCollisionOption.GenerateUniqueName);
+                using (Stream input = stream)
+                {
+                    var output = await storageFile.OpenStreamForWriteAsync();
+                    await input.CopyToAsync(output);
+                    output.Close();
+                    input.Close();
+                }
+                await Windows.System.Launcher.LaunchFileAsync(storageFile);
+            });
         }
 
         private void MerchantButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)

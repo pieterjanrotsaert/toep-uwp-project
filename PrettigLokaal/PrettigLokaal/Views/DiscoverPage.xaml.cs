@@ -124,7 +124,7 @@ namespace PrettigLokaal
 
         private async void ShowCouponButton_ClickAsync(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
-            Utils.InfoBox("Uw pdf wordt geopend");
+            Utils.InfoBox("Pdf wordt gegenereerd", "Pdf");
             Windows.System.LauncherOptions options = new Windows.System.LauncherOptions();
             options.ContentType = "application/pdf";
             await API.Get().downloadPdfAsync((int)((Windows.UI.Xaml.Controls.Button)sender).Tag, async (stream, err) =>

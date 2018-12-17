@@ -175,11 +175,25 @@ namespace PrettigLokaal.Views
             });
         }
 
-        private void ShowCouponButton_Click(object sender, RoutedEventArgs e)
+        private async void ShowCouponButton_Click(object sender, RoutedEventArgs e)
         {
-            int promotionId = (int)((Windows.UI.Xaml.Controls.Button)sender).Tag;
-
-            // TODO: Coupon weergeven (in pdf?)
+            Utils.InfoBox("Pdf wordt gegenereerd", "Pdf");
+            Windows.System.LauncherOptions options = new Windows.System.LauncherOptions();
+            options.ContentType = "application/pdf";
+            await API.Get().downloadPdfAsync((int)((Windows.UI.Xaml.Controls.Button)sender).Tag, async (stream, err) =>
+            {
+                string fileName = "Coupon.pdf";
+                Windows.Storage.StorageFolder storageFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
+                Windows.Storage.StorageFile storageFile = await storageFolder.CreateFileAsync(fileName, Windows.Storage.CreationCollisionOption.GenerateUniqueName);
+                using (Stream input = stream)
+                {
+                    var output = await storageFile.OpenStreamForWriteAsync();
+                    await input.CopyToAsync(output);
+                    output.Close();
+                    input.Close();
+                }
+                await Windows.System.Launcher.LaunchFileAsync(storageFile);
+            });
         }
     }
 }

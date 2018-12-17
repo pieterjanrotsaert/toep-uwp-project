@@ -108,7 +108,7 @@ namespace PrettigLokaalBackend.Controllers
                   <title>Promotion</title>
                 </head>
                 <body>
-                <img src='https://localhost:3001/Assets/Square150x150Logo.scale-200.png' height='200' style='position: absolute; top:50px; left:700px;'>
+                <img src='https://localhost:5001/Assets/Square150x150Logo.scale-200.png' height='200' style='position: absolute; top:50px; left:700px;'>
                   <h1>{0}</h1>
                 	<div id='details'>
                     <p></p>
@@ -119,7 +119,7 @@ namespace PrettigLokaalBackend.Controllers
                 	<p>	Geldig tot: {5}</p>
                 	<div id='img' style='padding-top: 5em;'>
                         <img src='{6}' height='250'>
-                		<img src='https://localhost:3001/Assets/sample.png' height='250' style='float: right; margin-right: 2em;'>
+                		<img src='https://localhost:5001/Assets/sample.png' height='250' style='float: right; margin-right: 2em;'>
                 	</div>
                   </div>
                 </body>
