@@ -56,8 +56,10 @@ namespace PrettigLokaal.Views
 
             viewModel.OpeningHours = "";
 
-            mainPage.SetLoading(true);
-            if(API.Get().IsLoggedIn())
+
+            if (API.Get().IsLoggedIn())
+            {
+                mainPage.SetLoading(true);
                 API.Get().IsSubscribed(viewModel.Merchant.Id, (result, err) =>
                 {
                     mainPage.SetLoading(false);
@@ -66,6 +68,7 @@ namespace PrettigLokaal.Views
                     else
                         viewModel.IsFollowing = result.State;
                 });
+            }
 
             if(dayStrings.Count >= 7)
             {
